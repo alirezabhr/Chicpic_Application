@@ -7,6 +7,8 @@ import 'package:chicpic/statics/shared_preferences_keys.dart';
 
 import 'package:chicpic/models/auth/user.dart';
 import 'package:chicpic/models/auth/token.dart';
+import 'package:chicpic/models/auth/login_user_data.dart';
+import 'package:chicpic/models/auth/signup_user_data.dart';
 
 const String _tokenPrefix = 'Bearer';
 
@@ -64,5 +66,17 @@ class AuthRepository {
   Future<void> userCheckAuthentication() async {
     final Response response = await APIService.userCheckAuthentication();
     _user = User.fromMap(response.data);
+  }
+
+  Future<void> signup(SignupUserData data) async {
+    final Response response = await APIService.signup(data);
+    _user = User.fromMap(response.data);
+    saveUserTokens(_user!.tokens);
+  }
+
+  Future<void> login(LoginUserData data) async {
+    final Response response = await APIService.login(data);
+    _user = User.fromMap(response.data);
+    saveUserTokens(_user!.tokens);
   }
 }
