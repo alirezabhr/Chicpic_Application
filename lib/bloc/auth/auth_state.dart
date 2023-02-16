@@ -32,30 +32,3 @@ class VerificationFailure extends AuthState {
   @override
   List<Object?> get props => [error];
 }
-
-class ChangeUserProfileLoading extends AuthState {}
-
-class ChangeUserProfileSuccess extends AuthState {}
-
-class ChangeUserProfileFailure extends AuthState {
-  final String error;
-
-  ChangeUserProfileFailure({required this.error});
-
-  @override
-  List<Object?> get props => [error];
-}
-
-class UserRetrieveProfileLoading extends AuthState {}
-
-class UserRetrieveProfileSuccess extends AuthState {
-}
-
-class UserRetrieveProfileFailure extends AuthState {
-  final String error;
-
-  UserRetrieveProfileFailure({required this.error});
-
-  @override
-  List<Object?> get props => [error];
-}
