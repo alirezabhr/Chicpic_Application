@@ -6,6 +6,7 @@ import 'package:chicpic/statics/url.dart';
 
 import 'package:chicpic/models/auth/login_user_data.dart';
 import 'package:chicpic/models/auth/signup_user_data.dart';
+import 'package:chicpic/models/product/category.dart';
 
 class APIService {
   // Users
@@ -37,5 +38,14 @@ class APIService {
       APIUrls.login,
       data: data.toMap(),
     );
+  }
+
+  // Products
+  static Future<List<Category>> getCategories(CategoryGender gender) async {
+    Response response = await Client.instance.get(
+      APIUrls.categories,
+      queryParameters: {'gender': gender.abbreviation},
+    );
+    return response.data.map<Category>((e) => Category.fromMap(e)).toList();
   }
 }
