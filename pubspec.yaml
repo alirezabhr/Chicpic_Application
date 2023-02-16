@@ -38,6 +38,9 @@ dependencies:
   intl: ^0.18.0
   progress_indicators: ^1.0.0
   email_validator: ^2.1.17
+  image_picker: ^0.8.6+1
+  path_provider: ^2.0.12
+  font_awesome_flutter: ^10.4.0
 
 dev_dependencies:
   flutter_test:
