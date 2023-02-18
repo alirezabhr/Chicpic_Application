@@ -21,4 +21,5 @@ abstract class APIUrls {
 
   static const String categories = '${_clothing}categories/';
   static const String shops = '${_clothing}shops/';
+  static const String products = '${_clothing}products/';
 }
