@@ -1,9 +1,9 @@
-import 'brand.dart';
+import 'shop.dart';
 import 'category.dart';
 
 class ProductBase {
   final int id;
-  final Brand brand;
+  final Shop shop;
   final String title;
   final String description;
   final Category? category;
@@ -14,7 +14,7 @@ class ProductBase {
 
   ProductBase({
     required this.id,
-    required this.brand,
+    required this.shop,
     required this.title,
     required this.description,
     this.category,
@@ -31,7 +31,7 @@ class ProductBase {
 
     return ProductBase(
       id: mapData['id'],
-      brand: Brand.fromMap(mapData['brand']),
+      shop: Shop.fromMap(mapData['shop']),
       title: mapData['title'],
       description: mapData['description'],
       category: category,

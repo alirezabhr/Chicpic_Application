@@ -1,5 +1,5 @@
 import 'product.dart';
-import 'brand.dart';
+import 'shop.dart';
 import 'category.dart';
 
 class ProductSavedTracked extends ProductBase {
@@ -8,7 +8,7 @@ class ProductSavedTracked extends ProductBase {
 
   ProductSavedTracked({
     required super.id,
-    required super.brand,
+    required super.shop,
     required super.title,
     required super.description,
     super.category,
@@ -27,7 +27,7 @@ class ProductSavedTracked extends ProductBase {
 
     return ProductSavedTracked(
       id: mapData['id'],
-      brand: Brand.fromMap(mapData['brand']),
+      shop: Shop.fromMap(mapData['shop']),
       title: mapData['title'],
       description: mapData['description'],
       category: category,
