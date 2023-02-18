@@ -8,6 +8,8 @@ import 'package:chicpic/repositories/auth/auth_repository.dart';
 import 'package:chicpic/bloc/auth/auth_bloc.dart';
 import 'package:chicpic/bloc/signup/signup_bloc.dart';
 import 'package:chicpic/bloc/login/login_bloc.dart';
+import 'package:chicpic/bloc/explore/shops/shops_explore_bloc.dart';
+import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 
 import 'app_router.dart';
 
@@ -40,6 +42,16 @@ void main() async {
               final AuthRepository authRepository =
                   RepositoryProvider.of<AuthRepository>(context);
               return LoginBloc(authRepository);
+            },
+          ),
+          BlocProvider<ShopsExploreBloc>(
+            create: (BuildContext context) {
+              return ShopsExploreBloc();
+            },
+          ),
+          BlocProvider<ProductsExploreBloc>(
+            create: (BuildContext context) {
+              return ProductsExploreBloc();
             },
           ),
         ],
