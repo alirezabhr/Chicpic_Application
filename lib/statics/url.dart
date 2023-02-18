@@ -6,7 +6,7 @@ abstract class BaseUrls {
 }
 
 abstract class APIUrls {
-  // User Apis
+  // Users APIs
   static const String _users = 'users/';
 
   static const String checkAuthentication = '${_users}details/';
@@ -15,4 +15,10 @@ abstract class APIUrls {
   static const String requestVerificationCode = '${_users}otp/request/';
   static const String checkVerificationCode = '${_users}otp/verify/';
   static const String tokenRefresh = '${_users}token/refresh/';
+
+  // Products APIs
+  static const String _products = 'products/';
+
+  static const String categories = '${_products}categories/';
+  static const String shops = '${_products}shops/';
 }
