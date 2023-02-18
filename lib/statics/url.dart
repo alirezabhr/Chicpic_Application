@@ -16,9 +16,9 @@ abstract class APIUrls {
   static const String checkVerificationCode = '${_users}otp/verify/';
   static const String tokenRefresh = '${_users}token/refresh/';
 
-  // Products APIs
-  static const String _products = 'products/';
+  // Clothing APIs
+  static const String _clothing = 'clothing/';
 
-  static const String categories = '${_products}categories/';
-  static const String shops = '${_products}shops/';
+  static const String categories = '${_clothing}categories/';
+  static const String shops = '${_clothing}shops/';
 }
