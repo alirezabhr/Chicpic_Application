@@ -5,9 +5,10 @@ class ProductBase {
   final int id;
   final Shop shop;
   final String title;
+  final String brand;
   final String description;
   final Category? category;
-  final String imageUrl;
+  final String image;
   final String link;
   final double originalPrice;
   final double? finalPrice;
@@ -16,9 +17,10 @@ class ProductBase {
     required this.id,
     required this.shop,
     required this.title,
+    required this.brand,
     required this.description,
     this.category,
-    required this.imageUrl,
+    required this.image,
     required this.link,
     required this.originalPrice,
     this.finalPrice,
@@ -33,12 +35,13 @@ class ProductBase {
       id: mapData['id'],
       shop: Shop.fromMap(mapData['shop']),
       title: mapData['title'],
+      brand: mapData['brand'],
       description: mapData['description'],
       category: category,
-      imageUrl: mapData['image'],
+      image: mapData['image'],
       link: mapData['link'],
-      originalPrice: mapData['originalPrice'].toDouble(),
-      finalPrice: mapData['finalPrice']?.toDouble(),
+      originalPrice: double.parse(mapData['originalPrice']),
+      finalPrice: double.tryParse(mapData['finalPrice'] ?? ''),
     );
   }
 }
