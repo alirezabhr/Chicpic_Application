@@ -12,6 +12,7 @@ import 'package:chicpic/ui/user_additional/widgets/waist_size_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/shirt_fit_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/hip_size_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/leg_length_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/trouser_fit_form.dart';
 
 class UserAdditionalScreen extends StatefulWidget {
   const UserAdditionalScreen({Key? key}) : super(key: key);
@@ -82,6 +83,10 @@ class _UserAdditionalScreenState extends State<UserAdditionalScreen> {
         continueBtnOnPressed: increaseStep,
       ),
       LegLengthForm(
+        backBtnOnPressed: decreaseStep,
+        continueBtnOnPressed: increaseStep,
+      ),
+      TrouserFitForm(
         backBtnOnPressed: decreaseStep,
         continueBtnOnPressed: increaseStep,
       ),
