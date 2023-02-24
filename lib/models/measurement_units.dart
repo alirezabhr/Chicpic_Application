@@ -1,6 +1,6 @@
 enum LengthUnit {
   cm('cm', 'cm'),
-  inches('Inches', 'in.');
+  feetInches('Feet & Inches', 'in.');
 
   final String name;
   final String abbreviation;
@@ -10,23 +10,30 @@ enum LengthUnit {
 
 class Length {
   LengthUnit unit;
-  int value;
+  int cmValue;
+  int inchesValue;
+  int feetValue;
 
   Length({
-    this.value = 0,
     this.unit = LengthUnit.cm,
+    this.cmValue = 0,
+    this.inchesValue = 0,
+    this.feetValue = 0,
   });
 
-  void convertToInches() {
+  void convertToFeetInches() {
     if (unit == LengthUnit.cm) {
-      value = (value * 2.54).round();
+      int inches = (cmValue / 2.54).round();
+      feetValue = (inches / 12).floor();
+      inchesValue = inches % 12;
     }
-    unit = LengthUnit.inches;
+    unit = LengthUnit.feetInches;
   }
 
   void convertToCm() {
-    if (unit == LengthUnit.inches) {
-      value = (value / 2.54).round();
+    if (unit == LengthUnit.feetInches) {
+      int inches = feetValue * 12 + inchesValue;
+      cmValue = (inches * 2.54).round();
     }
     unit = LengthUnit.cm;
   }
@@ -34,8 +41,8 @@ class Length {
   void convert(LengthUnit convertedUnit) {
     if (convertedUnit == LengthUnit.cm) {
       convertToCm();
-    } else if (convertedUnit == LengthUnit.inches) {
-      convertToInches();
+    } else if (convertedUnit == LengthUnit.feetInches) {
+      convertToFeetInches();
     }
   }
 }
