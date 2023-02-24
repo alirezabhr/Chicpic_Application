@@ -18,7 +18,7 @@ class UserAdditionalBloc
   }
 
   Mass weight = Mass(value: 60);
-  Length height = Length(value: 160);
+  Length height = Length(cmValue: 160);
   DateTime? birthDate;
   UserAdditionalInterestedGender? gender;
   int? bustSize;
