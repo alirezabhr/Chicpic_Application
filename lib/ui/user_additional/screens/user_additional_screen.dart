@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
 
 import 'package:chicpic/ui/user_additional/widgets/birth_date_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/gender_interested_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/weight_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/height_form.dart';
 
@@ -44,6 +45,10 @@ class _UserAdditionalScreenState extends State<UserAdditionalScreen> {
     super.initState();
     _userAdditionalFormWidgets = [
       BirthDateForm(
+        backBtnOnPressed: decreaseStep,
+        continueBtnOnPressed: increaseStep,
+      ),
+      GenderInterestedForm(
         backBtnOnPressed: decreaseStep,
         continueBtnOnPressed: increaseStep,
       ),
