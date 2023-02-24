@@ -7,7 +7,11 @@ import 'package:chicpic/ui/user_additional/widgets/birth_date_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/gender_interested_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/weight_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/height_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/bust_size_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/waist_size_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/shirt_fit_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/hip_size_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/leg_length_form.dart';
 
 class UserAdditionalScreen extends StatefulWidget {
   const UserAdditionalScreen({Key? key}) : super(key: key);
@@ -61,7 +65,23 @@ class _UserAdditionalScreenState extends State<UserAdditionalScreen> {
         backBtnOnPressed: decreaseStep,
         continueBtnOnPressed: increaseStep,
       ),
+      BustSizeForm(
+        backBtnOnPressed: decreaseStep,
+        continueBtnOnPressed: increaseStep,
+      ),
+      WaistSizeForm(
+        backBtnOnPressed: decreaseStep,
+        continueBtnOnPressed: increaseStep,
+      ),
       ShirtFitForm(
+        backBtnOnPressed: decreaseStep,
+        continueBtnOnPressed: increaseStep,
+      ),
+      HipSizeForm(
+        backBtnOnPressed: decreaseStep,
+        continueBtnOnPressed: increaseStep,
+      ),
+      LegLengthForm(
         backBtnOnPressed: decreaseStep,
         continueBtnOnPressed: increaseStep,
       ),

@@ -21,10 +21,10 @@ class UserAdditionalBloc
   Length height = Length(cmValue: 160);
   DateTime? birthDate;
   UserAdditionalInterestedGender? gender;
-  int? bustSize;
-  int? waistSize;
-  int? hipSize;
-  int? legLength;
+  Length bustSize = Length(cmValue: 60);
+  Length waistSize = Length(cmValue: 50);
+  Length hipSize = Length(cmValue: 80);
+  Length legLength = Length(cmValue: 110);
   int? shoeSize;
   List<ShirtFit> shirtFits = [];
   List<TrouserFit> trouserFits = [];
