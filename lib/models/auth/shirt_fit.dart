@@ -1,14 +1,18 @@
-import 'package:chicpic/services/exceptions.dart';
 import 'package:equatable/equatable.dart';
 
+import 'package:chicpic/services/exceptions.dart';
+
+import 'package:chicpic/statics/assets_helper.dart';
+
 enum ShirtFitType {
-  slim('Slim', 'Slim'),
-  regular('Regular', 'Regular');
+  slim('Slim', 'Slim', AssetsHelper.shirtFitSlim),
+  regular('Regular', 'Regular', AssetsHelper.shirtFitRegular);
 
   final String abbreviation;
   final String humanReadable;
+  final String image;
 
-  const ShirtFitType(this.abbreviation, this.humanReadable);
+  const ShirtFitType(this.abbreviation, this.humanReadable, this.image);
 }
 
 class ShirtFit extends Equatable {

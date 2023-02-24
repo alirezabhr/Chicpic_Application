@@ -1,17 +1,21 @@
-import 'package:chicpic/services/exceptions.dart';
 import 'package:equatable/equatable.dart';
 
+import 'package:chicpic/services/exceptions.dart';
+
+import 'package:chicpic/statics/assets_helper.dart';
+
 enum TrouserFitType {
-  skinny('Skinny', 'Skinny'),
-  slim('Slim', 'Slim'),
-  normal('Normal', 'Normal'),
-  loose('Loose', 'Loose'),
-  tapered('Tapered', 'Tapered');
+  skinny('Skinny', 'Skinny', AssetsHelper.trouserFitSkinny),
+  slim('Slim', 'Slim', AssetsHelper.trouserFitSlim),
+  normal('Normal', 'Normal', AssetsHelper.trouserFitNormal),
+  loose('Loose', 'Loose', AssetsHelper.trouserFitLoose),
+  tapered('Tapered', 'Tapered', AssetsHelper.trouserFitTapered);
 
   final String abbreviation;
   final String humanReadable;
+  final String image;
 
-  const TrouserFitType(this.abbreviation, this.humanReadable);
+  const TrouserFitType(this.abbreviation, this.humanReadable, this.image);
 }
 
 class TrouserFit extends Equatable {
