@@ -7,6 +7,7 @@ import 'package:chicpic/ui/user_additional/widgets/birth_date_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/gender_interested_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/weight_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/height_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/shirt_fit_form.dart';
 
 class UserAdditionalScreen extends StatefulWidget {
   const UserAdditionalScreen({Key? key}) : super(key: key);
@@ -57,6 +58,10 @@ class _UserAdditionalScreenState extends State<UserAdditionalScreen> {
         continueBtnOnPressed: increaseStep,
       ),
       HeightForm(
+        backBtnOnPressed: decreaseStep,
+        continueBtnOnPressed: increaseStep,
+      ),
+      ShirtFitForm(
         backBtnOnPressed: decreaseStep,
         continueBtnOnPressed: increaseStep,
       ),
