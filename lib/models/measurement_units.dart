@@ -1,6 +1,6 @@
 enum LengthUnit {
   cm('cm', 'cm'),
-  inches('Inches', 'inc.');
+  inches('Inches', 'in.');
 
   final String name;
   final String abbreviation;
@@ -19,14 +19,14 @@ class Length {
 
   void convertToInches() {
     if (unit == LengthUnit.cm) {
-      value = (value * 2.54).toInt();
+      value = (value * 2.54).round();
     }
     unit = LengthUnit.inches;
   }
 
   void convertToCm() {
     if (unit == LengthUnit.inches) {
-      value = value ~/ 2.54;
+      value = (value / 2.54).round();
     }
     unit = LengthUnit.cm;
   }
