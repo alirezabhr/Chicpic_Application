@@ -1,0 +1,72 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
+
+import 'package:chicpic/ui/user_additional/widgets/birth_date_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/weight_form.dart';
+
+class UserAdditionalScreen extends StatefulWidget {
+  const UserAdditionalScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UserAdditionalScreen> createState() => _UserAdditionalScreenState();
+}
+
+class _UserAdditionalScreenState extends State<UserAdditionalScreen> {
+  late final List<Widget> _userAdditionalFormWidgets;
+
+  int _step = 0;
+
+  void decreaseStep() {
+    if (_step == 0) {
+      Navigator.of(context).pop();
+    } else {
+      setState(() {
+        _step -= 1;
+      });
+    }
+  }
+
+  void increaseStep() {
+    if (_step == _userAdditionalFormWidgets.length - 1) {
+      BlocProvider.of<UserAdditionalBloc>(context).add(UserAdditionalSubmit());
+    } else {
+      setState(() {
+        _step += 1;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _userAdditionalFormWidgets = [
+      BirthDateForm(
+        backBtnOnPressed: decreaseStep,
+        continueBtnOnPressed: increaseStep,
+      ),
+      WeightForm(
+        backBtnOnPressed: decreaseStep,
+        continueBtnOnPressed: increaseStep,
+      ),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Size deviceSize = MediaQuery.of(context).size;
+
+    return Scaffold(
+      body: BlocListener<UserAdditionalBloc, UserAdditionalState>(
+        listener: (context, state) {},
+        child: Container(
+          height: deviceSize.height,
+          width: deviceSize.width,
+          color: Colors.blue[50],
+          child: _userAdditionalFormWidgets[_step],
+        ),
+      ),
+    );
+  }
+}
