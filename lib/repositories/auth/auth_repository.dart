@@ -9,6 +9,7 @@ import 'package:chicpic/models/auth/user.dart';
 import 'package:chicpic/models/auth/token.dart';
 import 'package:chicpic/models/auth/login_user_data.dart';
 import 'package:chicpic/models/auth/signup_user_data.dart';
+import 'package:chicpic/models/auth/user_additional.dart';
 
 const String _tokenPrefix = 'Bearer';
 
@@ -55,7 +56,7 @@ class AuthRepository {
   }
 
   Future<void> verifyUser() async {
-    _user?.verify();
+    _user = _user!.copyWith(isVerified: true);
   }
 
   Future<void> logout() async {
@@ -78,5 +79,12 @@ class AuthRepository {
     final Response response = await APIService.login(data);
     _user = User.fromMap(response.data);
     saveUserTokens(_user!.tokens);
+  }
+
+  Future<void> createUserAdditional(UserAdditional data) async {
+    final Response response = await APIService.createUserAdditional(data);
+    _user = _user!.copyWith(
+      userAdditional: UserAdditional.fromJson(response.data),
+    );
   }
 }

@@ -9,6 +9,7 @@ import 'package:chicpic/models/auth/signup_user_data.dart';
 import 'package:chicpic/models/product/category.dart';
 import 'package:chicpic/models/product/shop.dart';
 import 'package:chicpic/models/product/product_saved_tracked.dart';
+import 'package:chicpic/models/auth/user_additional.dart';
 
 class APIService {
   // Users
@@ -38,6 +39,13 @@ class APIService {
   static Future<Response> login(LoginUserData data) async {
     return await Client.instance.post(
       APIUrls.login,
+      data: data.toMap(),
+    );
+  }
+
+  static Future<Response> createUserAdditional(UserAdditional data) async {
+    return await Client.instance.post(
+      APIUrls.userAdditional,
       data: data.toMap(),
     );
   }

@@ -15,6 +15,7 @@ abstract class APIUrls {
   static const String requestVerificationCode = '${_users}otp/request/';
   static const String checkVerificationCode = '${_users}otp/verify/';
   static const String tokenRefresh = '${_users}token/refresh/';
+  static const String userAdditional = '${_users}additional/';
 
   // Clothing APIs
   static const String _clothing = 'clothing/';
