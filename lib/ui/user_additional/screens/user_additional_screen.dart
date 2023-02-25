@@ -13,6 +13,7 @@ import 'package:chicpic/ui/user_additional/widgets/shirt_fit_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/hip_size_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/leg_length_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/trouser_fit_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/shoe_size_form.dart';
 
 class UserAdditionalScreen extends StatefulWidget {
   const UserAdditionalScreen({Key? key}) : super(key: key);
@@ -26,69 +27,30 @@ class _UserAdditionalScreenState extends State<UserAdditionalScreen> {
 
   int _step = 0;
 
-  void decreaseStep() {
-    if (_step == 0) {
-      Navigator.of(context).pop();
-    } else {
-      setState(() {
-        _step -= 1;
-      });
-    }
-  }
-
-  void increaseStep() {
-    if (_step == _userAdditionalFormWidgets.length - 1) {
-      BlocProvider.of<UserAdditionalBloc>(context).add(UserAdditionalSubmit());
-    } else {
-      setState(() {
-        _step += 1;
-      });
-    }
-  }
-
   @override
   void initState() {
     super.initState();
     _userAdditionalFormWidgets = [
       BirthDateForm(
-        backBtnOnPressed: decreaseStep,
-        continueBtnOnPressed: increaseStep,
+        backBtnOnPressed: () {
+          Navigator.of(context).pop();
+        },
       ),
-      GenderInterestedForm(
-        backBtnOnPressed: decreaseStep,
-        continueBtnOnPressed: increaseStep,
-      ),
-      WeightForm(
-        backBtnOnPressed: decreaseStep,
-        continueBtnOnPressed: increaseStep,
-      ),
-      HeightForm(
-        backBtnOnPressed: decreaseStep,
-        continueBtnOnPressed: increaseStep,
-      ),
-      BustSizeForm(
-        backBtnOnPressed: decreaseStep,
-        continueBtnOnPressed: increaseStep,
-      ),
-      WaistSizeForm(
-        backBtnOnPressed: decreaseStep,
-        continueBtnOnPressed: increaseStep,
-      ),
-      ShirtFitForm(
-        backBtnOnPressed: decreaseStep,
-        continueBtnOnPressed: increaseStep,
-      ),
-      HipSizeForm(
-        backBtnOnPressed: decreaseStep,
-        continueBtnOnPressed: increaseStep,
-      ),
-      LegLengthForm(
-        backBtnOnPressed: decreaseStep,
-        continueBtnOnPressed: increaseStep,
-      ),
-      TrouserFitForm(
-        backBtnOnPressed: decreaseStep,
-        continueBtnOnPressed: increaseStep,
+      const GenderInterestedForm(),
+      const WeightForm(),
+      const HeightForm(),
+      const BustSizeForm(),
+      const WaistSizeForm(),
+      const ShirtFitForm(),
+      const HipSizeForm(),
+      const LegLengthForm(),
+      const TrouserFitForm(),
+      ShoeSizeForm(
+        continueBtnOnPressed: () {
+          BlocProvider.of<UserAdditionalBloc>(context).add(
+            UserAdditionalSubmit(),
+          );
+        },
       ),
     ];
   }
@@ -98,14 +60,19 @@ class _UserAdditionalScreenState extends State<UserAdditionalScreen> {
     final Size deviceSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: BlocListener<UserAdditionalBloc, UserAdditionalState>(
-        listener: (context, state) {},
-        child: Container(
-          height: deviceSize.height,
-          width: deviceSize.width,
-          color: Colors.blue[50],
-          child: _userAdditionalFormWidgets[_step],
-        ),
+      body: BlocBuilder<UserAdditionalBloc, UserAdditionalState>(
+        builder: (context, state) {
+          if (state is UserAdditionalStepChanged) {
+            _step = state.step;
+          }
+
+          return Container(
+            height: deviceSize.height,
+            width: deviceSize.width,
+            color: Colors.blue[50],
+            child: _userAdditionalFormWidgets[_step],
+          );
+        },
       ),
     );
   }
