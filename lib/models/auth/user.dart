@@ -1,50 +1,69 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:chicpic/models/auth/token.dart';
+import 'package:chicpic/models/auth/user_additional.dart';
 
 class User extends Equatable {
-  final int _id;
-  final String _email;
-  final String _username;
-  final UserToken _tokens;
-  late bool _isVerified;
+  final int id;
+  final String email;
+  final String username;
+  final UserToken tokens;
+  final bool isVerified;
+  final UserAdditional? userAdditional;
+
+  const User({
+    required this.id,
+    required this.email,
+    required this.username,
+    required this.tokens,
+    required this.isVerified,
+    this.userAdditional,
+  });
 
   User.fromMap(Map<String, dynamic> userData)
-      : _id = userData['id'],
-        _email = userData['email'],
-        _username = userData['username'],
-        _isVerified = userData['isVerified'],
-        _tokens = UserToken.fromJson(userData['tokens']);
+      : id = userData['id'],
+        email = userData['email'],
+        username = userData['username'],
+        isVerified = userData['isVerified'],
+        tokens = UserToken.fromJson(userData['tokens']),
+        userAdditional = userData['user_additional'] != null
+            ? UserAdditional.fromJson(userData['user_additional'])
+            : null;
 
   Map<String, dynamic> toMap() {
     return {
-      'id': _id,
-      'email': _email,
-      'username': _username,
-      'isVerified': _isVerified,
-      'tokens': _tokens.toMap(),
+      'id': id,
+      'email': email,
+      'username': username,
+      'isVerified': isVerified,
+      'tokens': tokens.toMap(),
     };
   }
 
-  int get id => _id;
-
-  String get email => _email;
-
-  String get username => _username;
-
-  bool get isVerified => _isVerified;
-
-  UserToken get tokens => _tokens;
-
   @override
   List<Object?> get props => [
-        _id,
-        _email,
-        _username,
-        _isVerified,
-        _tokens,
+        id,
+        email,
+        username,
+        isVerified,
+        tokens,
+        userAdditional,
       ];
 
-  void verify() {
-    _isVerified = true;
-  }
+  User copyWith({
+    int? id,
+    String? email,
+    String? username,
+    UserToken? tokens,
+    bool? isVerified,
+    UserAdditional? userAdditional,
+  }) =>
+      User(
+        id: id ?? this.id,
+        email: email ?? this.email,
+        username: username ?? this.username,
+        tokens: tokens ?? this.tokens,
+        isVerified: isVerified ?? this.isVerified,
+        userAdditional: userAdditional ?? this.userAdditional,
+      );
 }
