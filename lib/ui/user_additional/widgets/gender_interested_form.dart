@@ -24,7 +24,7 @@ class GenderInterestedForm extends StatefulWidget {
 }
 
 class _GenderInterestedFormState extends State<GenderInterestedForm> {
-  UserAdditionalInterestedGender? _selectedGender;
+  late UserAdditionalInterestedGender _selectedGender;
 
   @override
   void initState() {
@@ -33,18 +33,18 @@ class _GenderInterestedFormState extends State<GenderInterestedForm> {
   }
 
   Widget get content => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: Insets.small),
-    child: DropdownButtonFormField<UserAdditionalInterestedGender>(
+        padding: const EdgeInsets.symmetric(horizontal: Insets.small),
+        child: DropdownButtonFormField<UserAdditionalInterestedGender>(
           decoration: const InputDecoration(
             isDense: true,
             border: OutlineInputBorder(),
           ),
-          value: _selectedGender ?? UserAdditionalInterestedGender.female,
+          value: _selectedGender,
           onChanged: (UserAdditionalInterestedGender? newValue) async {
+            BlocProvider.of<UserAdditionalBloc>(context).gender = newValue!;
             setState(() {
-              _selectedGender = newValue!;
+              _selectedGender = newValue;
             });
-            BlocProvider.of<UserAdditionalBloc>(context).gender = _selectedGender!;
           },
           items: UserAdditionalInterestedGender.values.map((gender) {
             return DropdownMenuItem<UserAdditionalInterestedGender>(
@@ -55,7 +55,7 @@ class _GenderInterestedFormState extends State<GenderInterestedForm> {
             );
           }).toList(),
         ),
-  );
+      );
 
   @override
   Widget build(BuildContext context) {
