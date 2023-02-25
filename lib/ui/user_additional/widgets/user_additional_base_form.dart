@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
-
 
 Widget createUserAdditionalForm({
   required BuildContext context,
   required String title,
   String? helper,
   required Widget content,
-  required VoidCallback continueBtnOnPressed,
-  required VoidCallback backBtnOnPressed,
+  VoidCallback? continueBtnOnPressed,
+  VoidCallback? backBtnOnPressed,
 }) {
   final formKey = GlobalKey<FormState>();
 
@@ -35,39 +37,78 @@ Widget createUserAdditionalForm({
           const SizedBox(height: Insets.xLarge),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Insets.small),
-            child: Row(
-              children: [
-                TextButton(
-                  onPressed: backBtnOnPressed,
-                  child: const Text('back', style: TextStyle(fontSize: 18)),
-                ),
-                const Spacer(),
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      continueBtnOnPressed();
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: Insets.xSmall,
-                    ),
-                    child: Row(
-                      children: const [
-                        Text(
-                          'Continue',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+            child: BlocBuilder<UserAdditionalBloc, UserAdditionalState>(
+              builder: (context, state) {
+                return Row(
+                  children: [
+                    TextButton(
+                      onPressed: state is UserAdditionalLoading
+                          ? null
+                          : backBtnOnPressed ??
+                              () {
+                                BlocProvider.of<UserAdditionalBloc>(context)
+                                    .add(
+                                  UserAdditionalChangeStep(increasing: false),
+                                );
+                              },
+                      child: Text(
+                        'back',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: state is UserAdditionalLoading
+                              ? Colors.grey
+                              : Colors.black,
                         ),
-                        SizedBox(width: Insets.xSmall),
-                        Icon(Icons.arrow_right_alt),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ],
+                    const Spacer(),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (state is UserAdditionalLoading) {
+                          return;
+                        }
+                        if (formKey.currentState!.validate()) {
+                          if (continueBtnOnPressed != null) {
+                            continueBtnOnPressed();
+                          } else {
+                            BlocProvider.of<UserAdditionalBloc>(context).add(
+                              UserAdditionalChangeStep(increasing: true),
+                            );
+                          }
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: Insets.xSmall,
+                        ),
+                        height: 50,
+                        width: 100,
+                        child: state is UserAdditionalLoading
+                            ? const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : FittedBox(
+                              child: Row(
+                                  children: const [
+                                    Text(
+                                      'Continue',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(width: Insets.xSmall),
+                                    Icon(Icons.arrow_right_alt),
+                                  ],
+                                ),
+                            ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ],

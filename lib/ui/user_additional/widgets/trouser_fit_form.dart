@@ -10,13 +10,13 @@ import 'package:chicpic/models/auth/trouser_fit.dart';
 import 'package:chicpic/ui/user_additional/widgets/user_additional_base_form.dart';
 
 class TrouserFitForm extends StatefulWidget {
-  final VoidCallback backBtnOnPressed;
-  final VoidCallback continueBtnOnPressed;
+  final VoidCallback? backBtnOnPressed;
+  final VoidCallback? continueBtnOnPressed;
 
   const TrouserFitForm({
     Key? key,
-    required this.backBtnOnPressed,
-    required this.continueBtnOnPressed,
+    this.backBtnOnPressed,
+    this.continueBtnOnPressed,
   }) : super(key: key);
 
   @override

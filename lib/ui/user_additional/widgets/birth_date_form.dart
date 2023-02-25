@@ -7,13 +7,13 @@ import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
 import 'package:chicpic/ui/user_additional/widgets/user_additional_base_form.dart';
 
 class BirthDateForm extends StatefulWidget {
-  final VoidCallback backBtnOnPressed;
-  final VoidCallback continueBtnOnPressed;
+  final VoidCallback? backBtnOnPressed;
+  final VoidCallback? continueBtnOnPressed;
 
   const BirthDateForm({
     Key? key,
-    required this.backBtnOnPressed,
-    required this.continueBtnOnPressed,
+    this.backBtnOnPressed,
+    this.continueBtnOnPressed,
   }) : super(key: key);
 
   @override

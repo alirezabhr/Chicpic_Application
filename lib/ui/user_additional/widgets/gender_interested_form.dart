@@ -10,13 +10,13 @@ import 'package:chicpic/models/auth/user_additional.dart';
 import 'package:chicpic/ui/user_additional/widgets/user_additional_base_form.dart';
 
 class GenderInterestedForm extends StatefulWidget {
-  final VoidCallback backBtnOnPressed;
-  final VoidCallback continueBtnOnPressed;
+  final VoidCallback? backBtnOnPressed;
+  final VoidCallback? continueBtnOnPressed;
 
   const GenderInterestedForm({
     Key? key,
-    required this.backBtnOnPressed,
-    required this.continueBtnOnPressed,
+    this.backBtnOnPressed,
+    this.continueBtnOnPressed,
   }) : super(key: key);
 
   @override
@@ -44,7 +44,7 @@ class _GenderInterestedFormState extends State<GenderInterestedForm> {
             setState(() {
               _selectedGender = newValue!;
             });
-            BlocProvider.of<UserAdditionalBloc>(context).gender = _selectedGender;
+            BlocProvider.of<UserAdditionalBloc>(context).gender = _selectedGender!;
           },
           items: UserAdditionalInterestedGender.values.map((gender) {
             return DropdownMenuItem<UserAdditionalInterestedGender>(

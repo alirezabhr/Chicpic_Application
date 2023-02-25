@@ -10,13 +10,13 @@ import 'package:chicpic/models/auth/shirt_fit.dart';
 import 'package:chicpic/ui/user_additional/widgets/user_additional_base_form.dart';
 
 class ShirtFitForm extends StatefulWidget {
-  final VoidCallback backBtnOnPressed;
-  final VoidCallback continueBtnOnPressed;
+  final VoidCallback? backBtnOnPressed;
+  final VoidCallback? continueBtnOnPressed;
 
   const ShirtFitForm({
     Key? key,
-    required this.backBtnOnPressed,
-    required this.continueBtnOnPressed,
+    this.backBtnOnPressed,
+    this.continueBtnOnPressed,
   }) : super(key: key);
 
   @override
