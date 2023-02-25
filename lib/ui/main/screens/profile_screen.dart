@@ -36,7 +36,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: Insets.xLarge),
           ProfileButton(
             text: 'Account Settings',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRouter.userAdditional);
+            },
             icon: FontAwesomeIcons.userGear,
           ),
           ProfileButton(
