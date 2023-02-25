@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'package:chicpic/services/exceptions.dart';
+
 import 'package:chicpic/models/auth/shirt_fit.dart';
 import 'package:chicpic/models/auth/trouser_fit.dart';
 
@@ -14,72 +16,82 @@ enum UserAdditionalInterestedGender {
 }
 
 class UserAdditional extends Equatable {
-  late final UserAdditionalInterestedGender _genderInterested;
-  late final int _weight;
-  late final int _height;
-  late final DateTime _birthDate;
-  late final int _bustSize;
-  late final int _waistSize;
-  late final int _hipSize;
-  late final int _legLength;
-  late final int _shoeSize;
-  late final List<ShirtFit> _shirtFits;
-  late final List<TrouserFit> _trouserFits;
+  final int user;
+  final UserAdditionalInterestedGender genderInterested;
+  final int weight;
+  final int height;
+  final DateTime birthDate;
+  final int bustSize;
+  final int waistSize;
+  final int hipSize;
+  final int legLength;
+  final double shoeSize;
+  final List<ShirtFit> shirtFits;
+  final List<TrouserFit> trouserFits;
 
-  UserAdditional({
-    required String genderInterested,
-    required int weight,
-    required int height,
-    required DateTime birthDate,
-    required int bustSize,
-    required int waistSize,
-    required int hipSize,
-    required int legLength,
-    required int shoeSize,
-    List<ShirtFit>? shitFits,
-    List<TrouserFit>? trouserFits,
-  }) {
-    _genderInterested =
-        genderInterested == UserAdditionalInterestedGender.female.abbreviation
-            ? UserAdditionalInterestedGender.female
-            : UserAdditionalInterestedGender.male;
+  const UserAdditional({
+    required this.user,
+    required this.genderInterested,
+    required this.weight,
+    required this.height,
+    required this.birthDate,
+    required this.bustSize,
+    required this.waistSize,
+    required this.hipSize,
+    required this.legLength,
+    required this.shoeSize,
+    required this.shirtFits,
+    required this.trouserFits,
+  });
 
-    _weight = weight;
-    _height = height;
-    _birthDate = birthDate;
-    _bustSize = bustSize;
-    _waistSize = waistSize;
-    _hipSize = hipSize;
-    _legLength = legLength;
-    _shoeSize = shoeSize;
-    _shirtFits = shitFits ?? [];
-    _trouserFits = trouserFits ?? [];
+  factory UserAdditional.fromJson(Map<String, dynamic> map) {
+    UserAdditionalInterestedGender genderInterested;
+    if (map['genderInterested'] ==
+        UserAdditionalInterestedGender.female.abbreviation) {
+      genderInterested = UserAdditionalInterestedGender.female;
+    } else if (map['genderInterested'] ==
+        UserAdditionalInterestedGender.male.abbreviation) {
+      genderInterested = UserAdditionalInterestedGender.male;
+    } else {
+      throw SimpleException('Wrong gender interested value.');
+    }
+
+    return UserAdditional(
+      user: map['user'],
+      genderInterested: genderInterested,
+      weight: map['weight'],
+      height: map['height'],
+      birthDate: map['birthDate'],
+      bustSize: map['bustSize'],
+      waistSize: map['waistSize'],
+      hipSize: map['hipSize'],
+      legLength: map['legLength'],
+      shoeSize: map['shoeSize'],
+      shirtFits: map['shirtFits'],
+      trouserFits: map['trouserFits'],
+    );
   }
 
-  factory UserAdditional.fromJson(Map<String, dynamic> map) => UserAdditional(
-        genderInterested: map['genderInterested'],
-        weight: map['weight'],
-        height: map['height'],
-        birthDate: map['birthDate'],
-        bustSize: map['bustSize'],
-        waistSize: map['waistSize'],
-        hipSize: map['hipSize'],
-        legLength: map['legLength'],
-        shoeSize: map['shoeSize'],
-        shitFits: map['shirtFits'],
-        trouserFits: map['trouserFits'],
-      );
-
-  void addShirtFit(ShirtFit shirtFit) {
-    _shirtFits.add(shirtFit);
-  }
-
-  void addTrouserFit(TrouserFit trouserFit) {
-    _trouserFits.add(trouserFit);
+  Map<String, dynamic> toMap() {
+    return {
+      'user': user,
+      'genderInterested': genderInterested.abbreviation,
+      'weight': weight,
+      'height': height,
+      'birthDate': birthDate,
+      'bustSize': bustSize,
+      'waistSize': waistSize,
+      'hipSize': hipSize,
+      'legLength': legLength,
+      'shoeSize': shoeSize,
+      'shirtFits': shirtFits.map((e) => e.toMap()).toList(),
+      'trouserFits': trouserFits.map((e) => e.toMap()).toList(),
+    };
   }
 
   @override
   List<Object?> get props => [
+        user,
         genderInterested,
         weight,
         height,
@@ -92,26 +104,4 @@ class UserAdditional extends Equatable {
         shirtFits,
         trouserFits,
       ];
-
-  UserAdditionalInterestedGender get genderInterested => _genderInterested;
-
-  int get weight => _weight;
-
-  int get height => _height;
-
-  DateTime get birthDate => _birthDate;
-
-  int get bustSize => _bustSize;
-
-  int get waistSize => _waistSize;
-
-  int get hipSize => _hipSize;
-
-  int get legLength => _legLength;
-
-  int get shoeSize => _shoeSize;
-
-  List<ShirtFit> get shirtFits => _shirtFits;
-
-  List<TrouserFit> get trouserFits => _trouserFits;
 }

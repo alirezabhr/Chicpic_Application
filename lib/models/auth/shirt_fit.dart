@@ -33,6 +33,8 @@ class ShirtFit extends Equatable {
   factory ShirtFit.fromMap(Map<String, dynamic> map) =>
       ShirtFit(fitTypeAbbr: map['fitType']);
 
+  Map<String, dynamic> toMap() => {'fitType': _fitType.abbreviation};
+
   @override
   List<Object?> get props => [fitType];
 }

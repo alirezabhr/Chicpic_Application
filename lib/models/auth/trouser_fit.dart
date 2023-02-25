@@ -19,21 +19,19 @@ enum TrouserFitType {
 }
 
 class TrouserFit extends Equatable {
-  late final TrouserFitType _fitType;
-
-  TrouserFitType get fitType => _fitType;
+  late final TrouserFitType fitType;
 
   TrouserFit({required String fitTypeAbbr}) {
     if (fitTypeAbbr == TrouserFitType.skinny.abbreviation) {
-      _fitType = TrouserFitType.skinny;
+      fitType = TrouserFitType.skinny;
     } else if (fitTypeAbbr == TrouserFitType.slim.abbreviation) {
-      _fitType = TrouserFitType.slim;
+      fitType = TrouserFitType.slim;
     } else if (fitTypeAbbr == TrouserFitType.normal.abbreviation) {
-      _fitType = TrouserFitType.normal;
+      fitType = TrouserFitType.normal;
     } else if (fitTypeAbbr == TrouserFitType.loose.abbreviation) {
-      _fitType = TrouserFitType.loose;
+      fitType = TrouserFitType.loose;
     } else if (fitTypeAbbr == TrouserFitType.tapered.abbreviation) {
-      _fitType = TrouserFitType.tapered;
+      fitType = TrouserFitType.tapered;
     } else {
       throw SimpleException('Wrong shirt fit');
     }
@@ -41,6 +39,8 @@ class TrouserFit extends Equatable {
 
   factory TrouserFit.fromMap(Map<String, dynamic> map) =>
       TrouserFit(fitTypeAbbr: map['fitType']);
+
+  Map<String, dynamic> toMap() => {'fitType': fitType.abbreviation};
 
   @override
   List<Object?> get props => [fitType];
