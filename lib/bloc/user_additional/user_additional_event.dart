@@ -6,6 +6,8 @@ abstract class UserAdditionalEvent extends Equatable {
   get props => [];
 }
 
+class UserAdditionalInitialize extends UserAdditionalEvent {}
+
 class UserAdditionalChangeStep extends UserAdditionalEvent {
   final bool increasing;
 

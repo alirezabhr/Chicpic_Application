@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import 'package:chicpic/repositories/auth/auth_repository.dart';
+
 import 'package:chicpic/models/measurement_units.dart';
 import 'package:chicpic/models/auth/shirt_fit.dart';
 import 'package:chicpic/models/auth/trouser_fit.dart';
@@ -15,7 +17,12 @@ part 'user_additional_state.dart';
 
 class UserAdditionalBloc
     extends Bloc<UserAdditionalEvent, UserAdditionalState> {
-  UserAdditionalBloc() : super(UserAdditionalInitial()) {
+  final AuthRepository _authRepository;
+
+  UserAdditionalBloc(AuthRepository authRepository)
+      : _authRepository = authRepository,
+        super(UserAdditionalInitial()) {
+    on<UserAdditionalInitialize>(_onUserAdditionalInitialize);
     on<UserAdditionalChangeStep>(_onUserAdditionalChangeStep);
     on<UserAdditionalSubmit>(_onUserAdditionalSubmit);
   }
@@ -34,6 +41,14 @@ class UserAdditionalBloc
 
   int _formStep = 0;
 
+  FutureOr<void> _onUserAdditionalInitialize(
+    UserAdditionalInitialize event,
+    Emitter<UserAdditionalState> emit,
+  ) {
+    _formStep = 0;
+    emit(UserAdditionalInitial());
+  }
+
   FutureOr<void> _onUserAdditionalChangeStep(
     UserAdditionalChangeStep event,
     Emitter<UserAdditionalState> emit,
@@ -50,7 +65,28 @@ class UserAdditionalBloc
   FutureOr<void> _onUserAdditionalSubmit(
     UserAdditionalSubmit event,
     Emitter<UserAdditionalState> emit,
-  ) {
+  ) async {
+    try {
+      emit(UserAdditionalLoading());
 
+      UserAdditional userAdditional = UserAdditional(
+        user: _authRepository.user!.id,
+        genderInterested: gender,
+        weight: (weight..convertToKg()).value,
+        height: (height..convertToCm()).cmValue,
+        birthDate: birthDate!,
+        bustSize: (bustSize..convertToCm()).cmValue,
+        waistSize: (waistSize..convertToCm()).cmValue,
+        hipSize: (hipSize..convertToCm()).cmValue,
+        legLength: (legLength..convertToCm()).cmValue,
+        shoeSize: shoeSize!,
+        shirtFits: shirtFits,
+        trouserFits: trouserFits,
+      );
+      await _authRepository.createUserAdditional(userAdditional);
+      emit(UserAdditionalSubmitSuccess());
+    } catch (e) {
+      emit(UserAdditionalSubmitFailure(error: e.toString()));
+    }
   }
 }

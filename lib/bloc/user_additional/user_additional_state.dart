@@ -21,4 +21,14 @@ class UserAdditionalLoading extends UserAdditionalState {}
 
 class UserAdditionalSubmitSuccess extends UserAdditionalState {}
 
-class UserAdditionalSubmitFailure extends UserAdditionalState {}
+class UserAdditionalSubmitFailure extends UserAdditionalState {
+  final String error;
+
+  UserAdditionalSubmitFailure({required this.error});
+
+  @override
+  List<Object> get props => [error];
+
+  @override
+  String toString() => 'UserAdditional Submit Failure { error: $error }';
+}
