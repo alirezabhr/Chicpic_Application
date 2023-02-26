@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
 
+import 'package:chicpic/statics/insets.dart';
+
 import 'package:chicpic/ui/user_additional/widgets/birth_date_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/gender_interested_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/weight_form.dart';
@@ -30,6 +32,10 @@ class _UserAdditionalScreenState extends State<UserAdditionalScreen> {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<UserAdditionalBloc>(context).add(
+      UserAdditionalInitialize(),
+    );
+
     _userAdditionalFormWidgets = [
       BirthDateForm(
         backBtnOnPressed: () {
@@ -55,12 +61,32 @@ class _UserAdditionalScreenState extends State<UserAdditionalScreen> {
     ];
   }
 
+  void showSnackBar(String msg, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(msg),
+        backgroundColor: color,
+        padding: const EdgeInsets.all(Insets.small),
+        margin: const EdgeInsets.all(Insets.medium),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size deviceSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: BlocBuilder<UserAdditionalBloc, UserAdditionalState>(
+      body: BlocConsumer<UserAdditionalBloc, UserAdditionalState>(
+        listener: (context, state) {
+          if (state is UserAdditionalSubmitSuccess) {
+            showSnackBar('Your data submitted successfully', Colors.green);
+            Navigator.of(context).pop();
+          } else if (state is UserAdditionalSubmitFailure) {
+            showSnackBar('Error! Can not save your data.', Colors.red);
+          }
+        },
         builder: (context, state) {
           if (state is UserAdditionalStepChanged) {
             _step = state.step;
