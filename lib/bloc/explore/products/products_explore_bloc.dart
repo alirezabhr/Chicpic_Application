@@ -5,13 +5,13 @@ import 'package:meta/meta.dart';
 
 import 'package:chicpic/services/api_service.dart';
 
-import 'package:chicpic/models/product/product_saved_tracked.dart';
+import 'package:chicpic/models/product/product.dart';
 
 part 'products_explore_event.dart';
 part 'products_explore_state.dart';
 
 class ProductsExploreBloc extends Bloc<ProductsExploreEvent, ProductsExploreState> {
-  List<ProductSavedTracked> products = [];
+  List<ProductBase> products = [];
 
   ProductsExploreBloc() : super(ProductsExploreInitial()) {
     on<ProductsExploreFetch>(_onProductsExploreFetch);
@@ -24,7 +24,7 @@ class ProductsExploreBloc extends Bloc<ProductsExploreEvent, ProductsExploreStat
     emit(ProductsExploreFetchLoading());
 
     try {
-      List<ProductSavedTracked> data = await APIService.getProducts();
+      List<ProductBase> data = await APIService.getProducts();
       if (event.page == 0) {
         products = data;
       } else {

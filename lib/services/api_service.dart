@@ -8,7 +8,7 @@ import 'package:chicpic/models/auth/login_user_data.dart';
 import 'package:chicpic/models/auth/signup_user_data.dart';
 import 'package:chicpic/models/product/category.dart';
 import 'package:chicpic/models/product/shop.dart';
-import 'package:chicpic/models/product/product_saved_tracked.dart';
+import 'package:chicpic/models/product/product.dart';
 import 'package:chicpic/models/auth/user_additional.dart';
 
 class APIService {
@@ -64,10 +64,10 @@ class APIService {
     return response.data.map<Shop>((e) => Shop.fromMap(e)).toList();
   }
 
-  static Future<List<ProductSavedTracked>> getProducts() async {
+  static Future<List<ProductBase>> getProducts() async {
     Response response = await Client.instance.get(APIUrls.products);
     return response.data
-        .map<ProductSavedTracked>((e) => ProductSavedTracked.fromMap(e))
+        .map<ProductBase>((e) => ProductBase.fromMap(e))
         .toList();
   }
 }

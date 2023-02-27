@@ -6,15 +6,17 @@ import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
-import 'package:chicpic/models/product/product_saved_tracked.dart';
+import 'package:chicpic/models/product/product.dart';
 
-import 'package:chicpic/ui/explore/widgets/product_item.dart';
+import 'package:chicpic/ui/explore/widgets/product_item_dialog.dart';
 
 class ProductsExplore extends StatelessWidget {
   const ProductsExplore({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Size deviceSize = MediaQuery.of(context).size;
+
     return Column(
       children: [
         Padding(
@@ -43,18 +45,36 @@ class ProductsExplore extends StatelessWidget {
                 child: Center(child: CircularProgressIndicator()),
               );
             } else {
-              List<ProductSavedTracked> products =
+              List<ProductBase> products =
                   BlocProvider.of<ProductsExploreBloc>(context).products;
 
-              // TODO change it to ListView.builder for better performance without any rendering error.
-              return Column(
-                children: products
-                    .map((e) => Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: Insets.xSmall),
-                          child: ProductItem(product: e),
-                        ))
-                    .toList(),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: Insets.small),
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: products.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return ProductItemDialog(product: products[index]);
+                          },
+                        );
+                      },
+                      child: Image.network(
+                        products[index].image,
+                        width: deviceSize.width / 3,
+                        height: deviceSize.width / 3,
+                      ),
+                    );
+                  },
+                ),
               );
             }
           },
