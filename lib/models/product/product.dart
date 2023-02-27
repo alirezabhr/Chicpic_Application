@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import 'shop.dart';
 import 'category.dart';
 
-class ProductBase {
+class ProductBase extends Equatable {
   final int id;
   final Shop shop;
   final String title;
@@ -13,7 +15,7 @@ class ProductBase {
   final double originalPrice;
   final double? finalPrice;
 
-  ProductBase({
+  const ProductBase({
     required this.id,
     required this.shop,
     required this.title,
@@ -44,4 +46,7 @@ class ProductBase {
       finalPrice: double.tryParse(mapData['finalPrice'] ?? ''),
     );
   }
+
+  @override
+  List<Object?> get props => [];
 }
