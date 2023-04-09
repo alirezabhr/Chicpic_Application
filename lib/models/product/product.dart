@@ -1,52 +1,96 @@
 import 'package:equatable/equatable.dart';
 
-import 'shop.dart';
-import 'category.dart';
+import 'package:chicpic/models/product/shop.dart';
+import 'package:chicpic/models/product/variant.dart';
 
-class ProductBase extends Equatable {
+abstract class ProductBase extends Equatable {
   final int id;
-  final Shop shop;
   final String title;
   final String brand;
   final String description;
-  final Category? category;
-  final String image;
-  final String link;
-  final double originalPrice;
-  final double? finalPrice;
+  final String previewImage;
 
   const ProductBase({
     required this.id,
-    required this.shop,
     required this.title,
     required this.brand,
     required this.description,
-    this.category,
-    required this.image,
-    required this.link,
-    required this.originalPrice,
-    this.finalPrice,
+    required this.previewImage,
+  });
+}
+
+class ProductPreview extends ProductBase {
+  final int shop;
+  final int category;
+
+  const ProductPreview({
+    required super.id,
+    required super.title,
+    required super.brand,
+    required super.description,
+    required super.previewImage,
+    required this.shop,
+    required this.category,
   });
 
-  factory ProductBase.fromMap(Map<String, dynamic> mapData) {
-    final Category? category = mapData['category'] != null
-        ? Category.fromMap(mapData['category'])
-        : null;
-
-    return ProductBase(
-      id: mapData['id'],
-      shop: Shop.fromMap(mapData['shop']),
-      title: mapData['title'],
-      brand: mapData['brand'],
-      description: mapData['description'],
-      category: category,
-      image: mapData['image'],
-      link: mapData['link'],
-      originalPrice: double.parse(mapData['originalPrice']),
-      finalPrice: double.tryParse(mapData['finalPrice'] ?? ''),
-    );
-  }
+  factory ProductPreview.fromMap(Map<String, dynamic> mapData) =>
+      ProductPreview(
+        id: mapData['id'],
+        title: mapData['title'],
+        brand: mapData['brand'],
+        description: mapData['description'],
+        previewImage: mapData['previewImage'],
+        shop: mapData['shop'],
+        category: mapData['category'],
+      );
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        id,
+        title,
+        brand,
+        description,
+        previewImage,
+        shop,
+        category,
+      ];
+}
+
+class ProductDetail extends ProductBase {
+  final Shop shop;
+  final List<VariantDetail> variants;
+
+  const ProductDetail({
+    required super.id,
+    required super.title,
+    required super.brand,
+    required super.description,
+    required super.previewImage,
+    required this.shop,
+    required this.variants,
+  });
+
+  factory ProductDetail.fromMap(Map<String, dynamic> mapData) => ProductDetail(
+        id: mapData['id'],
+        title: mapData['title'],
+        brand: mapData['brand'],
+        description: mapData['description'],
+        previewImage: mapData['previewImage'],
+        shop: Shop.fromMap(mapData['shop']),
+        variants: mapData['variants']
+            .map<VariantDetail>(
+                (variantMap) => VariantDetail.fromMap(variantMap))
+            .toList(),
+      );
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        brand,
+        description,
+        previewImage,
+        shop,
+        variants,
+      ];
 }

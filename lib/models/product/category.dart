@@ -1,6 +1,6 @@
 enum CategoryGender {
-  male('M', 'Men'),
-  female('F', 'Women');
+  men('M', 'Men'),
+  women('W', 'Women');
 
   final String abbreviation;
   final String humanReadable;
@@ -20,9 +20,9 @@ class Category {
     required String gender,
     required this.image,
   }) {
-    this.gender = gender == CategoryGender.female.abbreviation
-        ? CategoryGender.female
-        : CategoryGender.male;
+    this.gender = gender == CategoryGender.women.abbreviation
+        ? CategoryGender.women
+        : CategoryGender.men;
   }
 
   factory Category.fromMap(Map<String, dynamic> categoryData) => Category(
