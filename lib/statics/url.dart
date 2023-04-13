@@ -21,6 +21,17 @@ abstract class APIUrls {
   static const String _clothing = 'clothing/';
 
   static const String categories = '${_clothing}categories/';
-  static const String shops = '${_clothing}shops/';
   static const String products = '${_clothing}products/';
+
+  static String shops({int page = 1}) {
+    return '${_clothing}shops/?page=$page';
+  }
+
+  static String variants({int page = 1}) {
+    return '${_clothing}variants/?page=$page';
+  }
+
+  static String productDetail(int productId) {
+    return '$products$productId/';
+  }
 }
