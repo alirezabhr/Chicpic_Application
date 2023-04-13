@@ -47,10 +47,8 @@ class ShopsExplore extends StatelessWidget {
                 if (state is ShopsExploreFetchLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else {
-                  List<Shop> shops = BlocProvider.of<ShopsExploreBloc>(context)
-                      .shops
-                      .take(10)
-                      .toList();
+                  List<Shop> shops =
+                      BlocProvider.of<ShopsExploreBloc>(context).shops;
 
                   return ListView.builder(
                     scrollDirection: Axis.horizontal,

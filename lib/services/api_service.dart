@@ -4,12 +4,12 @@ import 'package:chicpic/services/client.dart';
 
 import 'package:chicpic/statics/url.dart';
 
+import 'package:chicpic/models/pagination.dart';
 import 'package:chicpic/models/auth/login_user_data.dart';
 import 'package:chicpic/models/auth/signup_user_data.dart';
+import 'package:chicpic/models/auth/user_additional.dart';
 import 'package:chicpic/models/product/category.dart';
 import 'package:chicpic/models/product/shop.dart';
-import 'package:chicpic/models/product/product.dart';
-import 'package:chicpic/models/auth/user_additional.dart';
 
 class APIService {
   // Users
@@ -59,15 +59,15 @@ class APIService {
     return response.data.map<Category>((e) => Category.fromMap(e)).toList();
   }
 
-  static Future<List<Shop>> getShops() async {
-    Response response = await Client.instance.get(APIUrls.shops);
-    return response.data.map<Shop>((e) => Shop.fromMap(e)).toList();
-  }
+  static Future<Pagination<Shop>> getShops({int page = 1}) async {
+    Response response = await Client.instance.get(APIUrls.shops(page: page));
 
-  static Future<List<ProductBase>> getProducts() async {
-    Response response = await Client.instance.get(APIUrls.products);
-    return response.data
-        .map<ProductBase>((e) => ProductBase.fromMap(e))
-        .toList();
+    return Pagination<Shop>(
+      count: response.data['count'],
+      next: response.data['next'],
+      previous: response.data['previous'],
+      results:
+          response.data['results'].map<Shop>((e) => Shop.fromMap(e)).toList(),
+    );
   }
 }
