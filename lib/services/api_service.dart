@@ -10,6 +10,7 @@ import 'package:chicpic/models/auth/signup_user_data.dart';
 import 'package:chicpic/models/auth/user_additional.dart';
 import 'package:chicpic/models/product/category.dart';
 import 'package:chicpic/models/product/shop.dart';
+import 'package:chicpic/models/product/variant.dart';
 
 class APIService {
   // Users
@@ -68,6 +69,19 @@ class APIService {
       previous: response.data['previous'],
       results:
           response.data['results'].map<Shop>((e) => Shop.fromMap(e)).toList(),
+    );
+  }
+
+  static Future<Pagination<VariantPreview>> getVariants({int page = 1}) async {
+    Response response = await Client.instance.get(APIUrls.variants(page: page));
+
+    return Pagination<VariantPreview>(
+      count: response.data['count'],
+      next: response.data['next'],
+      previous: response.data['previous'],
+      results: response.data['results']
+          .map<VariantPreview>((e) => VariantPreview.fromMap(e))
+          .toList(),
     );
   }
 }

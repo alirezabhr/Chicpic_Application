@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
-import 'package:chicpic/models/product/product.dart';
-
-import 'package:chicpic/ui/explore/widgets/product_item_dialog.dart';
+import 'package:chicpic/models/product/variant.dart';
 
 class ProductsExplore extends StatelessWidget {
   const ProductsExplore({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Size deviceSize = MediaQuery.of(context).size;
-
     return Column(
       children: [
         Padding(
@@ -45,15 +42,15 @@ class ProductsExplore extends StatelessWidget {
                 child: Center(child: CircularProgressIndicator()),
               );
             } else {
-              List<ProductBase> products =
-                  BlocProvider.of<ProductsExploreBloc>(context).products;
+              List<VariantPreview> variants =
+                  BlocProvider.of<ProductsExploreBloc>(context).variants;
 
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: Insets.small),
                 child: GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: products.length,
+                  itemCount: variants.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                   ),
@@ -63,14 +60,18 @@ class ProductsExplore extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return ProductItemDialog(product: products[index]);
+                            return Container();
                           },
                         );
                       },
-                      child: Image.network(
-                        products[index].image,
-                        width: deviceSize.width / 3,
-                        height: deviceSize.width / 3,
+                      child: CachedNetworkImage(
+                        imageUrl: variants[index].imageSrc,
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (context, url, error) {
+                          return const Icon(Icons.error);
+                        },
                       ),
                     );
                   },

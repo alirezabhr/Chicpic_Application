@@ -4,7 +4,7 @@ part of 'products_explore_bloc.dart';
 abstract class ProductsExploreEvent {}
 
 class ProductsExploreFetch extends ProductsExploreEvent {
-  final int page;
+  final bool firstPage;
 
-  ProductsExploreFetch({this.page=0});
+  ProductsExploreFetch({this.firstPage=true});
 }
