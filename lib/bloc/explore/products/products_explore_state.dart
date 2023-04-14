@@ -10,3 +10,24 @@ class ProductsExploreFetchLoading extends ProductsExploreState {}
 class ProductsExploreFetchSuccess extends ProductsExploreState {}
 
 class ProductsExploreFetchFailure extends ProductsExploreState {}
+
+class ProductDetailFetchLoading extends ProductsExploreState {}
+
+class ProductDetailFetchSuccess extends ProductsExploreState {
+  final ProductDetail product;
+  late final VariantDetail selectedVariant;
+
+  ProductDetailFetchSuccess({
+    required this.product,
+    required int? selectedVariantId,
+  }) {
+    if (selectedVariantId == null) {
+      selectedVariant = product.variants.first;
+    } else {
+      selectedVariant = product.variants
+          .firstWhere((element) => element.id == selectedVariantId);
+    }
+  }
+}
+
+class ProductDetailFetchFailure extends ProductsExploreState {}

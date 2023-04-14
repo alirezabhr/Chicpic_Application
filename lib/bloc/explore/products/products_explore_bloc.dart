@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 import 'package:chicpic/services/api_service.dart';
 
 import 'package:chicpic/models/pagination.dart';
+import 'package:chicpic/models/product/product.dart';
 import 'package:chicpic/models/product/variant.dart';
 
 part 'products_explore_event.dart';
@@ -19,6 +20,7 @@ class ProductsExploreBloc
 
   ProductsExploreBloc() : super(ProductsExploreInitial()) {
     on<ProductsExploreFetch>(_onProductsExploreFetch);
+    on<ProductDetailFetch>(_onProductDetailFetch);
   }
 
   Future<void> _onProductsExploreFetch(
@@ -38,6 +40,23 @@ class ProductsExploreBloc
       emit(ProductsExploreFetchSuccess());
     } catch (_) {
       emit(ProductsExploreFetchFailure());
+    }
+  }
+
+  Future<void> _onProductDetailFetch(
+    ProductDetailFetch event,
+    Emitter<ProductsExploreState> emit,
+  ) async {
+    emit(ProductDetailFetchLoading());
+
+    try {
+      ProductDetail product = await APIService.getProduct(event.productId);
+      emit(ProductDetailFetchSuccess(
+        product: product,
+        selectedVariantId: event.variantId,
+      ));
+    } catch (_) {
+      emit(ProductDetailFetchFailure());
     }
   }
 }

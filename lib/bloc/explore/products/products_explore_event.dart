@@ -8,3 +8,10 @@ class ProductsExploreFetch extends ProductsExploreEvent {
 
   ProductsExploreFetch({this.firstPage=true});
 }
+
+class ProductDetailFetch extends ProductsExploreEvent {
+  final int productId;
+  final int? variantId;
+
+  ProductDetailFetch(this.productId, this.variantId);
+}

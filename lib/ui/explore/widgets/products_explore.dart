@@ -9,6 +9,8 @@ import 'package:chicpic/statics/insets.dart';
 
 import 'package:chicpic/models/product/variant.dart';
 
+import 'package:chicpic/ui/explore/widgets/product_item_dialog.dart';
+
 class ProductsExplore extends StatelessWidget {
   const ProductsExplore({Key? key}) : super(key: key);
 
@@ -60,18 +62,33 @@ class ProductsExplore extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return Container();
+                            return ProductItemDialog(
+                              productId: variants[index].product,
+                              variantId: variants[index].id,
+                            );
                           },
                         );
                       },
-                      child: CachedNetworkImage(
-                        imageUrl: variants[index].imageSrc,
-                        placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator(),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          border: Border.symmetric(
+                            vertical: BorderSide(width: 0.2),
+                            horizontal: BorderSide(width: 0.1),
+                          ),
                         ),
-                        errorWidget: (context, url, error) {
-                          return const Icon(Icons.error);
-                        },
+                        child: CachedNetworkImage(
+                          imageUrl: variants[index].imageSrc,
+                          placeholder: (context, url) => Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.6),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) {
+                            return const Icon(Icons.error);
+                          },
+                        ),
                       ),
                     );
                   },

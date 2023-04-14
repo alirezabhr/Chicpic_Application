@@ -11,6 +11,7 @@ import 'package:chicpic/models/auth/user_additional.dart';
 import 'package:chicpic/models/product/category.dart';
 import 'package:chicpic/models/product/shop.dart';
 import 'package:chicpic/models/product/variant.dart';
+import 'package:chicpic/models/product/product.dart';
 
 class APIService {
   // Users
@@ -83,5 +84,11 @@ class APIService {
           .map<VariantPreview>((e) => VariantPreview.fromMap(e))
           .toList(),
     );
+  }
+
+  static Future<ProductDetail> getProduct(int productId) async {
+    Response response =
+        await Client.instance.get(APIUrls.productDetail(productId));
+    return ProductDetail.fromMap(response.data);
   }
 }

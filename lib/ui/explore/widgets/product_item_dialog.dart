@@ -1,89 +1,179 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
+import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
-import 'package:chicpic/models/product/product.dart';
+import 'package:chicpic/models/product/variant.dart';
 
 class ProductItemDialog extends StatelessWidget {
-  final ProductBase product;
+  final int productId;
+  final int? variantId;
 
-  const ProductItemDialog({Key? key, required this.product}) : super(key: key);
+  const ProductItemDialog({
+    Key? key,
+    required this.productId,
+    this.variantId,
+  }) : super(key: key);
 
-  bool get hasDiscount => product.finalPrice != null;
+  bool hasDiscount(VariantDetail variant) =>
+      variant.originalPrice != variant.finalPrice;
 
   @override
   Widget build(BuildContext context) {
-    final double deviceHeight = MediaQuery.of(context).size.height;
+    BlocProvider.of<ProductsExploreBloc>(context)
+        .add(ProductDetailFetch(productId, variantId));
+
+    final Size deviceSize = MediaQuery.of(context).size;
 
     return Dialog(
       insetPadding: const EdgeInsets.symmetric(
         vertical: Insets.large,
         horizontal: Insets.xLarge,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(Insets.small),
-            child: Text(
-              product.brand.toUpperCase(),
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryColor,
-              ),
-            ),
-          ),
-          ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: deviceHeight * 0.6),
-            child: Stack(
-              children: [
-                Image.network(product.image),
-                Positioned(
-                  right: 15,
-                  bottom: 5,
-                  child: BuyButton(websiteLink: product.link),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: Insets.small,
-              vertical: Insets.xSmall,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  product.title,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                Text(
-                  "\$${product.originalPrice}",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Theme.of(context).primaryColor,
-                    decoration: hasDiscount ? TextDecoration.lineThrough : null,
-                  ),
-                ),
-                hasDiscount
-                    ? Text(
-                        "\$${product.finalPrice}",
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.red,
-                          fontWeight: FontWeight.w500,
+      child: BlocBuilder<ProductsExploreBloc, ProductsExploreState>(
+        builder: (context, state) {
+          if (state is ProductDetailFetchSuccess) {
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(Insets.small),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                              width: 0.5,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(6),
+                          child: Image.network(state.product.shop.image),
                         ),
-                      )
-                    : Container(),
-              ],
-            ),
-          ),
-        ],
+                        const SizedBox(width: Insets.small),
+                        Text(
+                          state.product.shop.name.toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Divider(thickness: 0.5, height: 0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: Insets.small),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: deviceSize.height * 0.6,
+                      ),
+                      child: Stack(
+                        children: [
+                          SizedBox(
+                            width: deviceSize.width,
+                            child: CachedNetworkImage(
+                              imageUrl: state.selectedVariant.imageSrc,
+                              fit: BoxFit.fill,
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (context, url, error) {
+                                return const Center(child: Icon(Icons.error));
+                              },
+                            ),
+                          ),
+                          Positioned(
+                            right: 15,
+                            bottom: 5,
+                            child: BuyButton(
+                              websiteLink: state.selectedVariant.link,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Insets.small,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //TODO add different colors and
+                        Text(
+                          state.product.title,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              state.product.brand,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            const Spacer(),
+                            Text(
+                              "\$${state.selectedVariant.originalPrice}",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(context).primaryColor,
+                                decoration: hasDiscount(state.selectedVariant)
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                                fontWeight: hasDiscount(state.selectedVariant)
+                                    ? FontWeight.normal
+                                    : FontWeight.bold,
+                              ),
+                            ),
+                            hasDiscount(state.selectedVariant)
+                                ? Row(
+                                    children: [
+                                      const SizedBox(width: Insets.xSmall),
+                                      Text(
+                                        "\$${state.selectedVariant.finalPrice}",
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Container(),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: Insets.small,
+                          ),
+                          child: Text(
+                            state.product.description,
+                            style: const TextStyle(fontWeight: FontWeight.w300),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
@@ -98,37 +188,26 @@ class BuyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return ElevatedButton(
       onPressed: () {
         //TODO open the seller website
       },
-      child: Text(
-        'Buy it',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.blue.shade600,
-          decoration: TextDecoration.underline,
-          decorationThickness: 2,
-          shadows: [
-            Shadow(
-              offset: const Offset(-1.5, -1.5),
-              color: textStrokeColor,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.4),
+      ),
+      child: Row(
+        children: const [
+          Icon(Icons.shopping_cart_outlined, size: 16),
+          SizedBox(width: Insets.xSmall),
+          Text(
+            'Buy it',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
-            Shadow(
-              offset: const Offset(1.5, -1.5),
-              color: textStrokeColor,
-            ),
-            Shadow(
-              offset: const Offset(1.5, 1.5),
-              color: textStrokeColor,
-            ),
-            Shadow(
-              offset: const Offset(-1.5, 1.5),
-              color: textStrokeColor,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
