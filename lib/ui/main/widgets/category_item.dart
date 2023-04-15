@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
+import 'package:chicpic/app_router.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
@@ -16,27 +19,32 @@ class CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // TODO navigate to category products page
+        Navigator.of(context).pushNamed(
+          AppRouter.category,
+          arguments: category.id,
+        );
       },
       child: Container(
         height: _containerHeight,
-        width: double.infinity,
         margin: const EdgeInsets.symmetric(vertical: Insets.xSmall),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(_borderRadius)),
           color: Theme.of(context).primaryColor,
-          // border: Border.all(color: Theme.of(context).primaryColor),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(Insets.medium),
-              child: Text(
-                category.title,
-                style: const TextStyle(fontSize: 22, color: Colors.white),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.all(Insets.small),
+                child: FittedBox(
+                  child: Text(
+                    category.title,
+                    style: const TextStyle(fontSize: 22, color: Colors.white),
+                  ),
+                ),
               ),
             ),
-            const Spacer(),
             SizedBox(
               width: _containerHeight,
               height: _containerHeight,
@@ -47,8 +55,8 @@ class CategoryItem extends StatelessWidget {
                   topLeft: Radius.zero,
                   bottomLeft: Radius.zero,
                 ),
-                child: Image.network(
-                  category.image,
+                child: CachedNetworkImage(
+                  imageUrl: category.image,
                   fit: BoxFit.cover,
                 ),
               ),

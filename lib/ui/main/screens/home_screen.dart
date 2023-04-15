@@ -1,12 +1,14 @@
-import 'package:chicpic/services/api_service.dart';
-import 'package:chicpic/statics/insets.dart';
-import 'package:chicpic/statics/shared_preferences_keys.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:chicpic/services/api_service.dart';
+
+import 'package:chicpic/statics/shared_preferences_keys.dart';
+import 'package:chicpic/statics/insets.dart';
 
 import 'package:chicpic/models/product/category.dart';
 
 import 'package:chicpic/ui/main/widgets/category_item.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  CategoryGender _selectedGender = CategoryGender.female;
+  CategoryGender _selectedGender = CategoryGender.women;
 
   List<Category> categories = [];
 
@@ -32,9 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     setState(() {
       _selectedGender = prefs.get(SharedPrefKeys.categoryGender) ==
-              CategoryGender.male.abbreviation
-          ? CategoryGender.male
-          : CategoryGender.female;
+              CategoryGender.men.abbreviation
+          ? CategoryGender.men
+          : CategoryGender.women;
     });
 
     await getCategories();
@@ -78,25 +80,27 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Insets.large),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: Insets.medium),
-              child: Text(
-                '${_selectedGender.humanReadable} Categories',
-                style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w500,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Insets.large),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: Insets.medium),
+                child: Text(
+                  '${_selectedGender.humanReadable} Categories',
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-            ),
-            ...categories
-                .map((category) => CategoryItem(category: category))
-                .toList(),
-          ],
+              ...categories
+                  .map((category) => CategoryItem(category: category))
+                  .toList(),
+            ],
+          ),
         ),
       ),
     );
