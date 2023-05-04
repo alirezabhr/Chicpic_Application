@@ -1,73 +1,63 @@
 import 'package:equatable/equatable.dart';
 
 import 'package:chicpic/models/product/shop.dart';
+import 'package:chicpic/models/product/product_attribute.dart';
 import 'package:chicpic/models/product/variant.dart';
 
 abstract class ProductBase extends Equatable {
   final int id;
   final String title;
-  final String brand;
-  final String description;
   final String previewImage;
+  final String brand;
 
   const ProductBase({
     required this.id,
     required this.title,
-    required this.brand,
-    required this.description,
     required this.previewImage,
+    required this.brand,
   });
 }
 
 class ProductPreview extends ProductBase {
-  final int shop;
-  final int category;
-
   const ProductPreview({
     required super.id,
     required super.title,
-    required super.brand,
-    required super.description,
     required super.previewImage,
-    required this.shop,
-    required this.category,
+    required super.brand,
   });
 
   factory ProductPreview.fromMap(Map<String, dynamic> mapData) =>
       ProductPreview(
         id: mapData['id'],
         title: mapData['title'],
-        brand: mapData['brand'],
-        description: mapData['description'],
         previewImage: mapData['previewImage'],
-        shop: mapData['shop'],
-        category: mapData['category'],
+        brand: mapData['brand'],
       );
 
   @override
   List<Object?> get props => [
         id,
         title,
-        brand,
-        description,
         previewImage,
-        shop,
-        category,
+        brand,
       ];
 }
 
 class ProductDetail extends ProductBase {
   final Shop shop;
+  final String description;
   final List<VariantDetail> variants;
+  final List<ProductAttribute> attributes;
 
   const ProductDetail({
     required super.id,
     required super.title,
     required super.brand,
-    required super.description,
     required super.previewImage,
+    required this.description,
     required this.shop,
     required this.variants,
+    required this.attributes,
   });
 
   factory ProductDetail.fromMap(Map<String, dynamic> mapData) => ProductDetail(
@@ -77,6 +67,10 @@ class ProductDetail extends ProductBase {
         description: mapData['description'],
         previewImage: mapData['previewImage'],
         shop: Shop.fromMap(mapData['shop']),
+        attributes: mapData['attributes']
+            .map<ProductAttribute>(
+                (attributeMap) => ProductAttribute.fromMap(attributeMap))
+            .toList(),
         variants: mapData['variants']
             .map<VariantDetail>(
                 (variantMap) => VariantDetail.fromMap(variantMap))
@@ -92,5 +86,6 @@ class ProductDetail extends ProductBase {
         previewImage,
         shop,
         variants,
+        attributes,
       ];
 }
