@@ -1,4 +1,8 @@
+import 'dart:ui';
+
 import 'package:equatable/equatable.dart';
+
+import 'package:chicpic/services/utils.dart';
 
 abstract class VariantBase extends Equatable {
   final int id;
@@ -9,8 +13,9 @@ abstract class VariantBase extends Equatable {
   final bool isAvailable;
   final String? option1;
   final String? option2;
-  final String? option3;
+  final String? color;
   final int product;
+  final List<Color> coloring;
 
   const VariantBase({
     required this.id,
@@ -21,9 +26,23 @@ abstract class VariantBase extends Equatable {
     required this.isAvailable,
     required this.option1,
     required this.option2,
-    required this.option3,
+    required this.color,
+    required this.coloring,
     required this.product,
   });
+
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'imageSrc': imageSrc,
+        'link': link,
+        'originalPrice': originalPrice,
+        'finalPrice': finalPrice,
+        'isAvailable': isAvailable,
+        'option1': option1,
+        'option2': option2,
+        'color': color,
+        'product': product,
+      };
 }
 
 class VariantPreview extends VariantBase {
@@ -36,23 +55,33 @@ class VariantPreview extends VariantBase {
     required super.isAvailable,
     required super.option1,
     required super.option2,
-    required super.option3,
+    required super.color,
+    required super.coloring,
     required super.product,
   });
 
-  factory VariantPreview.fromMap(Map<String, dynamic> mapData) =>
-      VariantPreview(
-        id: mapData['id'],
-        imageSrc: mapData['imageSrc'],
-        link: mapData['link'],
-        originalPrice: mapData['originalPrice'],
-        finalPrice: mapData['finalPrice'],
-        isAvailable: mapData['isAvailable'],
-        option1: mapData['option1'],
-        option2: mapData['option2'],
-        option3: mapData['option3'],
-        product: mapData['product'],
-      );
+  factory VariantPreview.fromMap(Map<String, dynamic> mapData) {
+    List<String> colorsHex = [];
+    if (mapData['color'] != null) {
+      colorsHex = mapData['color'].split('/');
+    }
+
+    return VariantPreview(
+      id: mapData['id'],
+      imageSrc: mapData['imageSrc'],
+      link: mapData['link'],
+      originalPrice: mapData['originalPrice'],
+      finalPrice: mapData['finalPrice'],
+      isAvailable: mapData['isAvailable'],
+      option1: mapData['option1'],
+      option2: mapData['option2'],
+      color: mapData['color'],
+      coloring: colorsHex
+          .map<Color>((colorCode) => Color(strToHex(colorCode)))
+          .toList(),
+      product: mapData['product'],
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -65,7 +94,8 @@ class VariantPreview extends VariantBase {
         product,
         option1,
         option2,
-        option3,
+        color,
+        coloring,
       ];
 }
 
@@ -83,25 +113,43 @@ class VariantDetail extends VariantBase {
     required super.product,
     required super.option1,
     required super.option2,
-    required super.option3,
+    required super.color,
+    required super.coloring,
     required this.isSaved,
     required this.isTracked,
   });
 
-  factory VariantDetail.fromMap(Map<String, dynamic> mapData) => VariantDetail(
-        id: mapData['id'],
-        imageSrc: mapData['imageSrc'],
-        link: mapData['link'],
-        originalPrice: mapData['originalPrice'],
-        finalPrice: mapData['finalPrice'],
-        isAvailable: mapData['isAvailable'],
-        product: mapData['product'],
-        option1: mapData['option1'],
-        option2: mapData['option2'],
-        option3: mapData['option3'],
-        isSaved: mapData['isSaved'],
-        isTracked: mapData['isTracked'],
-      );
+  factory VariantDetail.fromMap(Map<String, dynamic> mapData) {
+    List<String> colorsHex = [];
+    if (mapData['color'] != null) {
+      colorsHex = mapData['color'].split('/');
+    }
+
+    return VariantDetail(
+      id: mapData['id'],
+      imageSrc: mapData['imageSrc'],
+      link: mapData['link'],
+      originalPrice: mapData['originalPrice'],
+      finalPrice: mapData['finalPrice'],
+      isAvailable: mapData['isAvailable'],
+      product: mapData['product'],
+      option1: mapData['option1'],
+      option2: mapData['option2'],
+      color: mapData['color'],
+      coloring: colorsHex
+          .map<Color>((colorCode) => Color(strToHex(colorCode)))
+          .toList(),
+      isSaved: mapData['isSaved'],
+      isTracked: mapData['isTracked'],
+    );
+  }
+
+  @override
+  Map<String, dynamic> toMap() => super.toMap()
+    ..addAll({
+      'isSaved': isSaved,
+      'isTracked': isTracked,
+    });
 
   @override
   List<Object?> get props => [
@@ -113,7 +161,8 @@ class VariantDetail extends VariantBase {
         isAvailable,
         option1,
         option2,
-        option3,
+        color,
+        coloring,
         isSaved,
         isTracked,
         product,
