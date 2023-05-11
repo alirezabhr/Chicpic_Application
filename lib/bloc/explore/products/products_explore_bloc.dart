@@ -27,14 +27,15 @@ class ProductsExploreBloc
     ProductsExploreFetch event,
     Emitter<ProductsExploreState> emit,
   ) async {
-    emit(ProductsExploreFetchLoading());
+    if (event.firstPage) {
+      page = 1;
+      variants = [];
+    }
+    emit(ProductsExploreFetchLoading(page: page));
 
     try {
-      if (event.firstPage) {
-        page = 1;
-        variants = [];
-      }
-      Pagination<VariantPreview> pagination = await APIService.getVariants();
+      Pagination<VariantPreview> pagination =
+          await APIService.getVariants(page: page);
       variants = variants + pagination.results;
       page += 1;
       emit(ProductsExploreFetchSuccess());

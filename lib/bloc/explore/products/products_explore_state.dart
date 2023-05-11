@@ -5,7 +5,11 @@ abstract class ProductsExploreState {}
 
 class ProductsExploreInitial extends ProductsExploreState {}
 
-class ProductsExploreFetchLoading extends ProductsExploreState {}
+class ProductsExploreFetchLoading extends ProductsExploreState {
+  final int page;
+
+  ProductsExploreFetchLoading({required this.page});
+}
 
 class ProductsExploreFetchSuccess extends ProductsExploreState {}
 

@@ -36,9 +36,10 @@ class ProductsExplore extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(height: Insets.small),
         BlocBuilder<ProductsExploreBloc, ProductsExploreState>(
           builder: (context, state) {
-            if (state is ProductsExploreFetchLoading) {
+            if (state is ProductsExploreFetchLoading && state.page == 1) {
               return const SizedBox(
                 height: 200,
                 child: Center(child: CircularProgressIndicator()),
@@ -47,52 +48,62 @@ class ProductsExplore extends StatelessWidget {
               List<VariantPreview> variants =
                   BlocProvider.of<ProductsExploreBloc>(context).variants;
 
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: Insets.small),
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: variants.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                  ),
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ProductItemDialog(
-                              productId: variants[index].product,
-                              variantId: variants[index].id,
-                            );
-                          },
-                        );
-                      },
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          border: Border.symmetric(
-                            vertical: BorderSide(width: 0.2),
-                            horizontal: BorderSide(width: 0.1),
-                          ),
-                        ),
-                        child: CachedNetworkImage(
-                          imageUrl: variants[index].imageSrc,
-                          placeholder: (context, url) => Center(
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context)
-                                  .primaryColor
-                                  .withOpacity(0.6),
+              return Column(
+                children: [
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: variants.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ProductItemDialog(
+                                productId: variants[index].product,
+                                variantId: variants[index].id,
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            border: Border.symmetric(
+                              vertical: BorderSide(width: 0.2),
+                              horizontal: BorderSide(width: 0.1),
                             ),
                           ),
-                          errorWidget: (context, url, error) {
-                            return const Icon(Icons.error);
-                          },
+                          child: CachedNetworkImage(
+                            imageUrl: variants[index].imageSrc,
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.6),
+                              ),
+                            ),
+                            fit: BoxFit.cover,
+                            errorWidget: (context, url, error) {
+                              return const Icon(Icons.error);
+                            },
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  ),
+                  state is ProductsExploreFetchLoading
+                      ? const Padding(
+                          padding:
+                              EdgeInsets.symmetric(vertical: Insets.medium),
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      : Container()
+                ],
               );
             }
           },
