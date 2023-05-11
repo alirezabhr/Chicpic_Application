@@ -20,6 +20,7 @@ class ProductDetailFetchLoading extends ProductsExploreState {}
 class ProductDetailFetchSuccess extends ProductsExploreState {
   final ProductDetail product;
   late final VariantDetail selectedVariant;
+  late final List<List<Color>> colorsChoices;
 
   ProductDetailFetchSuccess({
     required this.product,
@@ -31,6 +32,13 @@ class ProductDetailFetchSuccess extends ProductsExploreState {
       selectedVariant = product.variants
           .firstWhere((element) => element.id == selectedVariantId);
     }
+
+    final List<List<Color>> tmp = product.variants
+        .where((v) => v.coloring.isNotEmpty)
+        .map<List<Color>>((v) => v.coloring)
+        .toList();
+
+    colorsChoices = removeDuplicates(tmp);
   }
 }
 

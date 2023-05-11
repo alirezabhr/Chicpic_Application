@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 import 'package:chicpic/services/api_service.dart';
+import 'package:chicpic/services/utils.dart';
 
 import 'package:chicpic/models/pagination.dart';
 import 'package:chicpic/models/product/product.dart';
