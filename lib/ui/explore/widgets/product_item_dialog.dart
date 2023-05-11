@@ -8,6 +8,9 @@ import 'package:chicpic/statics/insets.dart';
 
 import 'package:chicpic/models/product/variant.dart';
 
+import 'package:chicpic/ui/explore/widgets/color_selection.dart';
+import 'package:chicpic/ui/explore/widgets/product_attributes.dart';
+
 class ProductItemDialog extends StatelessWidget {
   final int productId;
   final int? variantId;
@@ -61,7 +64,7 @@ class ProductItemDialog extends StatelessWidget {
                         Text(
                           state.product.shop.name.toUpperCase(),
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
                           ),
@@ -69,47 +72,40 @@ class ProductItemDialog extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Divider(thickness: 0.5, height: 0),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: Insets.small),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: deviceSize.height * 0.6,
-                      ),
-                      child: Stack(
-                        children: [
-                          SizedBox(
-                            width: deviceSize.width,
-                            child: CachedNetworkImage(
-                              imageUrl: state.selectedVariant.imageSrc,
-                              fit: BoxFit.fill,
-                              placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                              errorWidget: (context, url, error) {
-                                return const Center(child: Icon(Icons.error));
-                              },
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: deviceSize.height * 0.6,
+                    ),
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          width: deviceSize.width,
+                          child: CachedNetworkImage(
+                            imageUrl: state.selectedVariant.imageSrc,
+                            fit: BoxFit.fill,
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(),
                             ),
+                            errorWidget: (context, url, error) {
+                              return const Center(child: Icon(Icons.error));
+                            },
                           ),
-                          Positioned(
-                            right: 15,
-                            bottom: 5,
-                            child: BuyButton(
-                              websiteLink: state.selectedVariant.link,
-                            ),
+                        ),
+                        Positioned(
+                          right: 15,
+                          bottom: 5,
+                          child: BuyButton(
+                            websiteLink: state.selectedVariant.link,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: Insets.small,
-                    ),
+                    padding: const EdgeInsets.all(Insets.small),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        //TODO add different colors and
                         Text(
                           state.product.title,
                           style: TextStyle(
@@ -156,14 +152,31 @@ class ProductItemDialog extends StatelessWidget {
                                 : Container(),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: Insets.small,
-                          ),
-                          child: Text(
-                            state.product.description,
-                            style: const TextStyle(fontWeight: FontWeight.w300),
-                          ),
+                        const SizedBox(height: Insets.xSmall),
+                        ColorSelectionRow(
+                          colorsList: state.colorsChoices,
+                          selectedColoring: state.selectedVariant.coloring,
+                        ),
+                        ProductAttributesView(
+                          attributes: state.product.attributes,
+                          selectedVariant: state.selectedVariant,
+                        ),
+                        const SizedBox(height: Insets.small),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Description:',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: Insets.xSmall / 2),
+                            Text(
+                              state.product.description,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
