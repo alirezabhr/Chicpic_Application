@@ -61,6 +61,24 @@ class APIService {
     return response.data.map<Category>((e) => Category.fromMap(e)).toList();
   }
 
+  static Future<Pagination<ProductPreview>> getCategoryProducts({
+    required int id,
+    int page = 1,
+  }) async {
+    Response response = await Client.instance.get(
+      APIUrls.categoryProducts(categoryId: id, page: page),
+    );
+
+    return Pagination<ProductPreview>(
+      count: response.data['count'],
+      next: response.data['next'],
+      previous: response.data['previous'],
+      results: response.data['results']
+          .map<ProductPreview>((e) => ProductPreview.fromMap(e))
+          .toList(),
+    );
+  }
+
   static Future<Pagination<Shop>> getShops({int page = 1}) async {
     Response response = await Client.instance.get(APIUrls.shops(page: page));
 
