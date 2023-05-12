@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:chicpic/app_router.dart';
+
+import 'package:chicpic/bloc/category/category_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
@@ -19,9 +22,12 @@ class CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        BlocProvider.of<CategoryBloc>(context).add(
+          CategoryProductsFetch(category, firstPage: true),
+        );
         Navigator.of(context).pushNamed(
           AppRouter.category,
-          arguments: category.id,
+          arguments: category,
         );
       },
       child: Container(

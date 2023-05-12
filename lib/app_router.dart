@@ -9,6 +9,7 @@ import 'package:chicpic/ui/auth/screens/verification_code_screen.dart';
 import 'package:chicpic/ui/user_additional/screens/user_additional_screen.dart';
 import 'package:chicpic/ui/terms_conditions_privacy_policy/screens/privacy_policy.dart';
 import 'package:chicpic/ui/terms_conditions_privacy_policy/screens/terms_and_condition.dart';
+import 'package:chicpic/ui/category/screens/category_screen.dart';
 
 abstract class AppRouter {
   static const String splash = "/";
@@ -20,6 +21,7 @@ abstract class AppRouter {
   static const String userAdditional = "/userAdditional";
   static const String termsConditions = "/terms";
   static const String privacyPolicy = "/privacy";
+  static const String category = "/category";
 
   static Route? generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
@@ -45,6 +47,11 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (_) => const TermsConditionsScreen());
       case privacyPolicy:
         return MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen());
+      case category:
+        return MaterialPageRoute(
+          builder: (_) => const CategoryScreen(),
+          settings: routeSettings,
+        );
       default:
         return null;
     }
