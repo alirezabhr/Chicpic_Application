@@ -23,6 +23,7 @@ class ProductsExploreBloc
   ProductsExploreBloc() : super(ProductsExploreInitial()) {
     on<ProductsExploreFetch>(_onProductsExploreFetch);
     on<ProductDetailFetch>(_onProductDetailFetch);
+    on<ProductDetailChangeColor>(_onProductDetailChangeColor);
   }
 
   Future<void> _onProductsExploreFetch(
@@ -61,5 +62,19 @@ class ProductsExploreBloc
     } catch (_) {
       emit(ProductDetailFetchFailure());
     }
+  }
+
+  Future<void> _onProductDetailChangeColor(
+    ProductDetailChangeColor event,
+    Emitter<ProductsExploreState> emit,
+  ) async {
+    final selectedVariant = event.product.variants.firstWhere(
+      (v) => v.coloring == event.coloring,
+      orElse: () => event.product.variants.first,
+    );
+    emit(ProductDetailFetchSuccess(
+      product: event.product,
+      selectedVariantId: selectedVariant.id,
+    ));
   }
 }

@@ -1,8 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:chicpic/services/utils.dart';
+
+import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
@@ -19,54 +22,72 @@ class ColorSelectionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Colors:',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        Row(
-          children: colorsList
-              .map(
-                (colors) => Padding(
-              padding: const EdgeInsets.only(
-                right: Insets.xSmall,
+    return BlocBuilder<ProductsExploreBloc, ProductsExploreState>(
+      builder: (context, state) {
+        if (state is ProductDetailFetchSuccess) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Colors:',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              child: CircularButton(
-                colors: colors,
-                isSelected: listEquals(selectedColoring, colors),
+              Row(
+                children: colorsList
+                    .map(
+                      (colors) => Padding(
+                        padding: const EdgeInsets.only(
+                          right: Insets.xSmall,
+                        ),
+                        child: CircularButton(
+                          onTap: () {
+                            BlocProvider.of<ProductsExploreBloc>(context).add(
+                              ProductDetailChangeColor(state.product, colors),
+                            );
+                          },
+                          colors: colors,
+                          isSelected: listEquals(selectedColoring, colors),
+                        ),
+                      ),
+                    )
+                    .toList(),
               ),
-            ),
-          )
-              .toList(),
-        ),
-      ],
+            ],
+          );
+        }
+        return Container();
+      },
     );
   }
 }
 
 class CircularButton extends StatelessWidget {
   final double radius = 22;
+  final VoidCallback onTap;
   final List<Color> colors;
   final bool isSelected;
 
   const CircularButton({
     super.key,
+    required this.onTap,
     required this.colors,
     required this.isSelected,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(2),
-      decoration: BoxDecoration(
-          color: isSelected ? Theme.of(context).primaryColor : Colors.grey[300],
-          shape: BoxShape.circle),
-      child: CustomPaint(
-        size: Size(radius, radius),
-        painter: _CircularButtonPainter(colors: colors),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+            color:
+                isSelected ? Theme.of(context).primaryColor : Colors.grey[300],
+            shape: BoxShape.circle),
+        child: CustomPaint(
+          size: Size(radius, radius),
+          painter: _CircularButtonPainter(colors: colors),
+        ),
       ),
     );
   }

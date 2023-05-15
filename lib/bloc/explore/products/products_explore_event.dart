@@ -15,3 +15,10 @@ class ProductDetailFetch extends ProductsExploreEvent {
 
   ProductDetailFetch(this.productId, this.variantId);
 }
+
+class ProductDetailChangeColor extends ProductsExploreEvent {
+  final ProductDetail product;
+  final List<Color> coloring;
+
+  ProductDetailChangeColor(this.product, this.coloring);
+}
