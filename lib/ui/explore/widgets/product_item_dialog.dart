@@ -43,6 +43,7 @@ class ProductItemDialog extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Shop image and name
                   Padding(
                     padding: const EdgeInsets.all(Insets.small),
                     child: Row(
@@ -72,17 +73,19 @@ class ProductItemDialog extends StatelessWidget {
                       ],
                     ),
                   ),
+                  // Variant Image and buttons on image
                   ConstrainedBox(
                     constraints: BoxConstraints(
                       maxHeight: deviceSize.height * 0.6,
                     ),
                     child: Stack(
                       children: [
+                        // Variant image
                         SizedBox(
                           width: deviceSize.width,
                           child: CachedNetworkImage(
                             imageUrl: state.selectedVariant.imageSrc,
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                             placeholder: (context, url) => const Center(
                               child: CircularProgressIndicator(),
                             ),
@@ -101,6 +104,7 @@ class ProductItemDialog extends StatelessWidget {
                       ],
                     ),
                   ),
+                  // Variant details
                   Padding(
                     padding: const EdgeInsets.all(Insets.small),
                     child: Column(
