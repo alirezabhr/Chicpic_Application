@@ -91,6 +91,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Nunito',
         primarySwatch: CustomTheme.primaryColor,
+        disabledColor: CustomTheme.disabledColor,
       ),
       initialRoute: AppRouter.splash,
       onGenerateRoute: AppRouter.generateRoute,

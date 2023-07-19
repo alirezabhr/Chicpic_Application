@@ -16,4 +16,6 @@ abstract class CustomTheme {
       900: Color.fromRGBO(80, 89, 118, 1),
     },
   );
+
+  static const MaterialColor disabledColor = MaterialColor(0xFFBDBDBD, {});
 }
