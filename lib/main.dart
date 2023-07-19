@@ -12,6 +12,7 @@ import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
 import 'package:chicpic/bloc/explore/shops/shops_explore_bloc.dart';
 import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 import 'package:chicpic/bloc/category/category_bloc.dart';
+import 'package:chicpic/bloc/shop/shop_bloc.dart';
 
 import 'app_router.dart';
 
@@ -66,6 +67,11 @@ void main() async {
           BlocProvider<CategoryBloc>(
             create: (BuildContext context) {
               return CategoryBloc();
+            },
+          ),
+          BlocProvider<ShopBloc>(
+            create: (BuildContext context) {
+              return ShopBloc();
             },
           ),
         ],

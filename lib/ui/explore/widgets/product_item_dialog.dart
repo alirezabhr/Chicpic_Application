@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import 'package:chicpic/app_router.dart';
+
 import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
+import 'package:chicpic/bloc/shop/shop_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
@@ -48,26 +51,57 @@ class ProductItemDialog extends StatelessWidget {
                     padding: const EdgeInsets.all(Insets.small),
                     child: Row(
                       children: [
-                        Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            border: Border.all(
-                              width: 0.5,
-                              color: Theme.of(context).primaryColor,
+                        GestureDetector(
+                          onTap: () {
+                            BlocProvider.of<ShopBloc>(context).add(
+                              ShopProductsFetch(
+                                state.product.shop,
+                                firstPage: true,
+                              ),
+                            );
+                            Navigator.of(context).pushNamed(
+                              AppRouter.shop,
+                              arguments: state.product.shop,
+                            );
+                          },
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              border: Border.all(
+                                width: 0.5,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
+                            // padding: const EdgeInsets.all(6),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(25),
+                              child: Image.network(state.product.shop.image),
                             ),
                           ),
-                          padding: const EdgeInsets.all(6),
-                          child: Image.network(state.product.shop.image),
                         ),
                         const SizedBox(width: Insets.small),
-                        Text(
-                          state.product.shop.name.toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
+                        TextButton(
+                          onPressed: () {
+                            BlocProvider.of<ShopBloc>(context).add(
+                              ShopProductsFetch(
+                                state.product.shop,
+                                firstPage: true,
+                              ),
+                            );
+                            Navigator.of(context).pushNamed(
+                              AppRouter.shop,
+                              arguments: state.product.shop,
+                            );
+                          },
+                          child: Text(
+                            state.product.shop.name.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
                         ),
                       ],

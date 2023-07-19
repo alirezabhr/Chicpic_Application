@@ -31,6 +31,10 @@ abstract class APIUrls {
     return '${_clothing}shops/?page=$page';
   }
 
+  static String shopProducts({required int shopId, int page = 1}) {
+    return '${_clothing}shops/$shopId/products/?page=$page';
+  }
+
   static String variants({int page = 1}) {
     return '${_clothing}variants/?page=$page';
   }
