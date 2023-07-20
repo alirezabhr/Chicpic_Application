@@ -24,6 +24,7 @@ class ProductsExploreBloc
     on<ProductsExploreFetch>(_onProductsExploreFetch);
     on<ProductDetailFetch>(_onProductDetailFetch);
     on<ProductDetailChangeColor>(_onProductDetailChangeColor);
+    on<ProductDetailChangeSize>(_onProductDetailChangeSize);
   }
 
   Future<void> _onProductsExploreFetch(
@@ -72,6 +73,22 @@ class ProductsExploreBloc
       (v) => v.coloring == event.coloring,
       orElse: () => event.product.variants.first,
     );
+    emit(ProductDetailFetchSuccess(
+      product: event.product,
+      selectedVariantId: selectedVariant.id,
+    ));
+  }
+
+  Future<void> _onProductDetailChangeSize(
+    ProductDetailChangeSize event,
+    Emitter<ProductsExploreState> emit,
+  ) async {
+    final selectedVariant = event.product.variants.firstWhere(
+      (VariantDetail v) =>
+          v.colorHex == event.selectedColorHex && v.size == event.selectedSize,
+      orElse: () => event.product.variants.first,
+    );
+
     emit(ProductDetailFetchSuccess(
       product: event.product,
       selectedVariantId: selectedVariant.id,

@@ -6,7 +6,7 @@ abstract class ProductsExploreEvent {}
 class ProductsExploreFetch extends ProductsExploreEvent {
   final bool firstPage;
 
-  ProductsExploreFetch({this.firstPage=true});
+  ProductsExploreFetch({this.firstPage = true});
 }
 
 class ProductDetailFetch extends ProductsExploreEvent {
@@ -21,4 +21,16 @@ class ProductDetailChangeColor extends ProductsExploreEvent {
   final List<Color> coloring;
 
   ProductDetailChangeColor(this.product, this.coloring);
+}
+
+class ProductDetailChangeSize extends ProductsExploreEvent {
+  final ProductDetail product;
+  final String selectedColorHex;
+  final String selectedSize;
+
+  ProductDetailChangeSize(
+    this.product,
+    this.selectedColorHex,
+    this.selectedSize,
+  );
 }
