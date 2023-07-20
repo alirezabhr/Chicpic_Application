@@ -9,16 +9,8 @@ import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
-
 class ColorSelectionRow extends StatelessWidget {
-  final List<List<Color>> colorsList;
-  final List<Color> selectedColoring;
-
-  const ColorSelectionRow({
-    Key? key,
-    required this.colorsList,
-    required this.selectedColoring,
-  }) : super(key: key);
+  const ColorSelectionRow({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +25,7 @@ class ColorSelectionRow extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Row(
-                children: colorsList
+                children: state.colorsChoices
                     .map(
                       (colors) => Padding(
                         padding: const EdgeInsets.only(
@@ -46,7 +38,10 @@ class ColorSelectionRow extends StatelessWidget {
                             );
                           },
                           colors: colors,
-                          isSelected: listEquals(selectedColoring, colors),
+                          isSelected: listEquals(
+                            state.selectedVariant.coloring,
+                            colors,
+                          ),
                         ),
                       ),
                     )
@@ -78,15 +73,22 @@ class CircularButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(2),
-        decoration: BoxDecoration(
-            color:
-                isSelected ? Theme.of(context).primaryColor : Colors.grey[300],
-            shape: BoxShape.circle),
-        child: CustomPaint(
-          size: Size(radius, radius),
-          painter: _CircularButtonPainter(colors: colors),
+      child: ClipOval(
+        child: Container(
+          padding: const EdgeInsets.all(2),
+          color: isSelected
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).disabledColor.withOpacity(0.5),
+          child: ClipOval(
+            child: Container(
+              padding: const EdgeInsets.all(1),
+              color: Colors.white,
+              child: CustomPaint(
+                size: Size(radius, radius),
+                painter: _CircularButtonPainter(colors: colors),
+              ),
+            ),
+          ),
         ),
       ),
     );

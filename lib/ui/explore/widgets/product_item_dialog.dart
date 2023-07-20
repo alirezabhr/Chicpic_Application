@@ -12,7 +12,7 @@ import 'package:chicpic/statics/insets.dart';
 import 'package:chicpic/models/product/variant.dart';
 
 import 'package:chicpic/ui/explore/widgets/color_selection.dart';
-import 'package:chicpic/ui/explore/widgets/product_attributes.dart';
+import 'package:chicpic/ui/explore/widgets/size_selection.dart';
 
 class ProductItemDialog extends StatelessWidget {
   final int productId;
@@ -191,31 +191,27 @@ class ProductItemDialog extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: Insets.xSmall),
-                        ColorSelectionRow(
-                          colorsList: state.colorsChoices,
-                          selectedColoring: state.selectedVariant.coloring,
-                        ),
-                        ProductAttributesView(
-                          attributes: state.product.attributes,
-                          selectedVariant: state.selectedVariant,
-                        ),
+                        const ColorSelectionRow(),
+                        const SizedBox(height: Insets.xSmall),
+                        const SizeSelection(),
                         const SizedBox(height: Insets.small),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Description:',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: Insets.xSmall / 2),
-                            Text(
-                              state.product.description,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w300,
+                        if (state.product.description.isNotEmpty)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Description:',
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                            ),
-                          ],
-                        ),
+                              const SizedBox(height: Insets.xSmall / 2),
+                              Text(
+                                state.product.description,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   ),
