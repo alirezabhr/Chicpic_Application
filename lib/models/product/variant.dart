@@ -11,9 +11,10 @@ abstract class VariantBase extends Equatable {
   final double originalPrice;
   final double finalPrice;
   final bool isAvailable;
+  final String? size;
   final String? option1;
   final String? option2;
-  final String? color;
+  final String? colorHex;
   final int product;
   final List<Color> coloring;
 
@@ -24,9 +25,10 @@ abstract class VariantBase extends Equatable {
     required this.originalPrice,
     required this.finalPrice,
     required this.isAvailable,
+    required this.size,
     required this.option1,
     required this.option2,
-    required this.color,
+    required this.colorHex,
     required this.coloring,
     required this.product,
   });
@@ -38,9 +40,10 @@ abstract class VariantBase extends Equatable {
         'originalPrice': originalPrice,
         'finalPrice': finalPrice,
         'isAvailable': isAvailable,
+        'size': size,
         'option1': option1,
         'option2': option2,
-        'color': color,
+        'colorHex': colorHex,
         'product': product,
       };
 }
@@ -53,17 +56,18 @@ class VariantPreview extends VariantBase {
     required super.originalPrice,
     required super.finalPrice,
     required super.isAvailable,
+    required super.size,
     required super.option1,
     required super.option2,
-    required super.color,
+    required super.colorHex,
     required super.coloring,
     required super.product,
   });
 
   factory VariantPreview.fromMap(Map<String, dynamic> mapData) {
     List<String> colorsHex = [];
-    if (mapData['color'] != null) {
-      colorsHex = mapData['color'].split('/');
+    if (mapData['colorHex'] != null) {
+      colorsHex = mapData['colorHex'].split('/');
     }
 
     return VariantPreview(
@@ -73,9 +77,10 @@ class VariantPreview extends VariantBase {
       originalPrice: mapData['originalPrice'],
       finalPrice: mapData['finalPrice'],
       isAvailable: mapData['isAvailable'],
+      size: mapData['size'],
       option1: mapData['option1'],
       option2: mapData['option2'],
-      color: mapData['color'],
+      colorHex: mapData['colorHex'],
       coloring: colorsHex
           .map<Color>((colorCode) => Color(strToHex(colorCode)))
           .toList(),
@@ -92,9 +97,10 @@ class VariantPreview extends VariantBase {
         finalPrice,
         isAvailable,
         product,
+        size,
         option1,
         option2,
-        color,
+        colorHex,
         coloring,
       ];
 }
@@ -111,9 +117,10 @@ class VariantDetail extends VariantBase {
     required super.finalPrice,
     required super.isAvailable,
     required super.product,
+    required super.size,
     required super.option1,
     required super.option2,
-    required super.color,
+    required super.colorHex,
     required super.coloring,
     required this.isSaved,
     required this.isTracked,
@@ -121,8 +128,8 @@ class VariantDetail extends VariantBase {
 
   factory VariantDetail.fromMap(Map<String, dynamic> mapData) {
     List<String> colorsHex = [];
-    if (mapData['color'] != null) {
-      colorsHex = mapData['color'].split('/');
+    if (mapData['colorHex'] != null) {
+      colorsHex = mapData['colorHex'].split('/');
     }
 
     return VariantDetail(
@@ -133,9 +140,10 @@ class VariantDetail extends VariantBase {
       finalPrice: mapData['finalPrice'],
       isAvailable: mapData['isAvailable'],
       product: mapData['product'],
+      size: mapData['size'],
       option1: mapData['option1'],
       option2: mapData['option2'],
-      color: mapData['color'],
+      colorHex: mapData['colorHex'],
       coloring: colorsHex
           .map<Color>((colorCode) => Color(strToHex(colorCode)))
           .toList(),
@@ -159,9 +167,10 @@ class VariantDetail extends VariantBase {
         originalPrice,
         finalPrice,
         isAvailable,
+        size,
         option1,
         option2,
-        color,
+        colorHex,
         coloring,
         isSaved,
         isTracked,
