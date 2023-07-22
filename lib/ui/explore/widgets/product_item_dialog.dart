@@ -131,9 +131,13 @@ class ProductItemDialog extends StatelessWidget {
                         Positioned(
                           right: 15,
                           bottom: 5,
-                          child: BuyButton(
-                            websiteLink: state.selectedVariant.link,
-                          ),
+                          child: state.selectedVariant.isAvailable
+                              ? BuyButton(
+                                  websiteLink: state.selectedVariant.link,
+                                )
+                              : TrackButton(
+                                  variantId: state.selectedVariant.id,
+                                ),
                         ),
                       ],
                     ),
@@ -247,7 +251,39 @@ class BuyButton extends StatelessWidget {
           Icon(Icons.shopping_cart_outlined, size: 16),
           SizedBox(width: Insets.xSmall),
           Text(
-            'Buy it',
+            'Buy item',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TrackButton extends StatelessWidget {
+  final int variantId;
+
+  const TrackButton({Key? key, required this.variantId}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        //TODO track the variant
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.4),
+      ),
+      child: Row(
+        children: const [
+          Icon(Icons.notifications_active_outlined, size: 16),
+          SizedBox(width: Insets.xSmall),
+          Text(
+            'Track item',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
