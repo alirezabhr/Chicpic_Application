@@ -13,6 +13,7 @@ import 'package:chicpic/models/product/variant.dart';
 
 import 'package:chicpic/ui/explore/widgets/color_selection.dart';
 import 'package:chicpic/ui/explore/widgets/size_selection.dart';
+import 'package:chicpic/ui/explore/widgets/product_attributes.dart';
 
 class ProductItemDialog extends StatelessWidget {
   final int productId;
@@ -198,6 +199,8 @@ class ProductItemDialog extends StatelessWidget {
                         const ColorSelectionRow(),
                         const SizedBox(height: Insets.xSmall),
                         const SizeSelection(),
+                        const SizedBox(height: Insets.xSmall),
+                        const ProductAttributesView(),
                         const SizedBox(height: Insets.small),
                         if (state.product.description.isNotEmpty)
                           Column(
