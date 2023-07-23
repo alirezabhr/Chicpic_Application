@@ -39,7 +39,7 @@ class ProductsExploreBloc
 
     try {
       Pagination<VariantPreview> pagination =
-          await APIService.getVariants(page: page);
+          await APIService.exploreVariants(page: page);
       variants = variants + pagination.results;
       page += 1;
       emit(ProductsExploreFetchSuccess());
@@ -65,10 +65,10 @@ class ProductsExploreBloc
     }
   }
 
-  Future<void> _onProductDetailChangeColor(
+  void _onProductDetailChangeColor(
     ProductDetailChangeColor event,
     Emitter<ProductsExploreState> emit,
-  ) async {
+  ) {
     final selectedVariant = event.product.variants.firstWhere(
       (v) => v.coloring == event.coloring,
       orElse: () => event.product.variants.first,
@@ -79,10 +79,10 @@ class ProductsExploreBloc
     ));
   }
 
-  Future<void> _onProductDetailChangeSize(
+  void _onProductDetailChangeSize(
     ProductDetailChangeSize event,
     Emitter<ProductsExploreState> emit,
-  ) async {
+  ) {
     final selectedVariant = event.product.variants.firstWhere(
       (VariantDetail v) =>
           v.colorHex == event.selectedColorHex && v.size == event.selectedSize,

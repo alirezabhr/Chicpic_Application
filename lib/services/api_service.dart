@@ -109,8 +109,11 @@ class APIService {
     );
   }
 
-  static Future<Pagination<VariantPreview>> getVariants({int page = 1}) async {
-    Response response = await Client.instance.get(APIUrls.variants(page: page));
+  static Future<Pagination<VariantPreview>> exploreVariants(
+      {int page = 1}) async {
+    Response response = await Client.instance.get(
+      APIUrls.exploreVariants(page: page),
+    );
 
     return Pagination<VariantPreview>(
       count: response.data['count'],
