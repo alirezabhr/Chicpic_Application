@@ -26,8 +26,8 @@ class User extends Equatable {
         username = userData['username'],
         isVerified = userData['isVerified'],
         tokens = UserToken.fromJson(userData['tokens']),
-        userAdditional = userData['user_additional'] != null
-            ? UserAdditional.fromJson(userData['user_additional'])
+        userAdditional = userData['additional'] != null
+            ? UserAdditional.fromJson(userData['additional'])
             : null;
 
   Map<String, dynamic> toMap() {
