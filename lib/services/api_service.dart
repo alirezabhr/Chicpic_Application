@@ -130,4 +130,22 @@ class APIService {
         await Client.instance.get(APIUrls.productDetail(productId));
     return ProductDetail.fromMap(response.data);
   }
+
+  static Future<Pagination<ProductPreview>> searchProduct({
+    required String searchText,
+    int page = 1,
+  }) async {
+    Response response = await Client.instance.get(
+      APIUrls.searchProduct(searchText: searchText, page: page),
+    );
+
+    return Pagination<ProductPreview>(
+      count: response.data['count'],
+      next: response.data['next'],
+      previous: response.data['previous'],
+      results: response.data['results']
+          .map<ProductPreview>((e) => ProductPreview.fromMap(e))
+          .toList(),
+    );
+  }
 }
