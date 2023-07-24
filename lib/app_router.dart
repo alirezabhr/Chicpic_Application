@@ -11,6 +11,7 @@ import 'package:chicpic/ui/terms_conditions_privacy_policy/screens/privacy_polic
 import 'package:chicpic/ui/terms_conditions_privacy_policy/screens/terms_and_condition.dart';
 import 'package:chicpic/ui/category/screens/category_screen.dart';
 import 'package:chicpic/ui/shop/screens/shop_screen.dart';
+import 'package:chicpic/ui/explore/screens/search_screen.dart';
 
 abstract class AppRouter {
   static const String splash = "/";
@@ -24,6 +25,7 @@ abstract class AppRouter {
   static const String privacyPolicy = "/privacy";
   static const String category = "/category";
   static const String shop = "/shop";
+  static const String search = "/search";
 
   static Route? generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
@@ -59,6 +61,8 @@ abstract class AppRouter {
           builder: (_) => const ShopScreen(),
           settings: routeSettings,
         );
+      case search:
+        return MaterialPageRoute(builder: (_) => const SearchScreen());
       default:
         return null;
     }

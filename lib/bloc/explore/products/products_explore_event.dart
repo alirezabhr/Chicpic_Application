@@ -34,3 +34,10 @@ class ProductDetailChangeSize extends ProductsExploreEvent {
     this.selectedSize,
   );
 }
+
+class ProductSearch extends ProductsExploreEvent {
+  final String searchText;
+  final bool firstPage;
+
+  ProductSearch(this.searchText, {this.firstPage = true});
+}

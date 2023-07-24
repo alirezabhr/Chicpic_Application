@@ -18,13 +18,16 @@ part 'products_explore_state.dart';
 class ProductsExploreBloc
     extends Bloc<ProductsExploreEvent, ProductsExploreState> {
   List<VariantPreview> variants = [];
-  int page = 1;
+  List<ProductPreview> searchedProducts = [];
+  int explorePage = 1;
+  int searchPage = 1;
 
   ProductsExploreBloc() : super(ProductsExploreInitial()) {
     on<ProductsExploreFetch>(_onProductsExploreFetch);
     on<ProductDetailFetch>(_onProductDetailFetch);
     on<ProductDetailChangeColor>(_onProductDetailChangeColor);
     on<ProductDetailChangeSize>(_onProductDetailChangeSize);
+    on<ProductSearch>(_onProductSearch);
   }
 
   Future<void> _onProductsExploreFetch(
@@ -32,16 +35,16 @@ class ProductsExploreBloc
     Emitter<ProductsExploreState> emit,
   ) async {
     if (event.firstPage) {
-      page = 1;
+      explorePage = 1;
       variants = [];
     }
-    emit(ProductsExploreFetchLoading(page: page));
+    emit(ProductsExploreFetchLoading(page: explorePage));
 
     try {
       Pagination<VariantPreview> pagination =
-          await APIService.exploreVariants(page: page);
+          await APIService.exploreVariants(page: explorePage);
       variants = variants + pagination.results;
-      page += 1;
+      explorePage += 1;
       emit(ProductsExploreFetchSuccess());
     } catch (_) {
       emit(ProductsExploreFetchFailure());
@@ -93,5 +96,30 @@ class ProductsExploreBloc
       product: event.product,
       selectedVariantId: selectedVariant.id,
     ));
+  }
+
+  Future<void> _onProductSearch(
+    ProductSearch event,
+    Emitter<ProductsExploreState> emit,
+  ) async {
+    emit(ProductSearchLoading());
+
+    if (event.firstPage) {
+      searchPage = 1;
+      searchedProducts = [];
+    }
+
+    try {
+      final pagination = await APIService.searchProduct(
+        searchText: event.searchText,
+        page: searchPage,
+      );
+
+      searchPage += 1;
+      searchedProducts += pagination.results;
+      emit(ProductSearchSuccess(searchedProducts));
+    } catch (_) {
+      emit(ProductSearchFailure());
+    }
   }
 }

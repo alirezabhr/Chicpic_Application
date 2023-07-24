@@ -43,3 +43,13 @@ class ProductDetailFetchSuccess extends ProductsExploreState {
 }
 
 class ProductDetailFetchFailure extends ProductsExploreState {}
+
+class ProductSearchLoading extends ProductsExploreState {}
+
+class ProductSearchSuccess extends ProductsExploreState {
+  final List<ProductPreview> products;
+
+  ProductSearchSuccess(this.products);
+}
+
+class ProductSearchFailure extends ProductsExploreState {}
