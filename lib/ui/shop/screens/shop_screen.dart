@@ -7,8 +7,10 @@ import 'package:chicpic/bloc/shop/shop_bloc.dart';
 import 'package:chicpic/models/product/shop.dart';
 import 'package:chicpic/models/product/product.dart';
 
-import 'package:chicpic/ui/explore/widgets/product_item_dialog.dart';
+import 'package:chicpic/statics/insets.dart';
 
+import 'package:chicpic/ui/explore/widgets/product_item_dialog.dart';
+import 'package:chicpic/ui/shop/widgets/shop_icon.dart';
 
 class ShopScreen extends StatefulWidget {
   const ShopScreen({Key? key}) : super(key: key);
@@ -23,7 +25,7 @@ class _ShopScreenState extends State<ShopScreen> {
 
   void _scrollListener() {
     if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent &&
+            _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
       final blocState = BlocProvider.of<ShopBloc>(context).state;
       if (blocState is! ShopProductsFetchLoading &&
@@ -53,11 +55,18 @@ class _ShopScreenState extends State<ShopScreen> {
     shop = ModalRoute.of(context)!.settings.arguments as Shop;
 
     return Scaffold(
-      appBar: AppBar(title: Text(shop.name),),
+      appBar: AppBar(
+        titleSpacing: 0,
+        title: Row(
+          children: [
+            ShopIcon(imageURL: shop.image),
+            const SizedBox(width: Insets.small),
+            Text(shop.name),
+          ],
+        ),
+      ),
       body: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
-          print('Shop BLoC state: $state');
-
           if (state is ShopProductsFetchLoading) {
             return const Center(child: CircularProgressIndicator());
           } else {
@@ -100,7 +109,7 @@ class _ShopScreenState extends State<ShopScreen> {
                         placeholder: (context, url) => Center(
                           child: CircularProgressIndicator(
                             color:
-                            Theme.of(context).primaryColor.withOpacity(0.6),
+                                Theme.of(context).primaryColor.withOpacity(0.6),
                           ),
                         ),
                         fit: BoxFit.cover,
