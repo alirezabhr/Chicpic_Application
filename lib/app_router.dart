@@ -11,6 +11,7 @@ import 'package:chicpic/ui/terms_conditions_privacy_policy/screens/privacy_polic
 import 'package:chicpic/ui/terms_conditions_privacy_policy/screens/terms_and_condition.dart';
 import 'package:chicpic/ui/category/screens/category_screen.dart';
 import 'package:chicpic/ui/shop/screens/shop_screen.dart';
+import 'package:chicpic/ui/shop/screens/shops_explore_screen.dart';
 import 'package:chicpic/ui/explore/screens/search_screen.dart';
 
 abstract class AppRouter {
@@ -25,6 +26,7 @@ abstract class AppRouter {
   static const String privacyPolicy = "/privacy";
   static const String category = "/category";
   static const String shop = "/shop";
+  static const String shopsExplore = "/shops-explore";
   static const String search = "/search";
 
   static Route? generateRoute(RouteSettings routeSettings) {
@@ -59,6 +61,11 @@ abstract class AppRouter {
       case shop:
         return MaterialPageRoute(
           builder: (_) => const ShopScreen(),
+          settings: routeSettings,
+        );
+      case shopsExplore:
+        return MaterialPageRoute(
+          builder: (_) => const ShopsExploreScreen(),
           settings: routeSettings,
         );
       case search:
