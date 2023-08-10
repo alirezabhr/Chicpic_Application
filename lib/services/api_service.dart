@@ -52,7 +52,7 @@ class APIService {
     );
   }
 
-  // Products
+  // Clothing
   static Future<List<Category>> getCategories(CategoryGender gender) async {
     Response response = await Client.instance.get(
       APIUrls.categories,
@@ -147,5 +147,25 @@ class APIService {
           .map<ProductPreview>((e) => ProductPreview.fromMap(e))
           .toList(),
     );
+  }
+
+  static Future<void> saveVariant(int userId, int variantId) async {
+    Map data = {'user': userId, 'variant': variantId};
+    await Client.instance.post(APIUrls.saveVariant, data: data);
+  }
+
+  static Future<void> unsaveVariant(int userId, int variantId) async {
+    Map data = {'user': userId, 'variant': variantId};
+    await Client.instance.delete(APIUrls.saveVariant, data: data);
+  }
+
+  static Future<void> trackVariant(int userId, int variantId) async {
+    Map data = {'user': userId, 'variant': variantId};
+    await Client.instance.post(APIUrls.trackVariant, data: data);
+  }
+
+  static Future<void> untrackVariant(int userId, int variantId) async {
+    Map data = {'user': userId, 'variant': variantId};
+    await Client.instance.delete(APIUrls.trackVariant, data: data);
   }
 }

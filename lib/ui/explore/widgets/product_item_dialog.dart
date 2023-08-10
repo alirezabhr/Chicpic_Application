@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chicpic/app_router.dart';
 
 import 'package:chicpic/services/api_service.dart';
+import 'package:chicpic/services/snack_bar.dart';
 
 import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 import 'package:chicpic/bloc/shop/shop_bloc.dart';
@@ -138,16 +139,21 @@ class ProductItemDialog extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Text(
-                                state.product.title,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor,
+                              // fit the title to the screen
+                              SizedBox(
+                                width: deviceSize.width * 0.5,
+                                child: Text(
+                                  state.product.title,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                 ),
                               ),
                               const Spacer(),
                               TrackButton(variant: state.selectedVariant),
+                              const SizedBox(width: Insets.xSmall),
                               SaveButton(variant: state.selectedVariant),
                             ],
                           ),
@@ -274,28 +280,33 @@ class TrackButton extends StatelessWidget {
       final userId = BlocProvider.of<AuthBloc>(context).user!.id;
       await APIService.trackVariant(userId, variant.id);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Item tracked successfully.'),
-          backgroundColor: Colors.green,
-          behavior: SnackBarBehavior.floating,
-          dismissDirection: DismissDirection.horizontal,
-        ),
+      showSnackBar(
+        context,
+        'Item tracked successfully.',
+        SnackBarStatus.success,
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Cannot track the item. Please try later.'),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-          dismissDirection: DismissDirection.horizontal,
-        ),
+      showSnackBar(
+        context,
+        'Cannot track the item. Please try later.',
+        SnackBarStatus.error,
       );
     }
   }
 
   Future<void> untrack(BuildContext context) async {
-    //TODO: implement untrack
+    try {
+      final userId = BlocProvider.of<AuthBloc>(context).user!.id;
+      await APIService.untrackVariant(userId, variant.id);
+
+      showSnackBar(context, 'Item untracked.', SnackBarStatus.normal);
+    } catch (e) {
+      showSnackBar(
+        context,
+        'Cannot untrack the item. Please try later.',
+        SnackBarStatus.error,
+      );
+    }
   }
 
   @override
@@ -308,14 +319,21 @@ class TrackButton extends StatelessWidget {
           track(context);
         }
       },
-      splashRadius: 18,
+      splashRadius: 20,
       padding: EdgeInsets.zero,
-      visualDensity: VisualDensity.compact,
+      constraints: const BoxConstraints(
+        minWidth: 14,
+        minHeight: 14,
+        maxWidth: 20,
+        maxHeight: 20,
+      ),
+      tooltip: variant.isSaved ? 'Untrack item' : 'Track item',
       icon: Icon(
         variant.isTracked
             ? Icons.notifications
             : Icons.notifications_active_outlined,
-        size: 18,
+        size: 20,
+        color: Colors.amber[700],
       ),
     );
   }
@@ -329,31 +347,31 @@ class SaveButton extends StatelessWidget {
   Future<void> save(BuildContext context) async {
     try {
       final userId = BlocProvider.of<AuthBloc>(context).user!.id;
-      // TODO: implement save
-      // await APIService.saveVariant(userId, variant.id);
+      await APIService.saveVariant(userId, variant.id);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Item saved successfully.'),
-          backgroundColor: Colors.green,
-          behavior: SnackBarBehavior.floating,
-          dismissDirection: DismissDirection.horizontal,
-        ),
-      );
+      showSnackBar(context, 'Item saved successfully.', SnackBarStatus.success);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Cannot save the item. Please try later.'),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-          dismissDirection: DismissDirection.horizontal,
-        ),
+      showSnackBar(
+        context,
+        'Cannot save the item. Please try later.',
+        SnackBarStatus.error,
       );
     }
   }
 
   Future<void> unsave(BuildContext context) async {
-    //TODO: implement unsave
+    try {
+      final userId = BlocProvider.of<AuthBloc>(context).user!.id;
+      await APIService.unsaveVariant(userId, variant.id);
+
+      showSnackBar(context, 'Item unsaved.', SnackBarStatus.normal);
+    } catch (e) {
+      showSnackBar(
+        context,
+        'Cannot unsave the item. Please try later.',
+        SnackBarStatus.error,
+      );
+    }
   }
 
   @override
@@ -366,14 +384,19 @@ class SaveButton extends StatelessWidget {
           save(context);
         }
       },
-      splashRadius: 18,
+      splashRadius: 20,
       padding: EdgeInsets.zero,
-      visualDensity: VisualDensity.compact,
+      constraints: const BoxConstraints(
+        minWidth: 14,
+        minHeight: 14,
+        maxWidth: 20,
+        maxHeight: 20,
+      ),
+      tooltip: variant.isSaved ? 'Unsave item' : 'Save item',
       icon: Icon(
-        variant.isSaved
-            ? Icons.bookmark
-            : Icons.bookmark_border_outlined,
-        size: 18,
+        variant.isSaved ? Icons.bookmark : Icons.bookmark_border_outlined,
+        size: 20,
+        color: Colors.deepPurple,
       ),
     );
   }
