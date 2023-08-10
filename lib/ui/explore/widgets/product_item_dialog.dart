@@ -4,13 +4,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:chicpic/app_router.dart';
 
+import 'package:chicpic/services/api_service.dart';
+
 import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 import 'package:chicpic/bloc/shop/shop_bloc.dart';
+import 'package:chicpic/bloc/auth/auth_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
 import 'package:chicpic/models/product/variant.dart';
 
+import 'package:chicpic/ui/shop/widgets/shop_icon.dart';
 import 'package:chicpic/ui/explore/widgets/color_selection.dart';
 import 'package:chicpic/ui/explore/widgets/size_selection.dart';
 import 'package:chicpic/ui/explore/widgets/product_attributes.dart';
@@ -40,222 +44,215 @@ class ProductItemDialog extends StatelessWidget {
         vertical: Insets.large,
         horizontal: Insets.xLarge,
       ),
-      child: BlocBuilder<ProductsExploreBloc, ProductsExploreState>(
-        builder: (context, state) {
-          if (state is ProductDetailFetchSuccess) {
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Shop image and name
-                  Padding(
-                    padding: const EdgeInsets.all(Insets.small),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            BlocProvider.of<ShopBloc>(context).add(
-                              ShopProductsFetch(
-                                state.product.shop,
-                                firstPage: true,
-                              ),
-                            );
-                            Navigator.of(context).pushNamed(
-                              AppRouter.shop,
-                              arguments: state.product.shop,
-                            );
-                          },
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              border: Border.all(
-                                width: 0.5,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                            // padding: const EdgeInsets.all(6),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(25),
-                              child: Image.network(state.product.shop.image),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: Insets.small),
-                        TextButton(
-                          onPressed: () {
-                            BlocProvider.of<ShopBloc>(context).add(
-                              ShopProductsFetch(
-                                state.product.shop,
-                                firstPage: true,
-                              ),
-                            );
-                            Navigator.of(context).pushNamed(
-                              AppRouter.shop,
-                              arguments: state.product.shop,
-                            );
-                          },
-                          child: Text(
-                            state.product.shop.name.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Variant Image and buttons on image
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: deviceSize.height * 0.6,
-                    ),
-                    child: Stack(
-                      children: [
-                        // Variant image
-                        SizedBox(
-                          width: deviceSize.width,
-                          child: CachedNetworkImage(
-                            imageUrl: state.selectedVariant.imageSrc,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            errorWidget: (context, url, error) {
-                              return const Center(child: Icon(Icons.error));
+      child: Scaffold(
+        body: BlocBuilder<ProductsExploreBloc, ProductsExploreState>(
+          builder: (context, state) {
+            if (state is ProductDetailFetchSuccess) {
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Shop information
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Insets.small,
+                        vertical: Insets.xSmall,
+                      ),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              BlocProvider.of<ShopBloc>(context).add(
+                                ShopProductsFetch(
+                                  state.product.shop,
+                                  firstPage: true,
+                                ),
+                              );
+                              Navigator.of(context).pushNamed(
+                                AppRouter.shop,
+                                arguments: state.product.shop,
+                              );
                             },
+                            child: ShopIcon(imageURL: state.product.shop.image),
                           ),
-                        ),
-                        Positioned(
-                          right: 15,
-                          bottom: 5,
-                          child: state.selectedVariant.isAvailable
-                              ? BuyButton(
-                                  websiteLink: state.selectedVariant.link,
-                                )
-                              : TrackButton(
-                                  variantId: state.selectedVariant.id,
+                          const SizedBox(width: Insets.small),
+                          TextButton(
+                            onPressed: () {
+                              BlocProvider.of<ShopBloc>(context).add(
+                                ShopProductsFetch(
+                                  state.product.shop,
+                                  firstPage: true,
                                 ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Variant details
-                  Padding(
-                    padding: const EdgeInsets.all(Insets.small),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          state.product.title,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              state.product.brand,
-                              style: const TextStyle(fontSize: 14),
-                            ),
-                            const Spacer(),
-                            Text(
-                              "\$${state.selectedVariant.originalPrice}",
+                              );
+                              Navigator.of(context).pushNamed(
+                                AppRouter.shop,
+                                arguments: state.product.shop,
+                              );
+                            },
+                            child: Text(
+                              state.product.shop.name.toUpperCase(),
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                                 color: Theme.of(context).primaryColor,
-                                decoration: hasDiscount(state.selectedVariant)
-                                    ? TextDecoration.lineThrough
-                                    : null,
-                                fontWeight: hasDiscount(state.selectedVariant)
-                                    ? FontWeight.normal
-                                    : FontWeight.bold,
                               ),
                             ),
-                            hasDiscount(state.selectedVariant)
-                                ? Row(
-                                    children: [
-                                      const SizedBox(width: Insets.xSmall),
-                                      Text(
-                                        "\$${state.selectedVariant.finalPrice}",
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : Container(),
-                          ],
-                        ),
-                        const SizedBox(height: Insets.xSmall),
-                        const ColorSelectionRow(),
-                        const SizedBox(height: Insets.xSmall),
-                        const SizeSelection(),
-                        const SizedBox(height: Insets.xSmall),
-                        const ProductAttributesView(),
-                        const SizedBox(height: Insets.small),
-                        if (state.product.description.isNotEmpty)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Description:',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Variant Image and buttons on image
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: deviceSize.height * 0.6,
+                      ),
+                      child: Stack(
+                        children: [
+                          // Variant image
+                          SizedBox(
+                            width: deviceSize.width,
+                            child: CachedNetworkImage(
+                              imageUrl: state.selectedVariant.imageSrc,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(),
                               ),
-                              const SizedBox(height: Insets.xSmall / 2),
+                              errorWidget: (context, url, error) {
+                                return const Center(child: Icon(Icons.error));
+                              },
+                            ),
+                          ),
+                          Positioned(
+                            right: 15,
+                            bottom: 5,
+                            child: BuyButton(variant: state.selectedVariant),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Variant details
+                    Padding(
+                      padding: const EdgeInsets.all(Insets.small),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
                               Text(
-                                state.product.description,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w300,
+                                state.product.title,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
+                              const Spacer(),
+                              TrackButton(variant: state.selectedVariant),
+                              SaveButton(variant: state.selectedVariant),
                             ],
                           ),
-                      ],
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                state.product.brand,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                              const Spacer(),
+                              Text(
+                                "\$${state.selectedVariant.originalPrice}",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Theme.of(context).primaryColor,
+                                  decoration: hasDiscount(state.selectedVariant)
+                                      ? TextDecoration.lineThrough
+                                      : null,
+                                  fontWeight: hasDiscount(state.selectedVariant)
+                                      ? FontWeight.normal
+                                      : FontWeight.bold,
+                                ),
+                              ),
+                              hasDiscount(state.selectedVariant)
+                                  ? Row(
+                                      children: [
+                                        const SizedBox(width: Insets.xSmall),
+                                        Text(
+                                          "\$${state.selectedVariant.finalPrice}",
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Container(),
+                            ],
+                          ),
+                          const SizedBox(height: Insets.xSmall),
+                          const ColorSelectionRow(),
+                          const SizedBox(height: Insets.xSmall),
+                          const SizeSelection(),
+                          const SizedBox(height: Insets.xSmall),
+                          const ProductAttributesView(),
+                          const SizedBox(height: Insets.small),
+                          if (state.product.description.isNotEmpty)
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Description:',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: Insets.xSmall / 2),
+                                Text(
+                                  state.product.description,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                              ],
+                            ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
+                  ],
+                ),
+              );
+            }
+            return const Center(child: CircularProgressIndicator());
+          },
+        ),
       ),
     );
   }
 }
 
 class BuyButton extends StatelessWidget {
-  final String websiteLink;
+  final VariantDetail variant;
 
-  const BuyButton({Key? key, required this.websiteLink}) : super(key: key);
+  const BuyButton({Key? key, required this.variant}) : super(key: key);
 
   final Color textStrokeColor = Colors.white;
+
+  void openWebsite() {
+    // launch(variant.link);
+  }
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        //TODO open the seller website
-      },
+      onPressed: variant.isAvailable ? openWebsite : null,
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).primaryColor.withOpacity(0.4),
       ),
       child: Row(
-        children: const [
-          Icon(Icons.shopping_cart_outlined, size: 16),
-          SizedBox(width: Insets.xSmall),
+        children: [
+          Icon(Icons.shopping_cart_outlined, size: 16, color: textStrokeColor),
+          const SizedBox(width: Insets.xSmall),
           Text(
-            'Buy item',
-            style: TextStyle(
+            variant.isAvailable ? 'Buy item' : 'Sold out',
+            style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -268,32 +265,115 @@ class BuyButton extends StatelessWidget {
 }
 
 class TrackButton extends StatelessWidget {
-  final int variantId;
+  final VariantDetail variant;
 
-  const TrackButton({Key? key, required this.variantId}) : super(key: key);
+  const TrackButton({Key? key, required this.variant}) : super(key: key);
+
+  Future<void> track(BuildContext context) async {
+    try {
+      final userId = BlocProvider.of<AuthBloc>(context).user!.id;
+      await APIService.trackVariant(userId, variant.id);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Item tracked successfully.'),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+          dismissDirection: DismissDirection.horizontal,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Cannot track the item. Please try later.'),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          dismissDirection: DismissDirection.horizontal,
+        ),
+      );
+    }
+  }
+
+  Future<void> untrack(BuildContext context) async {
+    //TODO: implement untrack
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return IconButton(
       onPressed: () {
-        //TODO track the variant
+        if (variant.isTracked) {
+          untrack(context);
+        } else {
+          track(context);
+        }
       },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.4),
+      splashRadius: 18,
+      padding: EdgeInsets.zero,
+      visualDensity: VisualDensity.compact,
+      icon: Icon(
+        variant.isTracked
+            ? Icons.notifications
+            : Icons.notifications_active_outlined,
+        size: 18,
       ),
-      child: Row(
-        children: const [
-          Icon(Icons.notifications_active_outlined, size: 16),
-          SizedBox(width: Insets.xSmall),
-          Text(
-            'Track item',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-        ],
+    );
+  }
+}
+
+class SaveButton extends StatelessWidget {
+  final VariantDetail variant;
+
+  const SaveButton({Key? key, required this.variant}) : super(key: key);
+
+  Future<void> save(BuildContext context) async {
+    try {
+      final userId = BlocProvider.of<AuthBloc>(context).user!.id;
+      // TODO: implement save
+      // await APIService.saveVariant(userId, variant.id);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Item saved successfully.'),
+          backgroundColor: Colors.green,
+          behavior: SnackBarBehavior.floating,
+          dismissDirection: DismissDirection.horizontal,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Cannot save the item. Please try later.'),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          dismissDirection: DismissDirection.horizontal,
+        ),
+      );
+    }
+  }
+
+  Future<void> unsave(BuildContext context) async {
+    //TODO: implement unsave
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        if (variant.isSaved) {
+          unsave(context);
+        } else {
+          save(context);
+        }
+      },
+      splashRadius: 18,
+      padding: EdgeInsets.zero,
+      visualDensity: VisualDensity.compact,
+      icon: Icon(
+        variant.isSaved
+            ? Icons.bookmark
+            : Icons.bookmark_border_outlined,
+        size: 18,
       ),
     );
   }
