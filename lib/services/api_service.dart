@@ -79,6 +79,24 @@ class APIService {
     );
   }
 
+  static Future<Pagination<ProductPreview>> getDiscountedProducts({
+    required int discount,
+    int page = 1,
+  }) async {
+    Response response = await Client.instance.get(
+      APIUrls.discountedProducts(discount, page: page),
+    );
+
+    return Pagination<ProductPreview>(
+      count: response.data['count'],
+      next: response.data['next'],
+      previous: response.data['previous'],
+      results: response.data['results']
+          .map<ProductPreview>((e) => ProductPreview.fromMap(e))
+          .toList(),
+    );
+  }
+
   static Future<Pagination<Shop>> getShops({int page = 1}) async {
     Response response = await Client.instance.get(APIUrls.shops(page: page));
 

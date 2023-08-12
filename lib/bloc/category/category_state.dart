@@ -22,3 +22,15 @@ class CategoryProductsFetchSuccess extends CategoryState {
 }
 
 class CategoryProductsFetchFailure extends CategoryState {}
+
+class DiscountedProductsFetchLoading extends CategoryState {}
+
+class DiscountedProductsFetchSuccess extends CategoryState {
+  final List<ProductPreview> products;
+
+  DiscountedProductsFetchSuccess({
+    required this.products,
+  });
+}
+
+class DiscountedProductsFetchFailure extends CategoryState {}

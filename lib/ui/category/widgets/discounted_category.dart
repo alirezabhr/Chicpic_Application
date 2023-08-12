@@ -33,14 +33,18 @@ class DiscountedCategory extends StatelessWidget {
         final tmpCategory =
             Category(title: 'Offers', id: 0, gender: '', image: '');
         BlocProvider.of<CategoryBloc>(context).add(
-          DiscountedProductsFetch(tmpCategory, firstPage: true),
+          DiscountedProductsFetch(
+            tmpCategory,
+            discountPercentage,
+            firstPage: true,
+          ),
         );
         Navigator.of(context).pushNamed(
           AppRouter.category,
           arguments: tmpCategory,
         );
       },
-      description: 'Up to $discountPercentage% off',
+      description: 'From $discountPercentage% off',
       trailing: RotationTransition(
         turns: const AlwaysStoppedAnimation(-15 / 360),
         child: Container(

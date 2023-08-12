@@ -16,6 +16,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   CategoryBloc() : super(CategoryInitial()) {
     on<CategoryProductsFetch>(_onCategoryProductsFetch);
+    on<DiscountedProductsFetch>(_onDiscountedProductsFetch);
   }
 
   Future<void> _onCategoryProductsFetch(
@@ -32,6 +33,34 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       Pagination<ProductPreview> pagination =
           await APIService.getCategoryProducts(
         id: event.category.id,
+        page: page,
+      );
+      products = products + pagination.results;
+      page += 1;
+
+      emit(CategoryProductsFetchSuccess(
+        category: event.category,
+        products: products,
+      ));
+    } catch (_) {
+      emit(CategoryProductsFetchFailure());
+    }
+  }
+
+  Future<void> _onDiscountedProductsFetch(
+    DiscountedProductsFetch event,
+    Emitter<CategoryState> emit,
+  ) async {
+    emit(CategoryProductsFetchLoading(event.category));
+    if (event.firstPage) {
+      page = 1;
+      products = [];
+    }
+
+    try {
+      Pagination<ProductPreview> pagination =
+      await APIService.getDiscountedProducts(
+        discount: event.discount,
         page: page,
       );
       products = products + pagination.results;
