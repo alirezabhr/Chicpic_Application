@@ -8,16 +8,17 @@ import 'package:chicpic/statics/insets.dart';
 
 import 'package:chicpic/models/product/category.dart';
 
-import 'package:chicpic/ui/main/widgets/category_item.dart';
+import 'package:chicpic/ui/category/widgets/category_item.dart';
+import 'package:chicpic/ui/category/widgets/discounted_category.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class CategoriesScreen extends StatefulWidget {
+  const CategoriesScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _CategoriesScreenState extends State<CategoriesScreen> {
   CategoryGender _selectedGender = CategoryGender.women;
 
   List<Category> categories = [];
@@ -96,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              const DiscountedCategory(),
               ...categories
                   .map((category) => CategoryItem(category: category))
                   .toList(),
