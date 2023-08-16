@@ -1,17 +1,9 @@
-enum CategoryGender {
-  men('M', 'Men'),
-  women('W', 'Women');
-
-  final String abbreviation;
-  final String humanReadable;
-
-  const CategoryGender(this.abbreviation, this.humanReadable);
-}
+import 'package:chicpic/models/auth/gender_choices.dart';
 
 class Category {
   int id;
   String title;
-  late CategoryGender gender;
+  late GenderChoices gender;
   String image;
 
   Category({
@@ -20,9 +12,9 @@ class Category {
     required String gender,
     required this.image,
   }) {
-    this.gender = gender == CategoryGender.women.abbreviation
-        ? CategoryGender.women
-        : CategoryGender.men;
+    this.gender = gender == GenderChoices.women.abbreviation
+        ? GenderChoices.women
+        : GenderChoices.men;
   }
 
   factory Category.fromMap(Map<String, dynamic> categoryData) => Category(

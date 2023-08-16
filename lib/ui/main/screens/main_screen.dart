@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:chicpic/ui/main/screens/home_screen.dart';
-import 'package:chicpic/ui/main/screens/explore_screen.dart';
+import 'package:chicpic/ui/category/screens/categories_screen.dart';
+import 'package:chicpic/ui/explore/screens/explore_screen.dart';
 import 'package:chicpic/ui/main/screens/notifications_screen.dart';
 import 'package:chicpic/ui/main/screens/profile_screen.dart';
+import 'package:chicpic/ui/main/widgets/image_picker_bottom_sheet.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -17,8 +18,8 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Map<String, dynamic>> _mainPages = [
     {
-      'icon': const Icon(Icons.home_outlined),
-      'page': const HomeScreen(),
+      'icon': const Icon(Icons.storefront),
+      'page': const CategoriesScreen(),
       'label': 'Home',
     },
     {
@@ -27,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
       'label': 'Explore',
     },
     {
-      'icon': const Icon(Icons.add_box_outlined),
+      'icon': const Icon(Icons.camera_enhance),
       'label': 'Upload Image',
     },
     {
@@ -59,7 +60,10 @@ class _MainScreenState extends State<MainScreen> {
               _pageIndex = index;
             });
           } else {
-
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => const ImagePickerBottomSheet(),
+            );
           }
         },
         items: _mainPages

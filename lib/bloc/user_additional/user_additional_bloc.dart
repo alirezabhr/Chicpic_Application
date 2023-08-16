@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:chicpic/repositories/auth/auth_repository.dart';
 
 import 'package:chicpic/models/measurement_units.dart';
+import 'package:chicpic/models/auth/gender_choices.dart';
 import 'package:chicpic/models/auth/shirt_fit.dart';
 import 'package:chicpic/models/auth/trouser_fit.dart';
 import 'package:chicpic/models/auth/user_additional.dart';
@@ -19,7 +20,7 @@ class DefaultUserAdditionalConfig {
   static final Mass weight = Mass(value: 60);
   static final Length height = Length(cmValue: 160);
   static const DateTime? birthDate = null;
-  static const gender = UserAdditionalInterestedGender.female;
+  static const gender = GenderChoices.women;
   static final Length shoulderSize = Length(cmValue: 80);
   static final Length chestSize = Length(cmValue: 60);
   static final Length bustSize = Length(cmValue: 60);
@@ -47,7 +48,7 @@ class UserAdditionalBloc
   late Mass weight;
   late Length height;
   DateTime? birthDate;
-  late UserAdditionalInterestedGender gender;
+  late GenderChoices gender;
   late Length shoulderSize;
   late Length? chestSize;
   late Length? bustSize;

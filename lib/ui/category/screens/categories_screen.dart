@@ -6,6 +6,7 @@ import 'package:chicpic/services/api_service.dart';
 import 'package:chicpic/statics/shared_preferences_keys.dart';
 import 'package:chicpic/statics/insets.dart';
 
+import 'package:chicpic/models/auth/gender_choices.dart';
 import 'package:chicpic/models/product/category.dart';
 
 import 'package:chicpic/ui/category/widgets/category_item.dart';
@@ -19,7 +20,7 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  CategoryGender _selectedGender = CategoryGender.women;
+  GenderChoices _selectedGender = GenderChoices.women;
 
   List<Category> categories = [];
 
@@ -34,10 +35,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     final prefs = await SharedPreferences.getInstance();
 
     setState(() {
-      _selectedGender = prefs.get(SharedPrefKeys.categoryGender) ==
-              CategoryGender.men.abbreviation
-          ? CategoryGender.men
-          : CategoryGender.women;
+      _selectedGender = prefs.get(SharedPrefKeys.GenderChoices) ==
+              GenderChoices.men.abbreviation
+          ? GenderChoices.men
+          : GenderChoices.women;
     });
 
     await getCategories();
@@ -56,22 +57,22 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         backgroundColor: Colors.white,
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: Insets.small),
-          child: DropdownButton<CategoryGender>(
+          child: DropdownButton<GenderChoices>(
             underline: Container(),
             value: _selectedGender,
-            onChanged: (CategoryGender? newValue) async {
+            onChanged: (GenderChoices? newValue) async {
               setState(() {
                 _selectedGender = newValue!;
               });
               getCategories();
               final prefs = await SharedPreferences.getInstance();
               prefs.setString(
-                SharedPrefKeys.categoryGender,
+                SharedPrefKeys.GenderChoices,
                 _selectedGender.abbreviation,
               );
             },
-            items: CategoryGender.values.map((gender) {
-              return DropdownMenuItem<CategoryGender>(
+            items: GenderChoices.values.map((gender) {
+              return DropdownMenuItem<GenderChoices>(
                 value: gender,
                 child: Text(
                   gender.humanReadable.toUpperCase(),

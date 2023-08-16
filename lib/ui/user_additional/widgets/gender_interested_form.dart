@@ -5,7 +5,7 @@ import 'package:chicpic/statics/insets.dart';
 
 import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
 
-import 'package:chicpic/models/auth/user_additional.dart';
+import 'package:chicpic/models/auth/gender_choices.dart';
 
 import 'package:chicpic/ui/user_additional/widgets/user_additional_base_form.dart';
 
@@ -24,7 +24,7 @@ class GenderInterestedForm extends StatefulWidget {
 }
 
 class _GenderInterestedFormState extends State<GenderInterestedForm> {
-  late UserAdditionalInterestedGender _selectedGender;
+  late GenderChoices _selectedGender;
 
   @override
   void initState() {
@@ -34,20 +34,20 @@ class _GenderInterestedFormState extends State<GenderInterestedForm> {
 
   Widget get content => Padding(
         padding: const EdgeInsets.symmetric(horizontal: Insets.small),
-        child: DropdownButtonFormField<UserAdditionalInterestedGender>(
+        child: DropdownButtonFormField<GenderChoices>(
           decoration: const InputDecoration(
             isDense: true,
             border: OutlineInputBorder(),
           ),
           value: _selectedGender,
-          onChanged: (UserAdditionalInterestedGender? newValue) async {
+          onChanged: (GenderChoices? newValue) async {
             BlocProvider.of<UserAdditionalBloc>(context).gender = newValue!;
             setState(() {
               _selectedGender = newValue;
             });
           },
-          items: UserAdditionalInterestedGender.values.map((gender) {
-            return DropdownMenuItem<UserAdditionalInterestedGender>(
+          items: GenderChoices.values.map((gender) {
+            return DropdownMenuItem<GenderChoices>(
               value: gender,
               child: Text(
                 gender.humanReadable,

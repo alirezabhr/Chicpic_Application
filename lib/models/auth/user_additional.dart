@@ -3,22 +3,13 @@ import 'package:intl/intl.dart';
 
 import 'package:chicpic/services/exceptions.dart';
 
+import 'package:chicpic/models/auth/gender_choices.dart';
 import 'package:chicpic/models/auth/shirt_fit.dart';
 import 'package:chicpic/models/auth/trouser_fit.dart';
 
-enum UserAdditionalInterestedGender {
-  male('M', "Men's Wear"),
-  female('F', "Women's Wear");
-
-  final String abbreviation;
-  final String humanReadable;
-
-  const UserAdditionalInterestedGender(this.abbreviation, this.humanReadable);
-}
-
 class UserAdditional extends Equatable {
   final int user;
-  final UserAdditionalInterestedGender genderInterested;
+  final GenderChoices genderInterested;
   final int weight;
   final int height;
   final DateTime birthDate;
@@ -50,13 +41,13 @@ class UserAdditional extends Equatable {
   });
 
   factory UserAdditional.fromJson(Map<String, dynamic> map) {
-    UserAdditionalInterestedGender genderInterested;
+    GenderChoices genderInterested;
     if (map['genderInterested'] ==
-        UserAdditionalInterestedGender.female.abbreviation) {
-      genderInterested = UserAdditionalInterestedGender.female;
+        GenderChoices.women.abbreviation) {
+      genderInterested = GenderChoices.women;
     } else if (map['genderInterested'] ==
-        UserAdditionalInterestedGender.male.abbreviation) {
-      genderInterested = UserAdditionalInterestedGender.male;
+        GenderChoices.men.abbreviation) {
+      genderInterested = GenderChoices.men;
     } else {
       throw SimpleException('Wrong gender interested value.');
     }

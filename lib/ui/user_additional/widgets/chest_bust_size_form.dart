@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
 
-import 'package:chicpic/models/auth/user_additional.dart';
+import 'package:chicpic/models/auth/gender_choices.dart';
 
 import 'package:chicpic/ui/user_additional/widgets/bust_size_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/chest_size_form.dart';
@@ -14,7 +14,7 @@ class ChestBustSizeForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (BlocProvider.of<UserAdditionalBloc>(context).gender ==
-        UserAdditionalInterestedGender.female) {
+        GenderChoices.women) {
       // return bust size form for females
       return const BustSizeForm();
     } else {

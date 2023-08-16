@@ -1,3 +1,4 @@
+import 'package:chicpic/models/auth/gender_choices.dart';
 import 'package:dio/dio.dart';
 
 import 'package:chicpic/services/client.dart';
@@ -60,7 +61,7 @@ class APIService {
   }
 
   // Clothing
-  static Future<List<Category>> getCategories(CategoryGender gender) async {
+  static Future<List<Category>> getCategories(GenderChoices gender) async {
     Response response = await Client.instance.get(
       APIUrls.categories,
       queryParameters: {'gender': gender.abbreviation},
