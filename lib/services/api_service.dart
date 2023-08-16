@@ -47,7 +47,14 @@ class APIService {
 
   static Future<Response> createUserAdditional(UserAdditional data) async {
     return await Client.instance.post(
-      APIUrls.userAdditional,
+      APIUrls.userAdditional(data.user),
+      data: data.toMap(),
+    );
+  }
+
+  static Future<Response> updateUserAdditional(UserAdditional data) async {
+    return await Client.instance.put(
+      APIUrls.userAdditional(data.user),
       data: data.toMap(),
     );
   }

@@ -81,8 +81,13 @@ class AuthRepository {
     saveUserTokens(_user!.tokens);
   }
 
-  Future<void> createUserAdditional(UserAdditional data) async {
-    final Response response = await APIService.createUserAdditional(data);
+  Future<void> submitUserAdditional(UserAdditional data) async {
+    late final Response response;
+    if (_user!.userAdditional != null) {  // Update user additional
+      response = await APIService.updateUserAdditional(data);
+    } else {  // Create user additional
+      response = await APIService.createUserAdditional(data);
+    }
     _user = _user!.copyWith(
       userAdditional: UserAdditional.fromJson(response.data),
     );
