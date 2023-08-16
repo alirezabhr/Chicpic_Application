@@ -10,59 +10,59 @@ import 'package:chicpic/statics/insets.dart';
 import 'package:chicpic/ui/user_additional/widgets/unit_switch.dart';
 import 'package:chicpic/ui/user_additional/widgets/user_additional_base_form.dart';
 
-class HipSizeForm extends StatefulWidget {
+class HipsSizeForm extends StatefulWidget {
   final VoidCallback? backBtnOnPressed;
   final VoidCallback? continueBtnOnPressed;
 
-  const HipSizeForm({
+  const HipsSizeForm({
     Key? key,
     this.backBtnOnPressed,
     this.continueBtnOnPressed,
   }) : super(key: key);
 
   @override
-  State<HipSizeForm> createState() => _HipSizeFormState();
+  State<HipsSizeForm> createState() => _HipsSizeFormState();
 }
 
-class _HipSizeFormState extends State<HipSizeForm> {
+class _HipsSizeFormState extends State<HipsSizeForm> {
   final TextEditingController _cmController = TextEditingController();
   final TextEditingController _inchController = TextEditingController();
   final TextEditingController _feetController = TextEditingController();
-  late Length hipSize;
+  late Length hipsSize;
 
   @override
   void initState() {
     super.initState();
-    hipSize = BlocProvider.of<UserAdditionalBloc>(context).hipSize;
-    _cmController.text = hipSize.cmValue.toString();
-    _feetController.text = hipSize.feetValue.toString();
-    _inchController.text = hipSize.inchesValue.toString();
+    hipsSize = BlocProvider.of<UserAdditionalBloc>(context).hipsSize;
+    _cmController.text = hipsSize.cmValue.toString();
+    _feetController.text = hipsSize.feetValue.toString();
+    _inchController.text = hipsSize.inchesValue.toString();
   }
 
-  void setHipSize(Length userHipSize) {
-    BlocProvider.of<UserAdditionalBloc>(context).hipSize = userHipSize;
+  void setHipsSize(Length userHipsSize) {
+    BlocProvider.of<UserAdditionalBloc>(context).hipsSize = userHipsSize;
     setState(() {
-      hipSize = userHipSize;
+      hipsSize = userHipsSize;
     });
   }
 
   Widget get content => Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      hipSize.unit == LengthUnit.cm
+      hipsSize.unit == LengthUnit.cm
           ? TextFormField(
         controller: _cmController,
         decoration: const InputDecoration(
           isDense: true,
           border: OutlineInputBorder(),
-          labelText: 'Hip Size (cm)',
+          labelText: 'Hips Size (cm)',
         ),
         enableSuggestions: false,
         autocorrect: false,
         keyboardType: TextInputType.number,
         onChanged: (String? value) {
-          hipSize.cmValue =
-              int.tryParse(value ?? '') ?? hipSize.cmValue;
+          hipsSize.cmValue =
+              int.tryParse(value ?? '') ?? hipsSize.cmValue;
         },
         validator: (String? value) {
           if (value == null || value.isEmpty) {
@@ -79,14 +79,14 @@ class _HipSizeFormState extends State<HipSizeForm> {
               decoration: const InputDecoration(
                 isDense: true,
                 border: OutlineInputBorder(),
-                labelText: 'Hip Size (ft)',
+                labelText: 'Hips Size (ft)',
               ),
               enableSuggestions: false,
               autocorrect: false,
               keyboardType: TextInputType.number,
               onChanged: (String? value) {
-                hipSize.feetValue =
-                    int.tryParse(value ?? '') ?? hipSize.feetValue;
+                hipsSize.feetValue =
+                    int.tryParse(value ?? '') ?? hipsSize.feetValue;
               },
               validator: (String? value) {
                 if (value == null || value.isEmpty) {
@@ -103,14 +103,14 @@ class _HipSizeFormState extends State<HipSizeForm> {
               decoration: const InputDecoration(
                 isDense: true,
                 border: OutlineInputBorder(),
-                labelText: 'Hip Size (inches)',
+                labelText: 'Hips Size (inches)',
               ),
               enableSuggestions: false,
               autocorrect: false,
               keyboardType: TextInputType.number,
               onChanged: (String? value) {
-                hipSize.inchesValue =
-                    int.tryParse(value ?? '') ?? hipSize.inchesValue;
+                hipsSize.inchesValue =
+                    int.tryParse(value ?? '') ?? hipsSize.inchesValue;
               },
               validator: (String? value) {
                 if (value == null || value.isEmpty) {
@@ -125,16 +125,16 @@ class _HipSizeFormState extends State<HipSizeForm> {
       const SizedBox(height: Insets.xSmall),
       UnitSwitch<LengthUnit>(
         items: LengthUnit.values,
-        initialIndex: LengthUnit.values.indexOf(hipSize.unit),
+        initialIndex: LengthUnit.values.indexOf(hipsSize.unit),
         itemTextBuilder: (LengthUnit unit) => unit.abbreviation,
         onChange: (LengthUnit unit) {
-          setHipSize(hipSize..convert(unit));
+          setHipsSize(hipsSize..convert(unit));
 
           if (unit == LengthUnit.cm) {
-            _cmController.text = hipSize.cmValue.toString();
+            _cmController.text = hipsSize.cmValue.toString();
           } else if (unit == LengthUnit.feetInches) {
-            _feetController.text = hipSize.feetValue.toString();
-            _inchController.text = hipSize.inchesValue.toString();
+            _feetController.text = hipsSize.feetValue.toString();
+            _inchController.text = hipsSize.inchesValue.toString();
           }
         },
       ),
@@ -145,7 +145,7 @@ class _HipSizeFormState extends State<HipSizeForm> {
   Widget build(BuildContext context) {
     return createUserAdditionalForm(
       context: context,
-      title: 'Hip Size:',
+      title: 'Hips Size:',
       content: content,
       continueBtnOnPressed: widget.continueBtnOnPressed,
       backBtnOnPressed: widget.backBtnOnPressed,

@@ -22,10 +22,12 @@ class UserAdditional extends Equatable {
   final int weight;
   final int height;
   final DateTime birthDate;
-  final int bustSize;
+  final int shoulderSize;
+  final int? chestSize;
+  final int? bustSize;
   final int waistSize;
-  final int hipSize;
-  final int legLength;
+  final int hipsSize;
+  final int inseam;
   final double shoeSize;
   final List<ShirtFit> shirtFits;
   final List<TrouserFit> trouserFits;
@@ -36,10 +38,12 @@ class UserAdditional extends Equatable {
     required this.weight,
     required this.height,
     required this.birthDate,
-    required this.bustSize,
+    required this.shoulderSize,
+    this.chestSize,
+    this.bustSize,
     required this.waistSize,
-    required this.hipSize,
-    required this.legLength,
+    required this.hipsSize,
+    required this.inseam,
     required this.shoeSize,
     required this.shirtFits,
     required this.trouserFits,
@@ -63,11 +67,13 @@ class UserAdditional extends Equatable {
       weight: map['weight'],
       height: map['height'],
       birthDate: DateTime.parse(map['birthDate']),
+      shoulderSize: map['shoulderSize'],
+      chestSize: map['chestSize'],
       bustSize: map['bustSize'],
       waistSize: map['waistSize'],
-      hipSize: map['hipSize'],
-      legLength: map['legLength'],
-      shoeSize: double.parse(map['shoeSize']),
+      hipsSize: map['hipsSize'],
+      inseam: map['inseam'],
+      shoeSize: map['shoeSize'],
       shirtFits:
           map['shirtFits'].map<ShirtFit>((e) => ShirtFit.fromMap(e)).toList(),
       trouserFits: map['trouserFits']
@@ -83,10 +89,12 @@ class UserAdditional extends Equatable {
       'weight': weight,
       'height': height,
       'birthDate': DateFormat('yyyy-MM-dd').format(birthDate),
+      'shoulderSize': shoulderSize,
+      'chestSize': chestSize,
       'bustSize': bustSize,
       'waistSize': waistSize,
-      'hipSize': hipSize,
-      'legLength': legLength,
+      'hipsSize': hipsSize,
+      'inseam': inseam,
       'shoeSize': shoeSize,
       'shirtFits': shirtFits.map((e) => e.toMap()).toList(),
       'trouserFits': trouserFits.map((e) => e.toMap()).toList(),
@@ -100,10 +108,12 @@ class UserAdditional extends Equatable {
         weight,
         height,
         birthDate,
+        shoulderSize,
+        chestSize,
         bustSize,
         waistSize,
-        hipSize,
-        legLength,
+        hipsSize,
+        inseam,
         shoeSize,
         shirtFits,
         trouserFits,

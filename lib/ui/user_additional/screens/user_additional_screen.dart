@@ -9,11 +9,12 @@ import 'package:chicpic/ui/user_additional/widgets/birth_date_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/gender_interested_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/weight_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/height_form.dart';
-import 'package:chicpic/ui/user_additional/widgets/bust_size_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/shoulder_size_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/chest_bust_size_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/waist_size_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/shirt_fit_form.dart';
-import 'package:chicpic/ui/user_additional/widgets/hip_size_form.dart';
-import 'package:chicpic/ui/user_additional/widgets/leg_length_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/hips_size_form.dart';
+import 'package:chicpic/ui/user_additional/widgets/inseam_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/trouser_fit_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/shoe_size_form.dart';
 
@@ -45,11 +46,12 @@ class _UserAdditionalScreenState extends State<UserAdditionalScreen> {
       const GenderInterestedForm(),
       const WeightForm(),
       const HeightForm(),
-      const BustSizeForm(),
+      const ShoulderSizeForm(),
+      const ChestBustSizeForm(),
       const WaistSizeForm(),
       const ShirtFitForm(),
-      const HipSizeForm(),
-      const LegLengthForm(),
+      const HipsSizeForm(),
+      const InseamForm(),
       const TrouserFitForm(),
       ShoeSizeForm(
         continueBtnOnPressed: () {

@@ -55,7 +55,7 @@ class _WaistSizeFormState extends State<WaistSizeForm> {
         decoration: const InputDecoration(
           isDense: true,
           border: OutlineInputBorder(),
-          labelText: 'Hip Size (cm)',
+          labelText: 'Waist Size (cm)',
         ),
         enableSuggestions: false,
         autocorrect: false,
@@ -79,7 +79,7 @@ class _WaistSizeFormState extends State<WaistSizeForm> {
               decoration: const InputDecoration(
                 isDense: true,
                 border: OutlineInputBorder(),
-                labelText: 'Hip Size (ft)',
+                labelText: 'Waist Size (ft)',
               ),
               enableSuggestions: false,
               autocorrect: false,
@@ -103,7 +103,7 @@ class _WaistSizeFormState extends State<WaistSizeForm> {
               decoration: const InputDecoration(
                 isDense: true,
                 border: OutlineInputBorder(),
-                labelText: 'Hip Size (inches)',
+                labelText: 'Waist Size (inches)',
               ),
               enableSuggestions: false,
               autocorrect: false,

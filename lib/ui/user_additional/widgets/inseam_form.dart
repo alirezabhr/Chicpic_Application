@@ -10,46 +10,46 @@ import 'package:chicpic/statics/insets.dart';
 import 'package:chicpic/ui/user_additional/widgets/unit_switch.dart';
 import 'package:chicpic/ui/user_additional/widgets/user_additional_base_form.dart';
 
-class LegLengthForm extends StatefulWidget {
+class InseamForm extends StatefulWidget {
   final VoidCallback? backBtnOnPressed;
   final VoidCallback? continueBtnOnPressed;
 
-  const LegLengthForm({
+  const InseamForm({
     Key? key,
     this.backBtnOnPressed,
     this.continueBtnOnPressed,
   }) : super(key: key);
 
   @override
-  State<LegLengthForm> createState() => _LegLengthFormState();
+  State<InseamForm> createState() => _InseamFormState();
 }
 
-class _LegLengthFormState extends State<LegLengthForm> {
+class _InseamFormState extends State<InseamForm> {
   final TextEditingController _cmController = TextEditingController();
   final TextEditingController _inchController = TextEditingController();
   final TextEditingController _feetController = TextEditingController();
-  late Length legLength;
+  late Length inseam;
 
   @override
   void initState() {
     super.initState();
-    legLength = BlocProvider.of<UserAdditionalBloc>(context).legLength;
-    _cmController.text = legLength.cmValue.toString();
-    _feetController.text = legLength.feetValue.toString();
-    _inchController.text = legLength.inchesValue.toString();
+    inseam = BlocProvider.of<UserAdditionalBloc>(context).inseam;
+    _cmController.text = inseam.cmValue.toString();
+    _feetController.text = inseam.feetValue.toString();
+    _inchController.text = inseam.inchesValue.toString();
   }
 
-  void setLegLength(Length userLegLength) {
-    BlocProvider.of<UserAdditionalBloc>(context).legLength = userLegLength;
+  void setInseam(Length userInseam) {
+    BlocProvider.of<UserAdditionalBloc>(context).inseam = userInseam;
     setState(() {
-      legLength = userLegLength;
+      inseam = userInseam;
     });
   }
 
   Widget get content => Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          legLength.unit == LengthUnit.cm
+          inseam.unit == LengthUnit.cm
               ? TextFormField(
                   controller: _cmController,
                   decoration: const InputDecoration(
@@ -61,8 +61,8 @@ class _LegLengthFormState extends State<LegLengthForm> {
                   autocorrect: false,
                   keyboardType: TextInputType.number,
                   onChanged: (String? value) {
-                    legLength.cmValue =
-                        int.tryParse(value ?? '') ?? legLength.cmValue;
+                    inseam.cmValue =
+                        int.tryParse(value ?? '') ?? inseam.cmValue;
                   },
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
@@ -85,8 +85,8 @@ class _LegLengthFormState extends State<LegLengthForm> {
                         autocorrect: false,
                         keyboardType: TextInputType.number,
                         onChanged: (String? value) {
-                          legLength.feetValue =
-                              int.tryParse(value ?? '') ?? legLength.feetValue;
+                          inseam.feetValue =
+                              int.tryParse(value ?? '') ?? inseam.feetValue;
                         },
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
@@ -109,8 +109,8 @@ class _LegLengthFormState extends State<LegLengthForm> {
                         autocorrect: false,
                         keyboardType: TextInputType.number,
                         onChanged: (String? value) {
-                          legLength.inchesValue = int.tryParse(value ?? '') ??
-                              legLength.inchesValue;
+                          inseam.inchesValue = int.tryParse(value ?? '') ??
+                              inseam.inchesValue;
                         },
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
@@ -125,16 +125,16 @@ class _LegLengthFormState extends State<LegLengthForm> {
           const SizedBox(height: Insets.xSmall),
           UnitSwitch<LengthUnit>(
             items: LengthUnit.values,
-            initialIndex: LengthUnit.values.indexOf(legLength.unit),
+            initialIndex: LengthUnit.values.indexOf(inseam.unit),
             itemTextBuilder: (LengthUnit unit) => unit.abbreviation,
             onChange: (LengthUnit unit) {
-              setLegLength(legLength..convert(unit));
+              setInseam(inseam..convert(unit));
 
               if (unit == LengthUnit.cm) {
-                _cmController.text = legLength.cmValue.toString();
+                _cmController.text = inseam.cmValue.toString();
               } else if (unit == LengthUnit.feetInches) {
-                _feetController.text = legLength.feetValue.toString();
-                _inchController.text = legLength.inchesValue.toString();
+                _feetController.text = inseam.feetValue.toString();
+                _inchController.text = inseam.inchesValue.toString();
               }
             },
           ),

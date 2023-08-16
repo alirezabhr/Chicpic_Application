@@ -10,60 +10,59 @@ import 'package:chicpic/statics/insets.dart';
 import 'package:chicpic/ui/user_additional/widgets/unit_switch.dart';
 import 'package:chicpic/ui/user_additional/widgets/user_additional_base_form.dart';
 
-class BustSizeForm extends StatefulWidget {
+class ShoulderSizeForm extends StatefulWidget {
   final VoidCallback? backBtnOnPressed;
   final VoidCallback? continueBtnOnPressed;
 
-  const BustSizeForm({
+  const ShoulderSizeForm({
     Key? key,
     this.backBtnOnPressed,
     this.continueBtnOnPressed,
   }) : super(key: key);
 
   @override
-  State<BustSizeForm> createState() => _BustSizeFormState();
+  State<ShoulderSizeForm> createState() => _ShoulderSizeFormState();
 }
 
-class _BustSizeFormState extends State<BustSizeForm> {
+class _ShoulderSizeFormState extends State<ShoulderSizeForm> {
   final TextEditingController _cmController = TextEditingController();
   final TextEditingController _inchController = TextEditingController();
   final TextEditingController _feetController = TextEditingController();
-  late Length bustSize;
+  late Length shoulderSize;
 
   @override
   void initState() {
     super.initState();
-    final blocProvider = BlocProvider.of<UserAdditionalBloc>(context);
-    bustSize = blocProvider.bustSize ?? DefaultUserAdditionalConfig.bustSize;
-    _cmController.text = bustSize.cmValue.toString();
-    _feetController.text = bustSize.feetValue.toString();
-    _inchController.text = bustSize.inchesValue.toString();
+    shoulderSize = BlocProvider.of<UserAdditionalBloc>(context).shoulderSize;
+    _cmController.text = shoulderSize.cmValue.toString();
+    _feetController.text = shoulderSize.feetValue.toString();
+    _inchController.text = shoulderSize.inchesValue.toString();
   }
 
-  void setBustSize(Length userBustSize) {
-    BlocProvider.of<UserAdditionalBloc>(context).bustSize = userBustSize;
+  void setShoulderSize(Length userShoulderSize) {
+    BlocProvider.of<UserAdditionalBloc>(context).shoulderSize = userShoulderSize;
     setState(() {
-      bustSize = userBustSize;
+      shoulderSize = userShoulderSize;
     });
   }
 
   Widget get content => Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          bustSize.unit == LengthUnit.cm
+          shoulderSize.unit == LengthUnit.cm
               ? TextFormField(
                   controller: _cmController,
                   decoration: const InputDecoration(
                     isDense: true,
                     border: OutlineInputBorder(),
-                    labelText: 'Bust Size (cm)',
+                    labelText: 'Shoulder Size (cm)',
                   ),
                   enableSuggestions: false,
                   autocorrect: false,
                   keyboardType: TextInputType.number,
                   onChanged: (String? value) {
-                    bustSize.cmValue =
-                        int.tryParse(value ?? '') ?? bustSize.cmValue;
+                    shoulderSize.cmValue =
+                        int.tryParse(value ?? '') ?? shoulderSize.cmValue;
                   },
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
@@ -80,14 +79,14 @@ class _BustSizeFormState extends State<BustSizeForm> {
                         decoration: const InputDecoration(
                           isDense: true,
                           border: OutlineInputBorder(),
-                          labelText: 'Bust Size (ft)',
+                          labelText: 'Shoulder Size (ft)',
                         ),
                         enableSuggestions: false,
                         autocorrect: false,
                         keyboardType: TextInputType.number,
                         onChanged: (String? value) {
-                          bustSize.feetValue =
-                              int.tryParse(value ?? '') ?? bustSize.feetValue;
+                          shoulderSize.feetValue =
+                              int.tryParse(value ?? '') ?? shoulderSize.feetValue;
                         },
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
@@ -104,14 +103,14 @@ class _BustSizeFormState extends State<BustSizeForm> {
                         decoration: const InputDecoration(
                           isDense: true,
                           border: OutlineInputBorder(),
-                          labelText: 'Bust Size (inches)',
+                          labelText: 'Shoulder Size (inches)',
                         ),
                         enableSuggestions: false,
                         autocorrect: false,
                         keyboardType: TextInputType.number,
                         onChanged: (String? value) {
-                          bustSize.inchesValue =
-                              int.tryParse(value ?? '') ?? bustSize.inchesValue;
+                          shoulderSize.inchesValue =
+                              int.tryParse(value ?? '') ?? shoulderSize.inchesValue;
                         },
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
@@ -126,16 +125,16 @@ class _BustSizeFormState extends State<BustSizeForm> {
           const SizedBox(height: Insets.xSmall),
           UnitSwitch<LengthUnit>(
             items: LengthUnit.values,
-            initialIndex: LengthUnit.values.indexOf(bustSize.unit),
+            initialIndex: LengthUnit.values.indexOf(shoulderSize.unit),
             itemTextBuilder: (LengthUnit unit) => unit.abbreviation,
             onChange: (LengthUnit unit) {
-              setBustSize(bustSize..convert(unit));
+              setShoulderSize(shoulderSize..convert(unit));
 
               if (unit == LengthUnit.cm) {
-                _cmController.text = bustSize.cmValue.toString();
+                _cmController.text = shoulderSize.cmValue.toString();
               } else if (unit == LengthUnit.feetInches) {
-                _feetController.text = bustSize.feetValue.toString();
-                _inchController.text = bustSize.inchesValue.toString();
+                _feetController.text = shoulderSize.feetValue.toString();
+                _inchController.text = shoulderSize.inchesValue.toString();
               }
             },
           ),
@@ -146,7 +145,7 @@ class _BustSizeFormState extends State<BustSizeForm> {
   Widget build(BuildContext context) {
     return createUserAdditionalForm(
       context: context,
-      title: 'Bust Size:',
+      title: 'Shoulder Size:',
       content: content,
       continueBtnOnPressed: widget.continueBtnOnPressed,
       backBtnOnPressed: widget.backBtnOnPressed,
