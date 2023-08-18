@@ -50,7 +50,7 @@ class _GenderInterestedFormState extends State<GenderInterestedForm> {
             return DropdownMenuItem<GenderChoices>(
               value: gender,
               child: Text(
-                gender.humanReadable,
+                "${gender.humanReadable}'s wear",
               ),
             );
           }).toList(),

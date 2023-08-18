@@ -35,7 +35,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     final prefs = await SharedPreferences.getInstance();
 
     setState(() {
-      _selectedGender = prefs.get(SharedPrefKeys.GenderChoices) ==
+      _selectedGender = prefs.get(SharedPrefKeys.categoryGender) ==
               GenderChoices.men.abbreviation
           ? GenderChoices.men
           : GenderChoices.women;
@@ -67,7 +67,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               getCategories();
               final prefs = await SharedPreferences.getInstance();
               prefs.setString(
-                SharedPrefKeys.GenderChoices,
+                SharedPrefKeys.categoryGender,
                 _selectedGender.abbreviation,
               );
             },
