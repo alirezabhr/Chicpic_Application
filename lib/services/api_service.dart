@@ -194,4 +194,20 @@ class APIService {
     Map data = {'user': userId, 'variant': variantId};
     await Client.instance.delete(APIUrls.trackVariant, data: data);
   }
+
+  static Future<Pagination<VariantPreview>> retrieveSavedVariants(int userId,
+      {int page = 1}) async {
+    Response response = await Client.instance.get(
+      APIUrls.savedVariants(userId: userId, page: page),
+    );
+
+    return Pagination<VariantPreview>(
+      count: response.data['count'],
+      next: response.data['next'],
+      previous: response.data['previous'],
+      results: response.data['results']
+          .map<VariantPreview>((e) => VariantPreview.fromMap(e))
+          .toList(),
+    );
+  }
 }

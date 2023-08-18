@@ -55,4 +55,8 @@ abstract class APIUrls {
 
   static const String saveVariant = '${_clothing}save/';
   static const String trackVariant = '${_clothing}track/';
+
+  static String savedVariants({required int userId, int page = 1}) {
+    return '${_clothing}saved/$userId/?page=$page';
+  }
 }
