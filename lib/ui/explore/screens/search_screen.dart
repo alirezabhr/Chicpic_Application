@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
-import 'package:chicpic/ui/explore/widgets/product_item_dialog.dart';
+import 'package:chicpic/ui/base_widgets/product_preview_widget.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -105,39 +104,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       crossAxisCount: 3,
                     ),
                     itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return ProductItemDialog(
-                                productId: state.products[index].id,
-                              );
-                            },
-                          );
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            border: Border.symmetric(
-                              vertical: BorderSide(width: 0.2),
-                              horizontal: BorderSide(width: 0.1),
-                            ),
-                          ),
-                          child: CachedNetworkImage(
-                            imageUrl: state.products[index].previewImage,
-                            placeholder: (context, url) => Center(
-                              child: CircularProgressIndicator(
-                                color: Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.6),
-                              ),
-                            ),
-                            fit: BoxFit.cover,
-                            errorWidget: (context, url, error) {
-                              return const Icon(Icons.error);
-                            },
-                          ),
-                        ),
+                      return ProductPreviewWidget(
+                        product: state.products[index],
                       );
                     },
                   );
