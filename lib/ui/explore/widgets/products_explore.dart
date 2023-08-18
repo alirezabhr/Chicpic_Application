@@ -10,6 +10,7 @@ import 'package:chicpic/statics/insets.dart';
 import 'package:chicpic/models/product/variant.dart';
 
 import 'package:chicpic/ui/explore/widgets/product_item_dialog.dart';
+import 'package:chicpic/ui/base_widgets/off_label.dart';
 
 class ProductsExplore extends StatelessWidget {
   const ProductsExplore({Key? key}) : super(key: key);
@@ -71,27 +72,34 @@ class ProductsExplore extends StatelessWidget {
                             },
                           );
                         },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            border: Border.symmetric(
-                              vertical: BorderSide(width: 0.2),
-                              horizontal: BorderSide(width: 0.1),
-                            ),
-                          ),
-                          child: CachedNetworkImage(
-                            imageUrl: variants[index].imageSrc,
-                            placeholder: (context, url) => Center(
-                              child: CircularProgressIndicator(
-                                color: Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.6),
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              decoration: const BoxDecoration(
+                                border: Border.symmetric(
+                                  vertical: BorderSide(width: 0.2),
+                                  horizontal: BorderSide(width: 0.1),
+                                ),
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: variants[index].imageSrc,
+                                placeholder: (context, url) => Center(
+                                  child: CircularProgressIndicator(
+                                    color: Theme.of(context)
+                                        .primaryColor
+                                        .withOpacity(0.6),
+                                  ),
+                                ),
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) {
+                                  return const Icon(Icons.error);
+                                },
                               ),
                             ),
-                            fit: BoxFit.cover,
-                            errorWidget: (context, url, error) {
-                              return const Icon(Icons.error);
-                            },
-                          ),
+                            if (variants[index].hasDiscount) const OffLabel(),
+                          ],
                         ),
                       );
                     },
