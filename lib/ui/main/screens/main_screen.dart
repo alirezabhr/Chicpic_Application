@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:chicpic/ui/category/screens/categories_screen.dart';
 import 'package:chicpic/ui/explore/screens/explore_screen.dart';
 import 'package:chicpic/ui/main/screens/notifications_screen.dart';
-import 'package:chicpic/ui/main/screens/profile_screen.dart';
+import 'package:chicpic/ui/profile/screens/profile_screen.dart';
 import 'package:chicpic/ui/main/widgets/image_picker_bottom_sheet.dart';
 
 class MainScreen extends StatefulWidget {

@@ -4,6 +4,8 @@ import 'dart:ui';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import 'package:chicpic/repositories/auth/auth_repository.dart';
+
 import 'package:chicpic/services/api_service.dart';
 import 'package:chicpic/services/utils.dart';
 
@@ -17,17 +19,22 @@ part 'products_explore_state.dart';
 
 class ProductsExploreBloc
     extends Bloc<ProductsExploreEvent, ProductsExploreState> {
+  final AuthRepository _authRepository;
+
   List<VariantPreview> variants = [];
   List<ProductPreview> searchedProducts = [];
+  List<VariantPreview> savedVariants = [];
   int explorePage = 1;
   int searchPage = 1;
+  int savedVariantsPage = 1;
 
-  ProductsExploreBloc() : super(ProductsExploreInitial()) {
+  ProductsExploreBloc(this._authRepository) : super(ProductsExploreInitial()) {
     on<ProductsExploreFetch>(_onProductsExploreFetch);
     on<ProductDetailFetch>(_onProductDetailFetch);
     on<ProductDetailChangeColor>(_onProductDetailChangeColor);
     on<ProductDetailChangeSize>(_onProductDetailChangeSize);
     on<ProductSearch>(_onProductSearch);
+    on<SavedVariantsFetch>(_onSavedVariantsFetch);
   }
 
   Future<void> _onProductsExploreFetch(
@@ -120,6 +127,29 @@ class ProductsExploreBloc
       emit(ProductSearchSuccess(searchedProducts));
     } catch (_) {
       emit(ProductSearchFailure());
+    }
+  }
+
+  Future<void> _onSavedVariantsFetch(
+    SavedVariantsFetch event,
+    Emitter<ProductsExploreState> emit,
+  ) async {
+    if (event.firstPage) {
+      savedVariantsPage = 1;
+      savedVariants = [];
+    }
+    emit(ProductsExploreFetchLoading(page: savedVariantsPage));
+
+    try {
+      final userId = _authRepository.user?.id;
+      Pagination<VariantPreview> pagination =
+          await APIService.retrieveSavedVariants(userId!,
+              page: savedVariantsPage);
+      savedVariants = savedVariants + pagination.results;
+      savedVariantsPage += 1;
+      emit(ProductsExploreFetchSuccess());
+    } catch (_) {
+      emit(ProductsExploreFetchFailure());
     }
   }
 }

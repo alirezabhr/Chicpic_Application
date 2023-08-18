@@ -9,6 +9,12 @@ class ProductsExploreFetch extends ProductsExploreEvent {
   ProductsExploreFetch({this.firstPage = true});
 }
 
+class SavedVariantsFetch extends ProductsExploreEvent {
+  final bool firstPage;
+
+  SavedVariantsFetch({this.firstPage = true});
+}
+
 class ProductDetailFetch extends ProductsExploreEvent {
   final int productId;
   final int? variantId;

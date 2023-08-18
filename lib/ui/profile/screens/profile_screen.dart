@@ -35,21 +35,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           const SizedBox(height: Insets.xLarge),
           ProfileButton(
-            text: 'Account Settings',
+            text: 'Saved Items',
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRouter.savedVariants);
+            },
+            icon: FontAwesomeIcons.solidBookmark,
+          ),
+          ProfileButton(
+            text: 'Body Size & Fit',
             onPressed: () {
               Navigator.of(context).pushNamed(AppRouter.userAdditional);
             },
-            icon: FontAwesomeIcons.userGear,
-          ),
-          ProfileButton(
-            text: 'Body Size',
-            onPressed: () {},
             icon: FontAwesomeIcons.shirt,
-          ),
-          ProfileButton(
-            text: 'Saved Items',
-            onPressed: () {},
-            icon: FontAwesomeIcons.solidBookmark,
           ),
           ProfileButton(
             text: 'App Settings',

@@ -53,3 +53,9 @@ class ProductSearchSuccess extends ProductsExploreState {
 }
 
 class ProductSearchFailure extends ProductsExploreState {}
+
+class SavedVariantsFetchLoading extends ProductsExploreState {}
+
+class SavedVariantsFetchSuccess extends ProductsExploreState {}
+
+class SavedVariantsFetchFailure extends ProductsExploreState {}

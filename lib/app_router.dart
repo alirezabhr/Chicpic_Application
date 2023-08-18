@@ -13,6 +13,7 @@ import 'package:chicpic/ui/category/screens/category_screen.dart';
 import 'package:chicpic/ui/shop/screens/shop_screen.dart';
 import 'package:chicpic/ui/shop/screens/shops_explore_screen.dart';
 import 'package:chicpic/ui/explore/screens/search_screen.dart';
+import 'package:chicpic/ui/profile/screens/saved_variants_screen.dart';
 
 abstract class AppRouter {
   static const String splash = "/";
@@ -28,6 +29,7 @@ abstract class AppRouter {
   static const String shop = "/shop";
   static const String shopsExplore = "/shops-explore";
   static const String search = "/search";
+  static const String savedVariants = "/saved-variants";
 
   static Route? generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
@@ -70,6 +72,11 @@ abstract class AppRouter {
         );
       case search:
         return MaterialPageRoute(builder: (_) => const SearchScreen());
+      case savedVariants:
+        return MaterialPageRoute(
+          builder: (_) => const SavedVariantsScreen(),
+          settings: routeSettings,
+        );
       default:
         return null;
     }
