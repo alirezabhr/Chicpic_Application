@@ -19,11 +19,14 @@ abstract class ProductBase extends Equatable {
 }
 
 class ProductPreview extends ProductBase {
+  final bool hasDiscount;
+
   const ProductPreview({
     required super.id,
     required super.title,
     required super.previewImage,
     required super.brand,
+    required this.hasDiscount,
   });
 
   factory ProductPreview.fromMap(Map<String, dynamic> mapData) =>
@@ -32,6 +35,7 @@ class ProductPreview extends ProductBase {
         title: mapData['title'],
         previewImage: mapData['previewImage'],
         brand: mapData['brand'],
+        hasDiscount: mapData['hasDiscount'],
       );
 
   @override
@@ -40,6 +44,7 @@ class ProductPreview extends ProductBase {
         title,
         previewImage,
         brand,
+        hasDiscount,
       ];
 }
 

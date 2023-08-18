@@ -49,6 +49,8 @@ abstract class VariantBase extends Equatable {
 }
 
 class VariantPreview extends VariantBase {
+  final bool hasDiscount;
+
   const VariantPreview({
     required super.id,
     required super.imageSrc,
@@ -62,12 +64,17 @@ class VariantPreview extends VariantBase {
     required super.colorHex,
     required super.coloring,
     required super.product,
+    required this.hasDiscount,
   });
 
   factory VariantPreview.fromMap(Map<String, dynamic> mapData) {
     List<String> colorsHex = [];
     if (mapData['colorHex'] != null) {
       colorsHex = mapData['colorHex'].split('/');
+    }
+
+    if (mapData['hasDiscount'] == null) {
+      print(mapData);
     }
 
     return VariantPreview(
@@ -85,6 +92,7 @@ class VariantPreview extends VariantBase {
           .map<Color>((colorCode) => Color(strToHex(colorCode)))
           .toList(),
       product: mapData['product'],
+      hasDiscount: mapData['hasDiscount'],
     );
   }
 
@@ -102,6 +110,7 @@ class VariantPreview extends VariantBase {
         option2,
         colorHex,
         coloring,
+        hasDiscount,
       ];
 }
 
