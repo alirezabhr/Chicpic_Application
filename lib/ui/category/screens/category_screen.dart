@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:chicpic/bloc/category/category_bloc.dart';
 
 import 'package:chicpic/models/product/category.dart';
 import 'package:chicpic/models/product/product.dart';
 
-import 'package:chicpic/ui/explore/widgets/product_item_dialog.dart';
+import 'package:chicpic/ui/base_widgets/product_preview_widget.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({Key? key}) : super(key: key);
@@ -22,7 +21,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   void _scrollListener() {
     if (_scrollController.offset >=
-        _scrollController.position.maxScrollExtent &&
+            _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
       final blocState = BlocProvider.of<CategoryBloc>(context).state;
       if (blocState is! CategoryProductsFetchLoading &&
@@ -76,45 +75,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   crossAxisCount: 3,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          // TODO return Product Item Dialog
-                          return const Card(
-                            margin: EdgeInsets.all(50),
-                            child: Text('Product Item Dialog'),
-                          );
-                          // return ProductItemDialog(
-                          //   productId: products[index].id,
-                          //   variantId: products[index].variants.,
-                          // );
-                        },
-                      );
-                    },
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        border: Border.symmetric(
-                          vertical: BorderSide(width: 0.2),
-                          horizontal: BorderSide(width: 0.1),
-                        ),
-                      ),
-                      child: CachedNetworkImage(
-                        imageUrl: products[index].previewImage,
-                        placeholder: (context, url) => Center(
-                          child: CircularProgressIndicator(
-                            color:
-                                Theme.of(context).primaryColor.withOpacity(0.6),
-                          ),
-                        ),
-                        fit: BoxFit.cover,
-                        errorWidget: (context, url, error) {
-                          return const Icon(Icons.error);
-                        },
-                      ),
-                    ),
-                  );
+                  return ProductPreviewWidget(product: products[index]);
                 },
               ),
             );
