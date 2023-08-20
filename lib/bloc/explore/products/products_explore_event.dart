@@ -41,6 +41,26 @@ class ProductDetailChangeSize extends ProductsExploreEvent {
   );
 }
 
+class VariantTrackToggle extends ProductsExploreEvent {
+  final ProductDetail product;
+  final VariantDetail selectedVariant;
+
+  VariantTrackToggle({
+    required this.product,
+    required this.selectedVariant,
+  });
+}
+
+class VariantSaveToggle extends ProductsExploreEvent {
+  final ProductDetail product;
+  final VariantDetail selectedVariant;
+
+  VariantSaveToggle({
+    required this.product,
+    required this.selectedVariant,
+  });
+}
+
 class ProductSearch extends ProductsExploreEvent {
   final String searchText;
   final bool firstPage;

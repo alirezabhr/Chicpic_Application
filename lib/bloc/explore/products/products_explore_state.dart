@@ -59,3 +59,21 @@ class SavedVariantsFetchLoading extends ProductsExploreState {}
 class SavedVariantsFetchSuccess extends ProductsExploreState {}
 
 class SavedVariantsFetchFailure extends ProductsExploreState {}
+
+class VariantTrackToggleSuccess extends ProductDetailFetchSuccess {
+  VariantTrackToggleSuccess({
+    required super.product,
+    required super.selectedVariantId,
+  });
+}
+
+class VariantTrackToggleFailure extends ProductDetailFetchFailure {}
+
+class VariantSaveToggleSuccess extends ProductDetailFetchSuccess {
+  VariantSaveToggleSuccess({
+    required super.product,
+    required super.selectedVariantId,
+  });
+}
+
+class VariantSaveToggleFailure extends ProductDetailFetchFailure {}

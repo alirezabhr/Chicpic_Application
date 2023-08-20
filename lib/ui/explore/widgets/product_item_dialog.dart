@@ -4,12 +4,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:chicpic/app_router.dart';
 
-import 'package:chicpic/services/api_service.dart';
 import 'package:chicpic/services/snack_bar.dart';
 
 import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 import 'package:chicpic/bloc/shop/shop_bloc.dart';
-import 'package:chicpic/bloc/auth/auth_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
@@ -152,9 +150,9 @@ class ProductItemDialog extends StatelessWidget {
                                 ),
                               ),
                               const Spacer(),
-                              TrackButton(variant: state.selectedVariant),
+                              const TrackButton(),
                               const SizedBox(width: Insets.xSmall),
-                              SaveButton(variant: state.selectedVariant),
+                              const SaveButton(),
                             ],
                           ),
                           Row(
@@ -241,14 +239,17 @@ class BuyButton extends StatelessWidget {
 
   final Color textStrokeColor = Colors.white;
 
-  void openWebsite() {
-    // launch(variant.link);
+  Future<void> _launchUrl(BuildContext context) async {
   }
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: variant.isAvailable ? openWebsite : null,
+      onPressed: variant.isAvailable
+          ? () {
+              _launchUrl(context);
+            }
+          : null,
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).primaryColor.withOpacity(0.4),
       ),
@@ -271,133 +272,115 @@ class BuyButton extends StatelessWidget {
 }
 
 class TrackButton extends StatelessWidget {
-  final VariantDetail variant;
-
-  const TrackButton({Key? key, required this.variant}) : super(key: key);
-
-  Future<void> track(BuildContext context) async {
-    try {
-      final userId = BlocProvider.of<AuthBloc>(context).user!.id;
-      await APIService.trackVariant(userId, variant.id);
-
-      showSnackBar(
-        context,
-        'Item tracked successfully.',
-        SnackBarStatus.success,
-      );
-    } catch (e) {
-      showSnackBar(
-        context,
-        'Cannot track the item. Please try later.',
-        SnackBarStatus.error,
-      );
-    }
-  }
-
-  Future<void> untrack(BuildContext context) async {
-    try {
-      final userId = BlocProvider.of<AuthBloc>(context).user!.id;
-      await APIService.untrackVariant(userId, variant.id);
-
-      showSnackBar(context, 'Item untracked.', SnackBarStatus.normal);
-    } catch (e) {
-      showSnackBar(
-        context,
-        'Cannot untrack the item. Please try later.',
-        SnackBarStatus.error,
-      );
-    }
-  }
+  const TrackButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        if (variant.isTracked) {
-          untrack(context);
-        } else {
-          track(context);
+    return BlocConsumer<ProductsExploreBloc, ProductsExploreState>(
+      listener: (context, state) {
+        if (state is VariantTrackToggleSuccess) {
+          if (state.selectedVariant.isTracked) {
+            showSnackBar(context, 'Item tracked.', SnackBarStatus.success);
+          } else {
+            showSnackBar(context, 'Item untracked.', SnackBarStatus.normal);
+          }
+        } else if (state is VariantTrackToggleFailure) {
+          showSnackBar(
+            context,
+            'Error happened. Please try later.',
+            SnackBarStatus.error,
+          );
         }
       },
-      splashRadius: 20,
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(
-        minWidth: 14,
-        minHeight: 14,
-        maxWidth: 20,
-        maxHeight: 20,
-      ),
-      tooltip: variant.isSaved ? 'Untrack item' : 'Track item',
-      icon: Icon(
-        variant.isTracked
-            ? Icons.notifications
-            : Icons.notifications_active_outlined,
-        size: 20,
-        color: Colors.amber[700],
-      ),
+      builder: (context, state) {
+        if (state is ProductDetailFetchSuccess) {
+          return IconButton(
+            onPressed: () {
+              BlocProvider.of<ProductsExploreBloc>(context).add(
+                VariantTrackToggle(
+                  product: state.product,
+                  selectedVariant: state.selectedVariant,
+                ),
+              );
+            },
+            splashRadius: 20,
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(
+              minWidth: 14,
+              minHeight: 14,
+              maxWidth: 20,
+              maxHeight: 20,
+            ),
+            tooltip:
+                state.selectedVariant.isSaved ? 'Untrack item' : 'Track item',
+            icon: Icon(
+              state.selectedVariant.isTracked
+                  ? Icons.notifications
+                  : Icons.notifications_active_outlined,
+              size: 20,
+              color: Colors.amber[700],
+            ),
+          );
+        }
+        return Container();
+      },
     );
   }
 }
 
 class SaveButton extends StatelessWidget {
-  final VariantDetail variant;
-
-  const SaveButton({Key? key, required this.variant}) : super(key: key);
-
-  Future<void> save(BuildContext context) async {
-    try {
-      final userId = BlocProvider.of<AuthBloc>(context).user!.id;
-      await APIService.saveVariant(userId, variant.id);
-
-      showSnackBar(context, 'Item saved successfully.', SnackBarStatus.success);
-    } catch (e) {
-      showSnackBar(
-        context,
-        'Cannot save the item. Please try later.',
-        SnackBarStatus.error,
-      );
-    }
-  }
-
-  Future<void> unsave(BuildContext context) async {
-    try {
-      final userId = BlocProvider.of<AuthBloc>(context).user!.id;
-      await APIService.unsaveVariant(userId, variant.id);
-
-      showSnackBar(context, 'Item unsaved.', SnackBarStatus.normal);
-    } catch (e) {
-      showSnackBar(
-        context,
-        'Cannot unsave the item. Please try later.',
-        SnackBarStatus.error,
-      );
-    }
-  }
+  const SaveButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        if (variant.isSaved) {
-          unsave(context);
-        } else {
-          save(context);
+    return BlocConsumer<ProductsExploreBloc, ProductsExploreState>(
+      listener: (context, state) {
+        if (state is VariantSaveToggleSuccess) {
+          if (state.selectedVariant.isSaved) {
+            showSnackBar(context, 'Item saved.', SnackBarStatus.success);
+          } else {
+            showSnackBar(context, 'Item unsaved.', SnackBarStatus.normal);
+          }
+        } else if (state is VariantSaveToggleFailure) {
+          showSnackBar(
+            context,
+            'Error happened. Please try later.',
+            SnackBarStatus.error,
+          );
         }
       },
-      splashRadius: 20,
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(
-        minWidth: 14,
-        minHeight: 14,
-        maxWidth: 20,
-        maxHeight: 20,
-      ),
-      tooltip: variant.isSaved ? 'Unsave item' : 'Save item',
-      icon: Icon(
-        variant.isSaved ? Icons.bookmark : Icons.bookmark_border_outlined,
-        size: 20,
-        color: Colors.deepPurple,
-      ),
+      builder: (context, state) {
+        if (state is ProductDetailFetchSuccess) {
+          return IconButton(
+            onPressed: () {
+              BlocProvider.of<ProductsExploreBloc>(context).add(
+                VariantSaveToggle(
+                  product: state.product,
+                  selectedVariant: state.selectedVariant,
+                ),
+              );
+            },
+            splashRadius: 20,
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(
+              minWidth: 14,
+              minHeight: 14,
+              maxWidth: 20,
+              maxHeight: 20,
+            ),
+            tooltip:
+                state.selectedVariant.isSaved ? 'Unsave item' : 'Save item',
+            icon: Icon(
+              state.selectedVariant.isSaved
+                  ? Icons.bookmark
+                  : Icons.bookmark_border_outlined,
+              size: 20,
+              color: Colors.deepPurple,
+            ),
+          );
+        }
+        return Container();
+      },
     );
   }
 }
