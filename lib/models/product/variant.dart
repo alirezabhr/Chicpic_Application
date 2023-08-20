@@ -168,6 +168,39 @@ class VariantDetail extends VariantBase {
       'isTracked': isTracked,
     });
 
+  VariantDetail copyWith({
+    int? id,
+    String? imageSrc,
+    String? link,
+    double? originalPrice,
+    double? finalPrice,
+    bool? isAvailable,
+    int? product,
+    String? size,
+    String? option1,
+    String? option2,
+    String? colorHex,
+    List<Color>? coloring,
+    bool? isSaved,
+    bool? isTracked,
+  }) =>
+      VariantDetail(
+        id: id ?? this.id,
+        imageSrc: imageSrc ?? this.imageSrc,
+        link: link ?? this.link,
+        originalPrice: originalPrice ?? this.originalPrice,
+        finalPrice: finalPrice ?? this.finalPrice,
+        isAvailable: isAvailable ?? this.isAvailable,
+        product: product ?? this.product,
+        size: size ?? this.size,
+        option1: option1 ?? this.option1,
+        option2: option2 ?? this.option2,
+        colorHex: colorHex ?? this.colorHex,
+        coloring: coloring ?? this.coloring,
+        isSaved: isSaved ?? this.isSaved,
+        isTracked: isTracked ?? this.isTracked,
+      );
+
   @override
   List<Object?> get props => [
         id,
