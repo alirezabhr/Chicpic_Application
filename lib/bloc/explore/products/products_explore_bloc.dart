@@ -33,6 +33,8 @@ class ProductsExploreBloc
     on<ProductDetailFetch>(_onProductDetailFetch);
     on<ProductDetailChangeColor>(_onProductDetailChangeColor);
     on<ProductDetailChangeSize>(_onProductDetailChangeSize);
+    on<VariantTrackToggle>(_onVariantTrackToggle);
+    on<VariantSaveToggle>(_onVariantSaveToggle);
     on<ProductSearch>(_onProductSearch);
     on<SavedVariantsFetch>(_onSavedVariantsFetch);
   }
@@ -103,6 +105,70 @@ class ProductsExploreBloc
       product: event.product,
       selectedVariantId: selectedVariant.id,
     ));
+  }
+
+  Future<void> _onVariantTrackToggle(
+    VariantTrackToggle event,
+    Emitter<ProductsExploreState> emit,
+  ) async {
+    try {
+      final userId = _authRepository.user?.id;
+      final int index = event.product.variants.indexOf(event.selectedVariant);
+
+      if (event.selectedVariant.isTracked) {
+        // Untrack the variant
+        await APIService.untrackVariant(userId!, event.selectedVariant.id);
+      } else {
+        // Track the variant
+        await APIService.trackVariant(userId!, event.selectedVariant.id);
+      }
+
+      event.product.variants[index] = event.product.variants[index]
+          .copyWith(isTracked: !event.selectedVariant.isTracked);
+
+      emit(VariantTrackToggleSuccess(
+        product: event.product,
+        selectedVariantId: event.selectedVariant.id,
+      ));
+    } catch (e) {
+      emit(VariantTrackToggleFailure());
+      emit(ProductDetailFetchSuccess(
+        product: event.product,
+        selectedVariantId: event.selectedVariant.id,
+      ));
+    }
+  }
+
+  Future<void> _onVariantSaveToggle(
+    VariantSaveToggle event,
+    Emitter<ProductsExploreState> emit,
+  ) async {
+    try {
+      final userId = _authRepository.user?.id;
+      final int index = event.product.variants.indexOf(event.selectedVariant);
+
+      if (event.selectedVariant.isSaved) {
+        // Unsave the variant
+        await APIService.unsaveVariant(userId!, event.selectedVariant.id);
+      } else {
+        // Save the variant
+        await APIService.saveVariant(userId!, event.selectedVariant.id);
+      }
+
+      event.product.variants[index] = event.product.variants[index]
+          .copyWith(isSaved: !event.selectedVariant.isSaved);
+
+      emit(VariantSaveToggleSuccess(
+        product: event.product,
+        selectedVariantId: event.selectedVariant.id,
+      ));
+    } catch (e) {
+      emit(VariantSaveToggleFailure());
+      emit(ProductDetailFetchSuccess(
+        product: event.product,
+        selectedVariantId: event.selectedVariant.id,
+      ));
+    }
   }
 
   Future<void> _onProductSearch(
