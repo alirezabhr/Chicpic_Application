@@ -11,8 +11,8 @@ import 'package:chicpic/bloc/login/login_bloc.dart';
 import 'package:chicpic/models/auth/login_user_data.dart';
 
 import 'package:chicpic/ui/auth/widgets/submit_button.dart';
-import 'package:chicpic/ui/auth/widgets/auth_divider.dart';
-import 'package:chicpic/ui/auth/widgets/google_button.dart';
+// import 'package:chicpic/ui/auth/widgets/auth_divider.dart';
+// import 'package:chicpic/ui/auth/widgets/google_button.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -135,11 +135,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   )
                                 : null,
                           ),
-                          const AuthDivider(),
-                          GoogleButton(
-                            onPressed: state is LoginLoading ? null : () {},
-                            label: 'Sign in with Google',
-                          ),
+                          // const AuthDivider(),
+                          // GoogleButton(
+                          //   onPressed: state is LoginLoading ? null : () {},
+                          //   label: 'Sign in with Google',
+                          // ),
                         ],
                       );
                     },
