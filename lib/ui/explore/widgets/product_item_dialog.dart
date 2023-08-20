@@ -17,6 +17,7 @@ import 'package:chicpic/ui/shop/widgets/shop_icon.dart';
 import 'package:chicpic/ui/explore/widgets/color_selection.dart';
 import 'package:chicpic/ui/explore/widgets/size_selection.dart';
 import 'package:chicpic/ui/explore/widgets/product_attributes.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProductItemDialog extends StatelessWidget {
   final int productId;
@@ -239,7 +240,13 @@ class BuyButton extends StatelessWidget {
 
   final Color textStrokeColor = Colors.white;
 
-  Future<void> _launchUrl(BuildContext context) async {
+  Future<void> _openWebsite(BuildContext context) async {
+    if (!await launchUrl(
+      Uri.parse(variant.link),
+      mode: LaunchMode.externalApplication,
+    )) {
+      showSnackBar(context, 'Could not open the website', SnackBarStatus.error);
+    }
   }
 
   @override
@@ -247,7 +254,7 @@ class BuyButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: variant.isAvailable
           ? () {
-              _launchUrl(context);
+              _openWebsite(context);
             }
           : null,
       style: ElevatedButton.styleFrom(
