@@ -49,6 +49,11 @@ class ProductsExploreBloc
     }
     emit(ProductsExploreFetchLoading(page: explorePage));
 
+    // Remind user to add additional info
+    if (await _authRepository.shouldRemindUserAdditional()) {
+      emit(ProductsExploreFetchRemindUserAdditional());
+    }
+
     try {
       Pagination<VariantPreview> pagination =
           await APIService.exploreVariants(page: explorePage);

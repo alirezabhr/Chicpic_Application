@@ -9,6 +9,7 @@ import 'package:chicpic/statics/insets.dart';
 import 'package:chicpic/models/product/variant.dart';
 
 import 'package:chicpic/ui/base_widgets/variant_preview_widget.dart';
+import 'package:chicpic/ui/explore/widgets/user_additional_reminder_dialog.dart';
 
 class ProductsExplore extends StatelessWidget {
   const ProductsExplore({Key? key}) : super(key: key);
@@ -36,7 +37,17 @@ class ProductsExplore extends StatelessWidget {
           ),
         ),
         const SizedBox(height: Insets.small),
-        BlocBuilder<ProductsExploreBloc, ProductsExploreState>(
+        BlocConsumer<ProductsExploreBloc, ProductsExploreState>(
+          listener: (context, state) {
+            if (state is ProductsExploreFetchRemindUserAdditional) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const UserAdditionalReminderDialog();
+                },
+              );
+            }
+          },
           builder: (context, state) {
             if (state is ProductsExploreFetchLoading && state.page == 1) {
               return const SizedBox(

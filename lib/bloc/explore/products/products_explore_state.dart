@@ -5,6 +5,8 @@ abstract class ProductsExploreState {}
 
 class ProductsExploreInitial extends ProductsExploreState {}
 
+class ProductsExploreFetchRemindUserAdditional extends ProductsExploreState {}
+
 class ProductsExploreFetchLoading extends ProductsExploreState {
   final int page;
 

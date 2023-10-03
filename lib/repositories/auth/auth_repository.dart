@@ -49,6 +49,16 @@ class AuthRepository {
     await saveUserRefreshToken(tokens.refreshToken);
   }
 
+  Future<void> saveUserAdditionalReminder({int remindIn = 0}) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Set reminder to next request
+    prefs.setInt(SharedPrefKeys.userAdditionalReminder, remindIn);
+  }
+
+  Future<void> saveUserDefaultSettings() async {
+    await saveUserAdditionalReminder();
+  }
+
   Future<void> clearUserTokens() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(SharedPrefKeys.userAccessToken);
@@ -73,12 +83,14 @@ class AuthRepository {
     final Response response = await APIService.signup(data);
     _user = User.fromMap(response.data);
     saveUserTokens(_user!.tokens);
+    saveUserDefaultSettings();
   }
 
   Future<void> login(LoginUserData data) async {
     final Response response = await APIService.login(data);
     _user = User.fromMap(response.data);
     saveUserTokens(_user!.tokens);
+    saveUserDefaultSettings();
   }
 
   Future<void> submitUserAdditional(UserAdditional data) async {
@@ -91,5 +103,25 @@ class AuthRepository {
     _user = _user!.copyWith(
       userAdditional: UserAdditional.fromJson(response.data),
     );
+  }
+
+  Future<bool> shouldRemindUserAdditional() async {
+    if (_user?.userAdditional == null) {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final int? reminder = prefs.getInt(SharedPrefKeys.userAdditionalReminder);
+      if (reminder == null) {
+        await saveUserAdditionalReminder(remindIn:5);
+        return true;
+      }
+      if (reminder > 0) {
+        await saveUserAdditionalReminder(remindIn: reminder - 1);
+        return false;
+      } else {
+        await saveUserAdditionalReminder(remindIn: 5);
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
 }
