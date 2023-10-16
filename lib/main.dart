@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'package:chicpic/statics/theme.dart';
 
@@ -18,66 +20,75 @@ import 'app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  final isProduction = dotenv.env['IS_PRODUCTION']?.toLowerCase() == 'true';
 
-  runApp(
-    MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider(create: (context) => AuthRepository()),
-      ],
-      child: MultiBlocProvider(
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = dotenv.env['SENTRY_DSN'];
+      options.environment = isProduction ? 'production' : 'development';
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(
+      MultiRepositoryProvider(
         providers: [
-          BlocProvider<AuthBloc>(
-            create: (BuildContext context) {
-              final AuthRepository authRepository =
-                  RepositoryProvider.of<AuthRepository>(context);
-              return AuthBloc(authRepository)..add(AppLoaded());
-            },
-          ),
-          BlocProvider<SignupBloc>(
-            create: (BuildContext context) {
-              final AuthRepository authRepository =
-                  RepositoryProvider.of<AuthRepository>(context);
-              return SignupBloc(authRepository);
-            },
-          ),
-          BlocProvider<LoginBloc>(
-            create: (BuildContext context) {
-              final AuthRepository authRepository =
-                  RepositoryProvider.of<AuthRepository>(context);
-              return LoginBloc(authRepository);
-            },
-          ),
-          BlocProvider<UserAdditionalBloc>(
-            create: (BuildContext context) {
-              final AuthRepository authRepository =
-              RepositoryProvider.of<AuthRepository>(context);
-              return UserAdditionalBloc(authRepository);
-            },
-          ),
-          BlocProvider<ShopsExploreBloc>(
-            create: (BuildContext context) {
-              return ShopsExploreBloc();
-            },
-          ),
-          BlocProvider<ProductsExploreBloc>(
-            create: (BuildContext context) {
-              final AuthRepository authRepository =
-              RepositoryProvider.of<AuthRepository>(context);
-              return ProductsExploreBloc(authRepository);
-            },
-          ),
-          BlocProvider<CategoryBloc>(
-            create: (BuildContext context) {
-              return CategoryBloc();
-            },
-          ),
-          BlocProvider<ShopBloc>(
-            create: (BuildContext context) {
-              return ShopBloc();
-            },
-          ),
+          RepositoryProvider(create: (context) => AuthRepository()),
         ],
-        child: const MyApp(),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<AuthBloc>(
+              create: (BuildContext context) {
+                final AuthRepository authRepository =
+                    RepositoryProvider.of<AuthRepository>(context);
+                return AuthBloc(authRepository)..add(AppLoaded());
+              },
+            ),
+            BlocProvider<SignupBloc>(
+              create: (BuildContext context) {
+                final AuthRepository authRepository =
+                    RepositoryProvider.of<AuthRepository>(context);
+                return SignupBloc(authRepository);
+              },
+            ),
+            BlocProvider<LoginBloc>(
+              create: (BuildContext context) {
+                final AuthRepository authRepository =
+                    RepositoryProvider.of<AuthRepository>(context);
+                return LoginBloc(authRepository);
+              },
+            ),
+            BlocProvider<UserAdditionalBloc>(
+              create: (BuildContext context) {
+                final AuthRepository authRepository =
+                    RepositoryProvider.of<AuthRepository>(context);
+                return UserAdditionalBloc(authRepository);
+              },
+            ),
+            BlocProvider<ShopsExploreBloc>(
+              create: (BuildContext context) {
+                return ShopsExploreBloc();
+              },
+            ),
+            BlocProvider<ProductsExploreBloc>(
+              create: (BuildContext context) {
+                final AuthRepository authRepository =
+                    RepositoryProvider.of<AuthRepository>(context);
+                return ProductsExploreBloc(authRepository);
+              },
+            ),
+            BlocProvider<CategoryBloc>(
+              create: (BuildContext context) {
+                return CategoryBloc();
+              },
+            ),
+            BlocProvider<ShopBloc>(
+              create: (BuildContext context) {
+                return ShopBloc();
+              },
+            ),
+          ],
+          child: const MyApp(),
+        ),
       ),
     ),
   );
