@@ -42,6 +42,8 @@ class _GenderInterestedFormState extends State<GenderInterestedForm> {
           value: _selectedGender,
           onChanged: (GenderChoices? newValue) async {
             BlocProvider.of<UserAdditionalBloc>(context).gender = newValue!;
+            BlocProvider.of<UserAdditionalBloc>(context).shoeSize.gender =
+                newValue;
             setState(() {
               _selectedGender = newValue;
             });

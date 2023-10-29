@@ -6,7 +6,9 @@ import 'package:meta/meta.dart';
 
 import 'package:chicpic/repositories/auth/auth_repository.dart';
 
-import 'package:chicpic/models/measurement_units.dart';
+import 'package:chicpic/models/measurements/mass.dart';
+import 'package:chicpic/models/measurements/length.dart';
+import 'package:chicpic/models/measurements/shoe_size.dart';
 import 'package:chicpic/models/auth/gender_choices.dart';
 import 'package:chicpic/models/auth/shirt_fit.dart';
 import 'package:chicpic/models/auth/trouser_fit.dart';
@@ -27,7 +29,7 @@ class DefaultUserAdditionalConfig {
   static final Length waistSize = Length(cmValue: 50);
   static final Length hipsSize = Length(cmValue: 80);
   static final Length inseam = Length(cmValue: 110);
-  static const double? shoeSize = null;
+  static final ShoeSize shoeSize = ShoeSize(gender: gender);
   static final List<ShirtFit> shirtFits = [];
   static final List<TrouserFit> trouserFits = [];
 }
@@ -55,7 +57,7 @@ class UserAdditionalBloc
   late Length waistSize;
   late Length hipsSize;
   late Length inseam;
-  double? shoeSize;
+  late ShoeSize shoeSize;
   late List<ShirtFit> shirtFits;
   late List<TrouserFit> trouserFits;
 
@@ -78,7 +80,7 @@ class UserAdditionalBloc
       waistSize = Length(cmValue: userAdditional.waistSize);
       hipsSize = Length(cmValue: userAdditional.hipsSize);
       inseam = Length(cmValue: userAdditional.inseam);
-      shoeSize = userAdditional.shoeSize;
+      shoeSize = ShoeSize(gender: gender, value: userAdditional.shoeSize);
       shirtFits = userAdditional.shirtFits;
       trouserFits = userAdditional.trouserFits;
     } else {
@@ -141,7 +143,7 @@ class UserAdditionalBloc
         waistSize: (waistSize..convertToCm()).cmValue,
         hipsSize: (hipsSize..convertToCm()).cmValue,
         inseam: (inseam..convertToCm()).cmValue,
-        shoeSize: shoeSize!,
+        shoeSize: (shoeSize..convertToUs()).value,
         shirtFits: shirtFits,
         trouserFits: trouserFits,
       );
