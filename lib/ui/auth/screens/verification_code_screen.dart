@@ -1,5 +1,6 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:chicpic/app_router.dart';
@@ -42,6 +43,25 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
     return (otp.length == _otpLength) && (int.tryParse(otp) != null);
   }
 
+  void setOTP(String otp) {
+    _fieldOne.text = otp[0];
+    _fieldTwo.text = otp[1];
+    _fieldThree.text = otp[2];
+    _fieldFour.text = otp[3];
+    _fieldFive.text = otp[4];
+    _fieldSix.text = otp[5];
+    FocusScope.of(context).unfocus();
+  }
+
+  void pasteOTP() async {
+    final clipboardData = await Clipboard.getData(Clipboard.kTextPlain);
+    final String text = clipboardData?.text ?? '';
+    final String otpStr = text.replaceAll(RegExp(r'[^0-9]'), '');
+    if (otpStr.length == 6) {
+      setOTP(otpStr);
+    }
+  }
+
   void _routeTo(String routeName) {
     Navigator.pushReplacementNamed(context, routeName);
   }
@@ -54,7 +74,8 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String userEmail = ModalRoute.of(context)!.settings.arguments as String;
+    final String userEmail =
+        ModalRoute.of(context)!.settings.arguments as String;
 
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
@@ -99,12 +120,16 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  OtpInput(controller: _fieldOne, autoFocus: true),
-                  OtpInput(controller: _fieldTwo),
-                  OtpInput(controller: _fieldThree),
-                  OtpInput(controller: _fieldFour),
-                  OtpInput(controller: _fieldFive),
-                  OtpInput(controller: _fieldSix),
+                  OtpInput(
+                    controller: _fieldOne,
+                    autoFocus: true,
+                    onPaste: pasteOTP,
+                  ),
+                  OtpInput(controller: _fieldTwo, onPaste: pasteOTP),
+                  OtpInput(controller: _fieldThree, onPaste: pasteOTP),
+                  OtpInput(controller: _fieldFour, onPaste: pasteOTP),
+                  OtpInput(controller: _fieldFive, onPaste: pasteOTP),
+                  OtpInput(controller: _fieldSix, onPaste: pasteOTP),
                 ],
               ),
             ),
