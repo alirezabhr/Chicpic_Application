@@ -80,6 +80,10 @@ class _UserAdditionalScreenState extends State<UserAdditionalScreen> {
     final Size deviceSize = MediaQuery.of(context).size;
 
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text('Add Your Body Size'),
+      ),
       body: BlocConsumer<UserAdditionalBloc, UserAdditionalState>(
         listener: (context, state) {
           if (state is UserAdditionalSubmitSuccess) {

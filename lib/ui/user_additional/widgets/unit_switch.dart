@@ -20,8 +20,8 @@ class UnitSwitch<T> extends StatefulWidget {
 }
 
 class _UnitSwitchState<T> extends State<UnitSwitch<T>> {
-  final double itemHeight = 20;
-  final double itemWidth = 30;
+  final double itemHeight = 28;
+  final double itemWidth = 40;
   late T currentValue;
 
   @override

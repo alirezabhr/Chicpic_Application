@@ -89,9 +89,9 @@ Widget createUserAdditionalForm({
                                   color: Colors.white,
                                 ),
                               )
-                            : FittedBox(
+                            : const FittedBox(
                               child: Row(
-                                  children: const [
+                                  children: [
                                     Text(
                                       'Continue',
                                       style: TextStyle(
