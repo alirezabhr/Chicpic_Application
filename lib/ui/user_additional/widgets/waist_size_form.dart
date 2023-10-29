@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
 
-import 'package:chicpic/models/measurement_units.dart';
+import 'package:chicpic/models/measurements/length.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
