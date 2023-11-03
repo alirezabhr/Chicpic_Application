@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chicpic/bloc/category/category_bloc.dart';
 
 import 'package:chicpic/models/product/category.dart';
-import 'package:chicpic/models/product/product.dart';
+import 'package:chicpic/models/product/variant.dart';
 
-import 'package:chicpic/ui/base_widgets/product_preview_widget.dart';
+import 'package:chicpic/ui/base_widgets/variant_preview_widget.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({Key? key}) : super(key: key);
@@ -24,10 +24,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
       final blocState = BlocProvider.of<CategoryBloc>(context).state;
-      if (blocState is! CategoryProductsFetchLoading &&
-          blocState is! CategoryProductsFetchFailure) {
+      if (blocState is! CategoryVariantsFetchLoading &&
+          blocState is! CategoryVariantsFetchFailure) {
         BlocProvider.of<CategoryBloc>(context).add(
-          CategoryProductsFetch(category, firstPage: false),
+          CategoryVariantsFetch(category, firstPage: false),
         );
       }
     }
@@ -56,26 +56,26 @@ class _CategoryScreenState extends State<CategoryScreen> {
       ),
       body: BlocBuilder<CategoryBloc, CategoryState>(
         builder: (context, state) {
-          if (state is CategoryProductsFetchLoading) {
+          if (state is CategoryVariantsFetchLoading) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            List<ProductPreview> products =
-                BlocProvider.of<CategoryBloc>(context).products;
+            List<VariantPreview> variants =
+                BlocProvider.of<CategoryBloc>(context).variants;
 
             return RefreshIndicator(
               onRefresh: () async {
                 BlocProvider.of<CategoryBloc>(context).add(
-                  CategoryProductsFetch(category, firstPage: true),
+                  CategoryVariantsFetch(category, firstPage: true),
                 );
               },
               child: GridView.builder(
                 controller: _scrollController,
-                itemCount: products.length,
+                itemCount: variants.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  return ProductPreviewWidget(product: products[index]);
+                  return VariantPreviewWidget(variant: variants[index]);
                 },
               ),
             );

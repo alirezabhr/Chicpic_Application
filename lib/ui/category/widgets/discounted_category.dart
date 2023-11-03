@@ -33,7 +33,7 @@ class DiscountedCategory extends StatelessWidget {
         final tmpCategory =
             Category(title: 'Offers', id: 0, gender: '', image: '');
         BlocProvider.of<CategoryBloc>(context).add(
-          DiscountedProductsFetch(
+          DiscountedVariantsFetch(
             tmpCategory,
             discountPercentage,
             firstPage: true,

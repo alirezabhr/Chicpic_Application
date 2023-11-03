@@ -1,77 +1,76 @@
 import 'package:bloc/bloc.dart';
 import 'package:chicpic/models/pagination.dart';
 import 'package:chicpic/models/product/category.dart';
+import 'package:chicpic/models/product/variant.dart';
 import 'package:chicpic/services/api_service.dart';
 import 'package:meta/meta.dart';
-
-import 'package:chicpic/models/product/product.dart';
 
 part 'category_event.dart';
 
 part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
-  List<ProductPreview> products = [];
+  List<VariantPreview> variants = [];
   int page = 1;
 
   CategoryBloc() : super(CategoryInitial()) {
-    on<CategoryProductsFetch>(_onCategoryProductsFetch);
-    on<DiscountedProductsFetch>(_onDiscountedProductsFetch);
+    on<CategoryVariantsFetch>(_onCategoryVariantsFetch);
+    on<DiscountedVariantsFetch>(_onDiscountedVariantsFetch);
   }
 
-  Future<void> _onCategoryProductsFetch(
-    CategoryProductsFetch event,
+  Future<void> _onCategoryVariantsFetch(
+    CategoryVariantsFetch event,
     Emitter<CategoryState> emit,
   ) async {
-    emit(CategoryProductsFetchLoading(event.category));
+    emit(CategoryVariantsFetchLoading(event.category));
     if (event.firstPage) {
       page = 1;
-      products = [];
+      variants = [];
     }
 
     try {
-      Pagination<ProductPreview> pagination =
-          await APIService.getCategoryProducts(
+      Pagination<VariantPreview> pagination =
+          await APIService.getCategoryVariants(
         id: event.category.id,
         page: page,
       );
-      products = products + pagination.results;
+      variants = variants + pagination.results;
       page += 1;
 
-      emit(CategoryProductsFetchSuccess(
+      emit(CategoryVariantsFetchSuccess(
         category: event.category,
-        products: products,
+        variants: variants,
       ));
     } catch (_) {
-      emit(CategoryProductsFetchFailure());
+      emit(CategoryVariantsFetchFailure());
     }
   }
 
-  Future<void> _onDiscountedProductsFetch(
-    DiscountedProductsFetch event,
+  Future<void> _onDiscountedVariantsFetch(
+    DiscountedVariantsFetch event,
     Emitter<CategoryState> emit,
   ) async {
-    emit(CategoryProductsFetchLoading(event.category));
+    emit(CategoryVariantsFetchLoading(event.category));
     if (event.firstPage) {
       page = 1;
-      products = [];
+      variants = [];
     }
 
     try {
-      Pagination<ProductPreview> pagination =
-      await APIService.getDiscountedProducts(
+      Pagination<VariantPreview> pagination =
+      await APIService.getDiscountedVariants(
         discount: event.discount,
         page: page,
       );
-      products = products + pagination.results;
+      variants = variants + pagination.results;
       page += 1;
 
-      emit(CategoryProductsFetchSuccess(
+      emit(CategoryVariantsFetchSuccess(
         category: event.category,
-        products: products,
+        variants: variants,
       ));
     } catch (_) {
-      emit(CategoryProductsFetchFailure());
+      emit(CategoryVariantsFetchFailure());
     }
   }
 }

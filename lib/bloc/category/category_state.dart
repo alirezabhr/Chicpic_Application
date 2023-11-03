@@ -5,32 +5,20 @@ abstract class CategoryState {}
 
 class CategoryInitial extends CategoryState {}
 
-class CategoryProductsFetchLoading extends CategoryState {
+class CategoryVariantsFetchLoading extends CategoryState {
   final Category category;
 
-  CategoryProductsFetchLoading(this.category);
+  CategoryVariantsFetchLoading(this.category);
 }
 
-class CategoryProductsFetchSuccess extends CategoryState {
+class CategoryVariantsFetchSuccess extends CategoryState {
   final Category category;
-  final List<ProductPreview> products;
+  final List<VariantPreview> variants;
 
-  CategoryProductsFetchSuccess({
+  CategoryVariantsFetchSuccess({
     required this.category,
-    required this.products,
+    required this.variants,
   });
 }
 
-class CategoryProductsFetchFailure extends CategoryState {}
-
-class DiscountedProductsFetchLoading extends CategoryState {}
-
-class DiscountedProductsFetchSuccess extends CategoryState {
-  final List<ProductPreview> products;
-
-  DiscountedProductsFetchSuccess({
-    required this.products,
-  });
-}
-
-class DiscountedProductsFetchFailure extends CategoryState {}
+class CategoryVariantsFetchFailure extends CategoryState {}

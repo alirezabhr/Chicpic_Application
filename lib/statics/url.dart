@@ -24,9 +24,10 @@ abstract class APIUrls {
 
   static const String categories = '${_clothing}categories/';
   static const String products = '${_clothing}products/';
+  static const String variants = '${_clothing}variants/';
 
-  static String categoryProducts({required int categoryId, int page = 1}) {
-    return '$categories$categoryId/products/?page=$page';
+  static String categoryVariants({required int categoryId, int page = 1}) {
+    return '$categories$categoryId/variants/?page=$page';
   }
 
   static String shops({int page = 1}) {
@@ -45,8 +46,8 @@ abstract class APIUrls {
     return '$products$productId/';
   }
 
-  static String discountedProducts(int discount, {int page = 1}) {
-    return '$products?discount=$discount&page=$page';
+  static String discountedVariants(int discount, {int page = 1}) {
+    return '$variants?discount=$discount&page=$page';
   }
 
   static String searchProduct({required String searchText, int page = 1}) {

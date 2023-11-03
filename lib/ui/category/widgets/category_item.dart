@@ -25,7 +25,7 @@ class CategoryItem extends StatelessWidget {
       ),
       onTap: () {
         BlocProvider.of<CategoryBloc>(context).add(
-          CategoryProductsFetch(category, firstPage: true),
+          CategoryVariantsFetch(category, firstPage: true),
         );
         Navigator.of(context).pushNamed(
           AppRouter.category,

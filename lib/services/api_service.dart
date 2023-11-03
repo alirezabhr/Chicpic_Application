@@ -69,38 +69,38 @@ class APIService {
     return response.data.map<Category>((e) => Category.fromMap(e)).toList();
   }
 
-  static Future<Pagination<ProductPreview>> getCategoryProducts({
+  static Future<Pagination<VariantPreview>> getCategoryVariants({
     required int id,
     int page = 1,
   }) async {
     Response response = await Client.instance.get(
-      APIUrls.categoryProducts(categoryId: id, page: page),
+      APIUrls.categoryVariants(categoryId: id, page: page),
     );
 
-    return Pagination<ProductPreview>(
+    return Pagination<VariantPreview>(
       count: response.data['count'],
       next: response.data['next'],
       previous: response.data['previous'],
       results: response.data['results']
-          .map<ProductPreview>((e) => ProductPreview.fromMap(e))
+          .map<VariantPreview>((e) => VariantPreview.fromMap(e))
           .toList(),
     );
   }
 
-  static Future<Pagination<ProductPreview>> getDiscountedProducts({
+  static Future<Pagination<VariantPreview>> getDiscountedVariants({
     required int discount,
     int page = 1,
   }) async {
     Response response = await Client.instance.get(
-      APIUrls.discountedProducts(discount, page: page),
+      APIUrls.discountedVariants(discount, page: page),
     );
 
-    return Pagination<ProductPreview>(
+    return Pagination<VariantPreview>(
       count: response.data['count'],
       next: response.data['next'],
       previous: response.data['previous'],
       results: response.data['results']
-          .map<ProductPreview>((e) => ProductPreview.fromMap(e))
+          .map<VariantPreview>((e) => VariantPreview.fromMap(e))
           .toList(),
     );
   }
