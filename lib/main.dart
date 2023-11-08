@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:chicpic/statics/theme.dart';
 
@@ -94,13 +95,33 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String appName = '';
+
+  setAppName() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      appName = packageInfo.appName;
+    });
+  }
+
+  @override
+  void initState() {
+    setAppName();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Chicpic',
+      title: appName,
       theme: ThemeData(
         fontFamily: 'Nunito',
         primarySwatch: CustomTheme.primaryColor,

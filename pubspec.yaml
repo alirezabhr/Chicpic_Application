@@ -45,6 +45,7 @@ dependencies:
   url_launcher: ^6.1.12
   flutter_dotenv: ^5.1.0
   sentry_flutter: ^7.10.1
+  package_info_plus: ^4.2.0
 
 dev_dependencies:
   flutter_test:

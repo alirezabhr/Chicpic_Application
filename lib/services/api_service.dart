@@ -1,20 +1,26 @@
-import 'package:chicpic/models/auth/gender_choices.dart';
 import 'package:dio/dio.dart';
 
 import 'package:chicpic/services/client.dart';
 
 import 'package:chicpic/statics/url.dart';
 
+import 'package:chicpic/models/app_version.dart';
 import 'package:chicpic/models/pagination.dart';
 import 'package:chicpic/models/auth/login_user_data.dart';
 import 'package:chicpic/models/auth/signup_user_data.dart';
 import 'package:chicpic/models/auth/user_additional.dart';
+import 'package:chicpic/models/auth/gender_choices.dart';
 import 'package:chicpic/models/product/category.dart';
 import 'package:chicpic/models/product/shop.dart';
 import 'package:chicpic/models/product/variant.dart';
 import 'package:chicpic/models/product/product.dart';
 
 class APIService {
+  static Future<List<AppVersion>> getVersions() async {
+    Response response = await Dio().get(BaseUrls.appVersions);
+    return response.data.map<AppVersion>((e) => AppVersion.fromMap(e)).toList();
+  }
+
   // Users
   static Future<Response> userCheckAuthentication() async {
     return await Client.instance.get(

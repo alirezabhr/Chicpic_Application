@@ -1,14 +1,22 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:progress_indicators/progress_indicators.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:chicpic/app_router.dart';
+
+import 'package:chicpic/services/api_service.dart';
 
 import 'package:chicpic/bloc/auth/auth_bloc.dart';
 
 import 'package:chicpic/statics/assets_helper.dart';
+
+import 'package:chicpic/models/app_version.dart';
 
 import 'package:chicpic/ui/splash/widgets/connection_failed_dialog.dart';
 
@@ -21,9 +29,20 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late Timer _timer;
+  String appName = '';
+  String currentVersion = '';
   bool _isLoaded = false;
+  bool _needUpdate = true;
   final int showSplashSeconds = 3;
   final int checkLoadingMilliseconds = 500;
+
+  setAppInfo() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      appName = packageInfo.appName;
+      currentVersion = packageInfo.version;
+    });
+  }
 
   void startTimer() {
     _isLoaded = false;
@@ -38,9 +57,59 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
+  showUpgradeDialog(AppVersion version) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        title: const Text('New Version Available'),
+        content: Text('Version ${version.version} is available. '
+            'Please update the app to continue using it.'),
+        actions: [
+          TextButton(
+            onPressed: () =>
+                SystemChannels.platform.invokeMethod('SystemNavigator.pop'),
+            child: const Text('Close'),
+          ),
+          TextButton(
+            onPressed: () async {
+              await launchUrl(
+                Uri.parse(version.url),
+                mode: LaunchMode.externalApplication,
+              );
+            },
+            child: const Text('Update'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  checkAppVersion() async {
+    // Get current platform
+    final String platform = Platform.isAndroid ? 'android' : 'ios';
+
+    List<AppVersion> versions = await APIService.getVersions();
+    // Sort versions by latest published date time
+    versions.sort((a, b) => b.publishedAt.compareTo(a.publishedAt));
+    // Get latest version for current platform
+    AppVersion latestVersion =
+        versions.firstWhere((e) => e.platform == platform && e.forceUpdate);
+
+    if (latestVersion.compareVersion(currentVersion) == 1) {
+        showUpgradeDialog(latestVersion);
+    } else {
+      setState(() {
+        _needUpdate = false;
+      });
+    }
+  }
+
   @override
   void initState() {
+    setAppInfo();
     startTimer();
+    checkAppVersion();
     super.initState();
   }
 
@@ -55,7 +124,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _waitAndNavigateTo(String route) async {
-    while (!_isLoaded) {
+    while (!_isLoaded || _needUpdate) {
       await Future.delayed(Duration(milliseconds: checkLoadingMilliseconds));
     }
     _routeTo(route);
@@ -96,7 +165,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 Image.asset(AssetsHelper.logo, scale: 4),
                 const SizedBox(height: 20),
                 Text(
-                  'chicpic',
+                  appName,
                   style: TextStyle(
                     fontFamily: 'Dyna Puff',
                     fontSize: 26,
@@ -120,6 +189,14 @@ class _SplashScreenState extends State<SplashScreen> {
                             ),
                           ),
                         ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'v $currentVersion',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ],
             ),

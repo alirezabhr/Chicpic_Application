@@ -3,6 +3,7 @@ abstract class BaseUrls {
   static const String https = 'https://';
   static const String _developmentBaseUrl = '${http}10.0.2.2:8000/';
   static const String baseUrl = _developmentBaseUrl;
+  static const String appVersions = "https://xmzcs0kq2d.execute-api.ca-central-1.amazonaws.com/chicpic_dev";
 }
 
 abstract class APIUrls {
