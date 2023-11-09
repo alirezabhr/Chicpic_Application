@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
 
+import 'package:chicpic/app_router.dart';
+
 import 'package:chicpic/statics/insets.dart';
 
 import 'package:chicpic/ui/user_additional/widgets/birth_date_form.dart';
@@ -83,6 +85,14 @@ class _UserAdditionalScreenState extends State<UserAdditionalScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Add Your Body Size'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRouter.sizeGuide);
+            },
+            icon: const Icon(Icons.help),
+          ),
+        ],
       ),
       body: BlocConsumer<UserAdditionalBloc, UserAdditionalState>(
         listener: (context, state) {

@@ -10,4 +10,9 @@ abstract class AssetsHelper {
   static const trouserFitNormal = '${_fitsImagesPrefix}trouser_normal.png';
   static const trouserFitLoose = '${_fitsImagesPrefix}trouser_loose.png';
   static const trouserFitTapered = '${_fitsImagesPrefix}trouser_tapered.png';
+
+
+  static const _sizeGuideDir = 'assets/images/size_guide/';
+  static const menSizeGuide = '${_sizeGuideDir}men.png';
+  static const womenSizeGuide = '${_sizeGuideDir}women.png';
 }

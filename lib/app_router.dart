@@ -7,6 +7,7 @@ import 'package:chicpic/ui/auth/screens/signup_screen.dart';
 import 'package:chicpic/ui/auth/screens/email_verification_screen.dart';
 import 'package:chicpic/ui/auth/screens/verification_code_screen.dart';
 import 'package:chicpic/ui/user_additional/screens/user_additional_screen.dart';
+import 'package:chicpic/ui/user_additional/screens/size_guide_screen.dart';
 import 'package:chicpic/ui/terms_conditions_privacy_policy/screens/privacy_policy.dart';
 import 'package:chicpic/ui/terms_conditions_privacy_policy/screens/terms_and_condition.dart';
 import 'package:chicpic/ui/category/screens/category_screen.dart';
@@ -23,6 +24,7 @@ abstract class AppRouter {
   static const String emailVerification = "/emailVerification";
   static const String verificationAccount = "/verifyAccount";
   static const String userAdditional = "/userAdditional";
+  static const String sizeGuide = "/size_guide";
   static const String termsConditions = "/terms";
   static const String privacyPolicy = "/privacy";
   static const String category = "/category";
@@ -51,6 +53,8 @@ abstract class AppRouter {
         );
       case userAdditional:
         return MaterialPageRoute(builder: (_) => const UserAdditionalScreen());
+      case sizeGuide:
+        return MaterialPageRoute(builder: (_) => const SizeGuideScreen());
       case termsConditions:
         return MaterialPageRoute(builder: (_) => const TermsConditionsScreen());
       case privacyPolicy:
