@@ -6,6 +6,9 @@ import 'package:chicpic/ui/auth/screens/login_screen.dart';
 import 'package:chicpic/ui/auth/screens/signup_screen.dart';
 import 'package:chicpic/ui/auth/screens/email_verification_screen.dart';
 import 'package:chicpic/ui/auth/screens/verification_code_screen.dart';
+import 'package:chicpic/ui/auth/screens/forget_password.dart';
+import 'package:chicpic/ui/auth/screens/reset_password_verification.dart';
+import 'package:chicpic/ui/auth/screens/reset_password.dart';
 import 'package:chicpic/ui/user_additional/screens/user_additional_screen.dart';
 import 'package:chicpic/ui/user_additional/screens/size_guide_screen.dart';
 import 'package:chicpic/ui/terms_conditions_privacy_policy/screens/privacy_policy.dart';
@@ -23,6 +26,9 @@ abstract class AppRouter {
   static const String signup = "/signup";
   static const String emailVerification = "/emailVerification";
   static const String verificationAccount = "/verifyAccount";
+  static const String forgetPassword = "/forgetPassword";
+  static const String resetPasswordVerification = "/resetPasswordVerification";
+  static const String resetPassword = "/resetPassword";
   static const String userAdditional = "/userAdditional";
   static const String sizeGuide = "/size_guide";
   static const String termsConditions = "/terms";
@@ -49,6 +55,18 @@ abstract class AppRouter {
       case verificationAccount:
         return MaterialPageRoute(
           builder: (_) => const VerificationCodeScreen(),
+          settings: routeSettings,
+        );
+      case forgetPassword:
+        return MaterialPageRoute(builder: (_) => const ForgetPasswordScreen());
+      case resetPasswordVerification:
+        return MaterialPageRoute(
+          builder: (_) => const ResetPasswordVerificationScreen(),
+          settings: routeSettings,
+        );
+      case resetPassword:
+        return MaterialPageRoute(
+          builder: (_) => const ResetPasswordScreen(),
           settings: routeSettings,
         );
       case userAdditional:

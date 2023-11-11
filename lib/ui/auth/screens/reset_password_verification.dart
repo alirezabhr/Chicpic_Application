@@ -1,33 +1,12 @@
+import 'package:chicpic/app_router.dart';
+import 'package:chicpic/bloc/auth/auth_bloc.dart';
+import 'package:chicpic/statics/insets.dart';
+import 'package:chicpic/ui/auth/widgets/otp_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:chicpic/app_router.dart';
-
-import 'package:chicpic/bloc/auth/auth_bloc.dart';
-
-import 'package:chicpic/statics/insets.dart';
-
-import 'package:chicpic/ui/auth/widgets/otp_form.dart';
-
-class VerificationCodeScreen extends StatefulWidget {
-  const VerificationCodeScreen({Key? key}) : super(key: key);
-
-  @override
-  State<VerificationCodeScreen> createState() => _VerificationCodeScreenState();
-}
-
-class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
-  late final AuthBloc authBloc;
-
-  void _routeTo(String routeName) {
-    Navigator.pushReplacementNamed(context, routeName);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    authBloc = BlocProvider.of<AuthBloc>(context);
-  }
+class ResetPasswordVerificationScreen extends StatelessWidget {
+  const ResetPasswordVerificationScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,19 +23,10 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
               ),
             );
           } else if (state is VerificationSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Your account verified.'),
-                backgroundColor: Colors.green,
-              ),
+            Navigator.of(context).pushReplacementNamed(
+              AppRouter.resetPassword,
+              arguments: userEmail,
             );
-            bool hasUserData = authBloc.hasUserData();
-            if (hasUserData) {
-              await authBloc.verifyUser();
-              _routeTo(AppRouter.main);
-            } else {
-              _routeTo(AppRouter.login);
-            }
           }
         },
         child: Column(

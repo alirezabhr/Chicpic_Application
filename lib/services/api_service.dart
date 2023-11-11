@@ -8,6 +8,7 @@ import 'package:chicpic/models/app_version.dart';
 import 'package:chicpic/models/pagination.dart';
 import 'package:chicpic/models/auth/login_user_data.dart';
 import 'package:chicpic/models/auth/signup_user_data.dart';
+import 'package:chicpic/models/auth/reset_password_data.dart';
 import 'package:chicpic/models/auth/user_additional.dart';
 import 'package:chicpic/models/auth/gender_choices.dart';
 import 'package:chicpic/models/product/category.dart';
@@ -36,6 +37,10 @@ class APIService {
   static Future<void> checkVerificationCode(String email, String code) async {
     Map data = {'email': email, 'code': code};
     await Client.instance.post(APIUrls.checkVerificationCode, data: data);
+  }
+
+  static Future<void> resetPassword(ResetPasswordData data) async {
+    await Client.instance.post(APIUrls.resetPassword, data: data.toMap());
   }
 
   static Future<Response> signup(SignupUserData data) async {

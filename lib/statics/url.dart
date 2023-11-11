@@ -2,6 +2,7 @@ abstract class BaseUrls {
   static const String http = 'http://';
   static const String https = 'https://';
   static const String _developmentBaseUrl = '${http}10.0.2.2:8000/';
+  static const String _productionBaseUrl = '${http}3.99.177.129/';
   static const String baseUrl = _developmentBaseUrl;
   static const String appVersions = "https://xmzcs0kq2d.execute-api.ca-central-1.amazonaws.com/chicpic_dev";
 }
@@ -15,6 +16,7 @@ abstract class APIUrls {
   static const String signup = '${_users}signup/';
   static const String requestVerificationCode = '${_users}otp/request/';
   static const String checkVerificationCode = '${_users}otp/verify/';
+  static const String resetPassword = '${_users}reset-password/';
   static const String tokenRefresh = '${_users}token/refresh/';
   static String userAdditional(int userId) {
     return '$_users$userId/additional/';

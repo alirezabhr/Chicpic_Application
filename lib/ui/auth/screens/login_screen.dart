@@ -11,9 +11,9 @@ import 'package:chicpic/bloc/login/login_bloc.dart';
 import 'package:chicpic/models/auth/login_user_data.dart';
 
 import 'package:chicpic/ui/auth/widgets/submit_button.dart';
+
 // import 'package:chicpic/ui/auth/widgets/auth_divider.dart';
 // import 'package:chicpic/ui/auth/widgets/google_button.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -105,7 +105,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: Insets.small),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        child: const Text('Forgot Password?'),
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(
+                            AppRouter.forgetPassword,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: Insets.medium),
                   BlocBuilder<LoginBloc, LoginState>(
                     builder: (context, state) {
                       return Column(
@@ -144,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     },
                   ),
-                  const SizedBox(height: Insets.medium),
+                  const SizedBox(height: Insets.xSmall),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

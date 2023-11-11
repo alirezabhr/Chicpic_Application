@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:chicpic/models/auth/reset_password_data.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -23,6 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthRequestVerificationCode>(_onAuthRequestVerificationCode);
     on<AuthCheckVerificationCode>(_onAuthCheckVerificationCode);
     on<AuthLogout>(_onAuthLogout);
+    on<AuthResetPassword>(_onAuthResetPassword);
   }
 
   User? get user => _authRepository.user;
@@ -94,6 +96,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           error: error.errorMessage ?? 'An error occurred'));
     } catch (_) {
       emit(VerificationFailure(error: 'An error occurred'));
+    }
+  }
+
+  Future<void> _onAuthResetPassword(
+    AuthResetPassword event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+
+    try {
+      await APIService.resetPassword(event.resetPasswordData);
+      emit(AuthResetPasswordSuccess());
+    } on BadRequestException catch (error) {
+      emit(AuthResetPasswordFailure(
+          error: error.errorMessage ?? 'An error occurred'));
+    } catch (_) {
+      emit(AuthResetPasswordFailure(error: 'An error occurred'));
     }
   }
 

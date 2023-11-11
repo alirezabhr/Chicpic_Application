@@ -30,4 +30,13 @@ class AuthCheckVerificationCode extends AuthEvent {
   List<Object> get props => [email, code];
 }
 
+class AuthResetPassword extends AuthEvent {
+  final ResetPasswordData resetPasswordData;
+
+  const AuthResetPassword(this.resetPasswordData);
+
+  @override
+  List<Object> get props => [resetPasswordData];
+}
+
 class AuthLogout extends AuthEvent {}
