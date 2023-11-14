@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 import 'package:chicpic/services/exceptions.dart';
 
-import 'package:chicpic/statics/url.dart';
+import 'package:chicpic/statics/urls.dart';
 
 import 'package:chicpic/repositories/auth/auth_repository.dart';
 
@@ -84,6 +84,7 @@ class ClientInterceptor extends Interceptor {
     if (userToken != null) {
       dio.options.headers['Authorization'] = userToken;
     }
+    // TODO check if it is only sending "get" requests
     return await dio.request(
       requestOptions.path,
       data: requestOptions.data,

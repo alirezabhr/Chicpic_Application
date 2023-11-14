@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 import 'package:chicpic/services/client.dart';
 
-import 'package:chicpic/statics/url.dart';
+import 'package:chicpic/statics/urls.dart';
 
 import 'package:chicpic/models/app_version.dart';
 import 'package:chicpic/models/pagination.dart';

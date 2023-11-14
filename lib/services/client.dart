@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import 'package:chicpic/statics/url.dart';
+import 'package:chicpic/statics/urls.dart';
 import 'package:chicpic/services/client_interceptor.dart';
 
 abstract class Client {
