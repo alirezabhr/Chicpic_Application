@@ -9,8 +9,9 @@ class ProductsExploreFetchRemindUserAdditional extends ProductsExploreState {}
 
 class ProductsExploreFetchLoading extends ProductsExploreState {
   final int page;
+  final bool firstPage;
 
-  ProductsExploreFetchLoading({required this.page});
+  ProductsExploreFetchLoading({required this.page, required this.firstPage});
 }
 
 class ProductsExploreFetchSuccess extends ProductsExploreState {}
@@ -46,7 +47,11 @@ class ProductDetailFetchSuccess extends ProductsExploreState {
 
 class ProductDetailFetchFailure extends ProductsExploreState {}
 
-class ProductSearchLoading extends ProductsExploreState {}
+class ProductSearchLoading extends ProductsExploreState {
+  final bool firstPage;
+
+  ProductSearchLoading(this.firstPage);
+}
 
 class ProductSearchSuccess extends ProductsExploreState {
   final List<ProductPreview> products;

@@ -7,8 +7,9 @@ class ShopInitial extends ShopState {}
 
 class ShopProductsFetchLoading extends ShopState {
   final Shop shop;
+  final bool firstPage;
 
-  ShopProductsFetchLoading(this.shop);
+  ShopProductsFetchLoading(this.shop, this.firstPage);
 }
 
 class ShopProductsFetchSuccess extends ShopState {

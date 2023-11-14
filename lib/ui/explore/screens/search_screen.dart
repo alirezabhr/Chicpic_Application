@@ -88,8 +88,9 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
             BlocBuilder<ProductsExploreBloc, ProductsExploreState>(
+              // TODO: Customize Search by body size and show variants not products
               builder: (context, state) {
-                if (state is ProductSearchLoading) {
+                if (state is ProductSearchLoading && state.firstPage == true) {
                   return const SizedBox(
                     height: 500,
                     child: Center(child: CircularProgressIndicator()),
@@ -110,6 +111,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     },
                   );
                 } else {
+                  // TODO: fix scroll bug by removing or changing else statement. The problem caused when bloc state is Loading but not first page
                   return Container();
                   // TODO: Recent searches
                   // return const RecentSearches();

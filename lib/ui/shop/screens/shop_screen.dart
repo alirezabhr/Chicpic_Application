@@ -66,7 +66,7 @@ class _ShopScreenState extends State<ShopScreen> {
       ),
       body: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
-          if (state is ShopProductsFetchLoading) {
+          if (state is ShopProductsFetchLoading && state.firstPage == true) {
             return const Center(child: CircularProgressIndicator());
           } else {
             List<ProductPreview> products =

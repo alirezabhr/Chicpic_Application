@@ -24,7 +24,7 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
       ShopProductsFetch event,
       Emitter<ShopState> emit,
       ) async {
-    emit(ShopProductsFetchLoading(event.shop));
+    emit(ShopProductsFetchLoading(event.shop, event.firstPage));
     if (event.firstPage) {
       page = 1;
       products = [];

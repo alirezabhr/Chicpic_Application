@@ -47,7 +47,10 @@ class ProductsExploreBloc
       explorePage = 1;
       variants = [];
     }
-    emit(ProductsExploreFetchLoading(page: explorePage));
+    emit(
+      ProductsExploreFetchLoading(
+          page: explorePage, firstPage: event.firstPage),
+    );
 
     // Remind user to add additional info
     if (await _authRepository.shouldRemindUserAdditional()) {
@@ -180,7 +183,7 @@ class ProductsExploreBloc
     ProductSearch event,
     Emitter<ProductsExploreState> emit,
   ) async {
-    emit(ProductSearchLoading());
+    emit(ProductSearchLoading(event.firstPage));
 
     if (event.firstPage) {
       searchPage = 1;
@@ -209,7 +212,10 @@ class ProductsExploreBloc
       savedVariantsPage = 1;
       savedVariants = [];
     }
-    emit(ProductsExploreFetchLoading(page: savedVariantsPage));
+    emit(
+      ProductsExploreFetchLoading(
+          page: savedVariantsPage, firstPage: event.firstPage),
+    );
 
     try {
       final userId = _authRepository.user?.id;

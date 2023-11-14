@@ -56,7 +56,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
       ),
       body: BlocBuilder<CategoryBloc, CategoryState>(
         builder: (context, state) {
-          if (state is CategoryVariantsFetchLoading) {
+          if (state is CategoryVariantsFetchLoading &&
+              state.firstPage == true) {
             return const Center(child: CircularProgressIndicator());
           } else {
             List<VariantPreview> variants =

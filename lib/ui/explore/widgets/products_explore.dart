@@ -49,7 +49,7 @@ class ProductsExplore extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            if (state is ProductsExploreFetchLoading && state.page == 1) {
+            if (state is ProductsExploreFetchLoading && state.firstPage == true) {
               return const SizedBox(
                 height: 200,
                 child: Center(child: CircularProgressIndicator()),

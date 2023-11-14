@@ -7,8 +7,9 @@ class CategoryInitial extends CategoryState {}
 
 class CategoryVariantsFetchLoading extends CategoryState {
   final Category category;
+  final bool firstPage;
 
-  CategoryVariantsFetchLoading(this.category);
+  CategoryVariantsFetchLoading(this.category, this.firstPage);
 }
 
 class CategoryVariantsFetchSuccess extends CategoryState {

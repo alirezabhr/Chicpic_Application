@@ -22,7 +22,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     CategoryVariantsFetch event,
     Emitter<CategoryState> emit,
   ) async {
-    emit(CategoryVariantsFetchLoading(event.category));
+    emit(CategoryVariantsFetchLoading(event.category, event.firstPage));
     if (event.firstPage) {
       page = 1;
       variants = [];
@@ -50,7 +50,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     DiscountedVariantsFetch event,
     Emitter<CategoryState> emit,
   ) async {
-    emit(CategoryVariantsFetchLoading(event.category));
+    emit(CategoryVariantsFetchLoading(event.category, event.firstPage));
     if (event.firstPage) {
       page = 1;
       variants = [];
