@@ -4,17 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
 
-import 'package:chicpic/ui/user_additional/widgets/user_additional_base_form.dart';
-
 class BirthDateForm extends StatefulWidget {
-  final VoidCallback? backBtnOnPressed;
-  final VoidCallback? continueBtnOnPressed;
-
-  const BirthDateForm({
-    Key? key,
-    this.backBtnOnPressed,
-    this.continueBtnOnPressed,
-  }) : super(key: key);
+  const BirthDateForm({Key? key}) : super(key: key);
 
   @override
   State<BirthDateForm> createState() => _BirthDateFormState();
@@ -23,20 +14,16 @@ class BirthDateForm extends StatefulWidget {
 class _BirthDateFormState extends State<BirthDateForm> {
   final TextEditingController _controller = TextEditingController();
   DateTime? pickedDate;
+  static const int minValidAge = 10; // years
 
-  bool dateIsBefore({
-    required String date,
-    int yearsAgo = 0,
-    int monthsAgo = 0,
-    int daysAgo = 0,
-  }) {
+  bool hasValidAge({required String date}) {
     DateTime today = DateTime.now();
-    DateTime dateAgo = DateTime(
-      today.year - yearsAgo,
-      today.month - monthsAgo,
-      today.day - daysAgo,
+    DateTime lastValidDate = DateTime(
+      today.year - minValidAge,
+      today.month,
+      today.day,
     );
-    return DateTime.parse(date).isBefore(dateAgo);
+    return DateTime.parse(date).isBefore(lastValidDate);
   }
 
   @override
@@ -51,45 +38,37 @@ class _BirthDateFormState extends State<BirthDateForm> {
     BlocProvider.of<UserAdditionalBloc>(context).birthDate = date;
   }
 
-  Widget get content => TextFormField(
-        controller: _controller,
-        decoration: const InputDecoration(
-          icon: Icon(Icons.calendar_today),
-          labelText: "Enter Date",
-        ),
-        readOnly: true,
-        validator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'Birth date is required.';
-          }
-          if (!dateIsBefore(date: value, yearsAgo: 10)) {
-            return 'You must be at least 10 years old.';
-          }
-          return null;
-        },
-        onTap: () async {
-          pickedDate = await showDatePicker(
-            context: context,
-            initialDate: pickedDate ?? DateTime.now(),
-            firstDate: DateTime(1950),
-            lastDate: DateTime.now(),
-          );
-
-          if (pickedDate != null) {
-            setBirthDate(pickedDate!);
-            _controller.text = DateFormat('yyyy-MM-dd').format(pickedDate!);
-          }
-        },
-      );
-
   @override
   Widget build(BuildContext context) {
-    return createUserAdditionalForm(
-      context: context,
-      title: 'Birth Date:',
-      content: content,
-      continueBtnOnPressed: widget.continueBtnOnPressed,
-      backBtnOnPressed: widget.backBtnOnPressed,
+    return TextFormField(
+      controller: _controller,
+      decoration: const InputDecoration(
+        icon: Icon(Icons.calendar_today),
+        labelText: "Enter Date",
+      ),
+      readOnly: true,
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
+          return 'Birth date is required.';
+        }
+        if (!hasValidAge(date: value)) {
+          return 'You must be at least $minValidAge years old.';
+        }
+        return null;
+      },
+      onTap: () async {
+        pickedDate = await showDatePicker(
+          context: context,
+          initialDate: pickedDate ?? DateTime.now(),
+          firstDate: DateTime(1950),
+          lastDate: DateTime.now(),
+        );
+
+        if (pickedDate != null) {
+          setBirthDate(pickedDate!);
+          _controller.text = DateFormat('yyyy-MM-dd').format(pickedDate!);
+        }
+      },
     );
   }
 }

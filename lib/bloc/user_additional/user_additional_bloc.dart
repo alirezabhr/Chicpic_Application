@@ -61,8 +61,10 @@ class UserAdditionalBloc
   late List<ShirtFit> shirtFits;
   late List<TrouserFit> trouserFits;
 
+  bool hasUserAdditional() => _authRepository.user?.userAdditional != null;
+
   void _loadUserAdditionalValues() {
-    if (_authRepository.user?.userAdditional != null) {
+    if (hasUserAdditional()) {
       // load user additional values
       UserAdditional userAdditional = _authRepository.user!.userAdditional!;
 

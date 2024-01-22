@@ -8,17 +8,9 @@ import 'package:chicpic/models/measurements/length.dart';
 import 'package:chicpic/statics/insets.dart';
 
 import 'package:chicpic/ui/user_additional/widgets/unit_switch.dart';
-import 'package:chicpic/ui/user_additional/widgets/user_additional_base_form.dart';
 
 class WaistSizeForm extends StatefulWidget {
-  final VoidCallback? backBtnOnPressed;
-  final VoidCallback? continueBtnOnPressed;
-
-  const WaistSizeForm({
-    Key? key,
-    this.backBtnOnPressed,
-    this.continueBtnOnPressed,
-  }) : super(key: key);
+  const WaistSizeForm({Key? key}) : super(key: key);
 
   @override
   State<WaistSizeForm> createState() => _WaistSizeFormState();
@@ -46,109 +38,101 @@ class _WaistSizeFormState extends State<WaistSizeForm> {
     });
   }
 
-  Widget get content => Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      waistSize.unit == LengthUnit.cm
-          ? TextFormField(
-        controller: _cmController,
-        decoration: const InputDecoration(
-          isDense: true,
-          border: OutlineInputBorder(),
-          labelText: 'Waist Size (cm)',
-        ),
-        enableSuggestions: false,
-        autocorrect: false,
-        keyboardType: TextInputType.number,
-        onChanged: (String? value) {
-          waistSize.cmValue =
-              int.tryParse(value ?? '') ?? waistSize.cmValue;
-        },
-        validator: (String? value) {
-          if (value == null || value.isEmpty) {
-            return 'This field is required.';
-          }
-          return null;
-        },
-      )
-          : Row(
-        children: [
-          Expanded(
-            child: TextFormField(
-              controller: _feetController,
-              decoration: const InputDecoration(
-                isDense: true,
-                border: OutlineInputBorder(),
-                labelText: 'Waist Size (ft)',
-              ),
-              enableSuggestions: false,
-              autocorrect: false,
-              keyboardType: TextInputType.number,
-              onChanged: (String? value) {
-                waistSize.feetValue =
-                    int.tryParse(value ?? '') ?? waistSize.feetValue;
-              },
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return 'This field is required.';
-                }
-                return null;
-              },
-            ),
-          ),
-          const SizedBox(width: Insets.large),
-          Expanded(
-            child: TextFormField(
-              controller: _inchController,
-              decoration: const InputDecoration(
-                isDense: true,
-                border: OutlineInputBorder(),
-                labelText: 'Waist Size (inches)',
-              ),
-              enableSuggestions: false,
-              autocorrect: false,
-              keyboardType: TextInputType.number,
-              onChanged: (String? value) {
-                waistSize.inchesValue =
-                    int.tryParse(value ?? '') ?? waistSize.inchesValue;
-              },
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return 'This field is required.';
-                }
-                return null;
-              },
-            ),
-          ),
-        ],
-      ),
-      const SizedBox(height: Insets.xSmall),
-      UnitSwitch<LengthUnit>(
-        items: LengthUnit.values,
-        initialIndex: LengthUnit.values.indexOf(waistSize.unit),
-        itemTextBuilder: (LengthUnit unit) => unit.abbreviation,
-        onChange: (LengthUnit unit) {
-          setWaistSize(waistSize..convert(unit));
-
-          if (unit == LengthUnit.cm) {
-            _cmController.text = waistSize.cmValue.toString();
-          } else if (unit == LengthUnit.feetInches) {
-            _feetController.text = waistSize.feetValue.toString();
-            _inchController.text = waistSize.inchesValue.toString();
-          }
-        },
-      ),
-    ],
-  );
-
   @override
   Widget build(BuildContext context) {
-    return createUserAdditionalForm(
-      context: context,
-      title: 'Waist Size:',
-      content: content,
-      continueBtnOnPressed: widget.continueBtnOnPressed,
-      backBtnOnPressed: widget.backBtnOnPressed,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        waistSize.unit == LengthUnit.cm
+            ? TextFormField(
+                controller: _cmController,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  labelText: 'Waist Size (cm)',
+                ),
+                enableSuggestions: false,
+                autocorrect: false,
+                keyboardType: TextInputType.number,
+                onChanged: (String? value) {
+                  waistSize.cmValue =
+                      int.tryParse(value ?? '') ?? waistSize.cmValue;
+                },
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'This field is required.';
+                  }
+                  return null;
+                },
+              )
+            : Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _feetController,
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        border: OutlineInputBorder(),
+                        labelText: 'Waist Size (ft)',
+                      ),
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      keyboardType: TextInputType.number,
+                      onChanged: (String? value) {
+                        waistSize.feetValue =
+                            int.tryParse(value ?? '') ?? waistSize.feetValue;
+                      },
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'This field is required.';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: Insets.large),
+                  Expanded(
+                    child: TextFormField(
+                      controller: _inchController,
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        border: OutlineInputBorder(),
+                        labelText: 'Waist Size (inches)',
+                      ),
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      keyboardType: TextInputType.number,
+                      onChanged: (String? value) {
+                        waistSize.inchesValue =
+                            int.tryParse(value ?? '') ?? waistSize.inchesValue;
+                      },
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'This field is required.';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+        const SizedBox(height: Insets.xSmall),
+        UnitSwitch<LengthUnit>(
+          items: LengthUnit.values,
+          initialIndex: LengthUnit.values.indexOf(waistSize.unit),
+          itemTextBuilder: (LengthUnit unit) => unit.abbreviation,
+          onChange: (LengthUnit unit) {
+            setWaistSize(waistSize..convert(unit));
+
+            if (unit == LengthUnit.cm) {
+              _cmController.text = waistSize.cmValue.toString();
+            } else if (unit == LengthUnit.feetInches) {
+              _feetController.text = waistSize.feetValue.toString();
+              _inchController.text = waistSize.inchesValue.toString();
+            }
+          },
+        ),
+      ],
     );
   }
 }
