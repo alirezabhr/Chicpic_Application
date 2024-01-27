@@ -51,8 +51,8 @@ abstract class APIUrls {
     return '$products$productId/';
   }
 
-  static String discountedVariants(int discount, {int page = 1}) {
-    return '$variants?discount=$discount&page=$page';
+  static String discountedVariants(int discount, String gender, {int page = 1}) {
+    return '$variants?discount=$discount&gender=$gender&page=$page';
   }
 
   static String searchProduct({required String searchText, int page = 1}) {

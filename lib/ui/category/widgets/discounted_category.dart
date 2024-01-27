@@ -7,12 +7,15 @@ import 'package:chicpic/statics/insets.dart';
 
 import 'package:chicpic/bloc/category/category_bloc.dart';
 
+import 'package:chicpic/models/auth/gender_choices.dart';
 import 'package:chicpic/models/product/category.dart';
 
 import 'base_category_item.dart';
 
 class DiscountedCategory extends StatelessWidget {
-  const DiscountedCategory({Key? key}) : super(key: key);
+  final GenderChoices gender;
+
+  const DiscountedCategory({required this.gender, Key? key}) : super(key: key);
 
   final int discountPercentage = 50;
 
@@ -30,12 +33,17 @@ class DiscountedCategory extends StatelessWidget {
       ),
       title: 'OFFERS',
       onTap: () {
-        final tmpCategory =
-            Category(title: 'Offers', id: 0, gender: '', image: '');
+        final tmpCategory = Category(
+          title: 'Offers',
+          id: 0,
+          gender: gender.abbreviation,
+          image: '',
+        );
         BlocProvider.of<CategoryBloc>(context).add(
           DiscountedVariantsFetch(
             tmpCategory,
             discountPercentage,
+            gender,
             firstPage: true,
           ),
         );

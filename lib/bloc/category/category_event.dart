@@ -7,13 +7,15 @@ class CategoryVariantsFetch extends CategoryEvent {
   final Category category;
   final bool firstPage;
 
-  CategoryVariantsFetch(this.category, {this.firstPage=true});
+  CategoryVariantsFetch(this.category, {this.firstPage = true});
 }
 
 class DiscountedVariantsFetch extends CategoryEvent {
   final Category category;
   final int discount;
+  final GenderChoices gender;
   final bool firstPage;
 
-  DiscountedVariantsFetch(this.category, this.discount, {this.firstPage=true});
+  DiscountedVariantsFetch(this.category, this.discount, this.gender,
+      {this.firstPage = true});
 }

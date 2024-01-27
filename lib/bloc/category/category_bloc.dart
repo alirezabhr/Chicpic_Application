@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:chicpic/models/auth/gender_choices.dart';
 import 'package:chicpic/models/pagination.dart';
 import 'package:chicpic/models/product/category.dart';
 import 'package:chicpic/models/product/variant.dart';
@@ -60,6 +61,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       Pagination<VariantPreview> pagination =
       await APIService.getDiscountedVariants(
         discount: event.discount,
+        genderChoices: event.gender,
         page: page,
       );
       variants = variants + pagination.results;

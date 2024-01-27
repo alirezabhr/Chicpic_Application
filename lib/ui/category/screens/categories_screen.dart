@@ -98,7 +98,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   ),
                 ),
               ),
-              const DiscountedCategory(),
+              DiscountedCategory(gender: _selectedGender),
               ...categories
                   .map((category) => CategoryItem(category: category))
                   .toList(),

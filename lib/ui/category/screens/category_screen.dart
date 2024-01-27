@@ -26,9 +26,23 @@ class _CategoryScreenState extends State<CategoryScreen> {
       final blocState = BlocProvider.of<CategoryBloc>(context).state;
       if (blocState is! CategoryVariantsFetchLoading &&
           blocState is! CategoryVariantsFetchFailure) {
-        BlocProvider.of<CategoryBloc>(context).add(
-          CategoryVariantsFetch(category, firstPage: false),
-        );
+        // TODO: refactor
+        if (category.id == 0) {
+          // Discounted category
+          const int discountPercentage = 50;
+          BlocProvider.of<CategoryBloc>(context).add(
+            DiscountedVariantsFetch(
+              category,
+              discountPercentage,
+              category.gender,
+              firstPage: false,
+            ),
+          );
+        } else { // not offer(discounted) category
+          BlocProvider.of<CategoryBloc>(context).add(
+            CategoryVariantsFetch(category, firstPage: false),
+          );
+        }
       }
     }
   }

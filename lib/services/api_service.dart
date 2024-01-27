@@ -100,10 +100,15 @@ class APIService {
 
   static Future<Pagination<VariantPreview>> getDiscountedVariants({
     required int discount,
+    required GenderChoices genderChoices,
     int page = 1,
   }) async {
     Response response = await Client.instance.get(
-      APIUrls.discountedVariants(discount, page: page),
+      APIUrls.discountedVariants(
+        discount,
+        genderChoices.abbreviation,
+        page: page,
+      ),
     );
 
     return Pagination<VariantPreview>(
