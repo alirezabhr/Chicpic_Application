@@ -55,8 +55,8 @@ abstract class APIUrls {
     return '$variants?discount=$discount&gender=$gender&page=$page';
   }
 
-  static String searchProduct({required String searchText, int page = 1}) {
-    return '${_clothing}search/products/?q=$searchText&page=$page';
+  static String searchVariant({required String searchText, int page = 1}) {
+    return '${_clothing}search/?q=$searchText&page=$page';
   }
 
   static const String saveVariant = '${_clothing}save/';

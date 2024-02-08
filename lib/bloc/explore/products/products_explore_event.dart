@@ -61,9 +61,9 @@ class VariantSaveToggle extends ProductsExploreEvent {
   });
 }
 
-class ProductSearch extends ProductsExploreEvent {
+class VariantSearch extends ProductsExploreEvent {
   final String searchText;
   final bool firstPage;
 
-  ProductSearch(this.searchText, {this.firstPage = true});
+  VariantSearch(this.searchText, {this.firstPage = true});
 }

@@ -47,19 +47,15 @@ class ProductDetailFetchSuccess extends ProductsExploreState {
 
 class ProductDetailFetchFailure extends ProductsExploreState {}
 
-class ProductSearchLoading extends ProductsExploreState {
+class VariantSearchLoading extends ProductsExploreState {
   final bool firstPage;
 
-  ProductSearchLoading(this.firstPage);
+  VariantSearchLoading(this.firstPage);
 }
 
-class ProductSearchSuccess extends ProductsExploreState {
-  final List<ProductPreview> products;
+class VariantSearchSuccess extends ProductsExploreState {}
 
-  ProductSearchSuccess(this.products);
-}
-
-class ProductSearchFailure extends ProductsExploreState {}
+class VariantSearchFailure extends ProductsExploreState {}
 
 class SavedVariantsFetchLoading extends ProductsExploreState {}
 

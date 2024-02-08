@@ -73,8 +73,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   onPressed: () {
                     Navigator.of(context).pushNamed(AppRouter.search);
                   },
-                  child: Row(
-                    children: const [
+                  child: const Row(
+                    children: [
                       Icon(Icons.search, size: 18, color: Colors.black45),
                       SizedBox(width: Insets.xSmall),
                       Text('Search', style: TextStyle(color: Colors.black45)),

@@ -5,7 +5,9 @@ import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
-import 'package:chicpic/ui/base_widgets/product_preview_widget.dart';
+import 'package:chicpic/models/product/variant.dart';
+
+import 'package:chicpic/ui/base_widgets/variant_preview_widget.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -27,9 +29,9 @@ class _SearchScreenState extends State<SearchScreen> {
               _scrollController.position.maxScrollExtent &&
           !_scrollController.position.outOfRange) {
         final bloc = BlocProvider.of<ProductsExploreBloc>(context);
-        if (bloc.state is! ProductSearchLoading &&
-            bloc.state is! ProductSearchFailure) {
-          bloc.add(ProductSearch(_searchedText!, firstPage: false));
+        if (bloc.state is! VariantSearchLoading &&
+            bloc.state is! VariantSearchFailure) {
+          bloc.add(VariantSearch(_searchedText!, firstPage: false));
         }
       }
     }
@@ -39,6 +41,8 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     super.initState();
     _scrollController = ScrollController()..addListener(_scrollListener);
+    // Clear searched text
+    BlocProvider.of<ProductsExploreBloc>(context).clearSearchedVariants();
   }
 
   @override
@@ -52,7 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
     if (value.isNotEmpty) {
       _searchedText = value;
       BlocProvider.of<ProductsExploreBloc>(context).add(
-        ProductSearch(_searchedText!),
+        VariantSearch(_searchedText!),
       );
     }
   }
@@ -67,7 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: Insets.medium),
+              padding: const EdgeInsets.only(top: Insets.medium),
               child: Row(
                 children: [
                   IconButton(
@@ -88,33 +92,26 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
             BlocBuilder<ProductsExploreBloc, ProductsExploreState>(
-              // TODO: Customize Search by body size and show variants not products
               builder: (context, state) {
-                if (state is ProductSearchLoading && state.firstPage == true) {
-                  return const SizedBox(
-                    height: 500,
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                } else if (state is ProductSearchSuccess) {
+                if (state is VariantSearchLoading && state.firstPage == true) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  List<VariantPreview> variants =
+                      BlocProvider.of<ProductsExploreBloc>(context)
+                          .searchedVariants;
+
                   return GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.products.length,
+                    itemCount: variants.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                     ),
                     itemBuilder: (BuildContext context, int index) {
-                      return ProductPreviewWidget(
-                        product: state.products[index],
-                      );
+                      return VariantPreviewWidget(variant: variants[index]);
                     },
                   );
-                } else {
-                  // TODO: fix scroll bug by removing or changing else statement. The problem caused when bloc state is Loading but not first page
-                  return Container();
-                  // TODO: Recent searches
-                  // return const RecentSearches();
                 }
               },
             ),

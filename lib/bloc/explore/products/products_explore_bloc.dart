@@ -22,7 +22,7 @@ class ProductsExploreBloc
   final AuthRepository _authRepository;
 
   List<VariantPreview> variants = [];
-  List<ProductPreview> searchedProducts = [];
+  List<VariantPreview> searchedVariants = [];
   List<VariantPreview> savedVariants = [];
   int explorePage = 1;
   int searchPage = 1;
@@ -35,8 +35,13 @@ class ProductsExploreBloc
     on<ProductDetailChangeSize>(_onProductDetailChangeSize);
     on<VariantTrackToggle>(_onVariantTrackToggle);
     on<VariantSaveToggle>(_onVariantSaveToggle);
-    on<ProductSearch>(_onProductSearch);
+    on<VariantSearch>(_onVariantSearch);
     on<SavedVariantsFetch>(_onSavedVariantsFetch);
+  }
+
+  void clearSearchedVariants() {
+    searchedVariants = [];
+    searchPage = 1;
   }
 
   Future<void> _onProductsExploreFetch(
@@ -179,28 +184,28 @@ class ProductsExploreBloc
     }
   }
 
-  Future<void> _onProductSearch(
-    ProductSearch event,
+  Future<void> _onVariantSearch(
+    VariantSearch event,
     Emitter<ProductsExploreState> emit,
   ) async {
-    emit(ProductSearchLoading(event.firstPage));
+    emit(VariantSearchLoading(event.firstPage));
 
     if (event.firstPage) {
       searchPage = 1;
-      searchedProducts = [];
+      searchedVariants = [];
     }
 
     try {
-      final pagination = await APIService.searchProduct(
+      final pagination = await APIService.searchVariant(
         searchText: event.searchText,
         page: searchPage,
       );
 
       searchPage += 1;
-      searchedProducts += pagination.results;
-      emit(ProductSearchSuccess(searchedProducts));
+      searchedVariants += pagination.results;
+      emit(VariantSearchSuccess());
     } catch (_) {
-      emit(ProductSearchFailure());
+      emit(VariantSearchFailure());
     }
   }
 
