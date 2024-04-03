@@ -12,6 +12,7 @@ import 'package:chicpic/app_router.dart';
 
 import 'package:chicpic/services/api_service.dart';
 
+import 'package:chicpic/bloc/settings/settings_bloc.dart';
 import 'package:chicpic/bloc/auth/auth_bloc.dart';
 
 import 'package:chicpic/statics/assets_helper.dart';
@@ -97,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen> {
         versions.firstWhere((e) => e.platform == platform && e.forceUpdate);
 
     if (latestVersion.compareVersion(currentVersion) == 1) {
-        showUpgradeDialog(latestVersion);
+      showUpgradeDialog(latestVersion);
     } else {
       setState(() {
         _needUpdate = false;
@@ -105,11 +106,16 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+  loadConfigs() async {
+    BlocProvider.of<SettingsBloc>(context).add(LoadSettings());
+  }
+
   @override
   void initState() {
     setAppInfo();
     startTimer();
     checkAppVersion();
+    loadConfigs();
     super.initState();
   }
 

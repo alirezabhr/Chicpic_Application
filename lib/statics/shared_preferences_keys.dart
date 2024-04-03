@@ -5,4 +5,6 @@ abstract class SharedPrefKeys {
   static const String userAdditionalReminder = 'user_additional_reminder';
 
   static const String categoryGender = 'category_gender';
+
+  static const String showPersonalized = 'show_personalized';
 }
