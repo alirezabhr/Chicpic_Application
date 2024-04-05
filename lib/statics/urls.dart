@@ -5,8 +5,11 @@ abstract class BaseUrls {
   static const String https = 'https://';
   static const String _developmentBaseUrl = '${http}10.0.2.2:8000/';
   static const String _productionBaseUrl = '${http}3.99.177.129/';
-  static String baseUrl = dotenv.env['IS_PRODUCTION'] == 'true' ? _productionBaseUrl : _developmentBaseUrl;
-  static const String appVersions = "https://xmzcs0kq2d.execute-api.ca-central-1.amazonaws.com/chicpic_dev";
+  static String baseUrl = dotenv.env['IS_PRODUCTION'] == 'true'
+      ? _productionBaseUrl
+      : _developmentBaseUrl;
+  static const String appVersions =
+      "https://xmzcs0kq2d.execute-api.ca-central-1.amazonaws.com/chicpic_dev";
 }
 
 abstract class APIUrls {
@@ -20,6 +23,7 @@ abstract class APIUrls {
   static const String checkVerificationCode = '${_users}otp/verify/';
   static const String resetPassword = '${_users}reset-password/';
   static const String tokenRefresh = '${_users}token/refresh/';
+
   static String userAdditional(int userId) {
     return '$_users$userId/additional/';
   }
@@ -31,8 +35,12 @@ abstract class APIUrls {
   static const String products = '${_clothing}products/';
   static const String variants = '${_clothing}variants/';
 
-  static String categoryVariants({required int categoryId, int page = 1}) {
-    return '$categories$categoryId/variants/?page=$page';
+  static String categoryVariants({
+    required int categoryId,
+    bool recommend = false,
+    int page = 1,
+  }) {
+    return '$categories$categoryId/variants/?recom=$recommend&page=$page';
   }
 
   static String shops({int page = 1}) {
@@ -43,16 +51,21 @@ abstract class APIUrls {
     return '${_clothing}shops/$shopId/products/?page=$page';
   }
 
-  static String exploreVariants({int page = 1}) {
-    return '${_clothing}explore/variants/?page=$page';
+  static String exploreVariants({bool recommend = false, int page = 1}) {
+    return '${_clothing}explore/variants/?recom=$recommend&page=$page';
   }
 
   static String productDetail(int productId) {
     return '$products$productId/';
   }
 
-  static String discountedVariants(int discount, String gender, {int page = 1}) {
-    return '$variants?discount=$discount&gender=$gender&page=$page';
+  static String discountedVariants(
+    int discount,
+    String gender, {
+    bool recommend = false,
+    int page = 1,
+  }) {
+    return '$variants?discount=$discount&gender=$gender&recom=$recommend&page=$page';
   }
 
   static String searchVariant({required String searchText, int page = 1}) {

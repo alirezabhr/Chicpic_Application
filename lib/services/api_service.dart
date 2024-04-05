@@ -82,10 +82,15 @@ class APIService {
 
   static Future<Pagination<VariantPreview>> getCategoryVariants({
     required int id,
+    bool shouldRecommend = false,
     int page = 1,
   }) async {
     Response response = await Client.instance.get(
-      APIUrls.categoryVariants(categoryId: id, page: page),
+      APIUrls.categoryVariants(
+        categoryId: id,
+        recommend: shouldRecommend,
+        page: page,
+      ),
     );
 
     return Pagination<VariantPreview>(
@@ -101,12 +106,14 @@ class APIService {
   static Future<Pagination<VariantPreview>> getDiscountedVariants({
     required int discount,
     required GenderChoices genderChoices,
+    bool shouldRecommend = false,
     int page = 1,
   }) async {
     Response response = await Client.instance.get(
       APIUrls.discountedVariants(
         discount,
         genderChoices.abbreviation,
+        recommend: shouldRecommend,
         page: page,
       ),
     );
@@ -151,10 +158,12 @@ class APIService {
     );
   }
 
-  static Future<Pagination<VariantPreview>> exploreVariants(
-      {int page = 1}) async {
+  static Future<Pagination<VariantPreview>> exploreVariants({
+    bool shouldRecommend = false,
+    int page = 1,
+  }) async {
     Response response = await Client.instance.get(
-      APIUrls.exploreVariants(page: page),
+      APIUrls.exploreVariants(recommend: shouldRecommend, page: page),
     );
 
     return Pagination<VariantPreview>(
