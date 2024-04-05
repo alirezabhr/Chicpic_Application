@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 import 'package:chicpic/repositories/auth/auth_repository.dart';
+import 'package:chicpic/repositories/settings/settings_repository.dart';
 
 import 'package:chicpic/services/api_service.dart';
 import 'package:chicpic/services/utils.dart';
@@ -20,6 +21,7 @@ part 'products_explore_state.dart';
 class ProductsExploreBloc
     extends Bloc<ProductsExploreEvent, ProductsExploreState> {
   final AuthRepository _authRepository;
+  final SettingsRepository _settingsRepository;
 
   List<VariantPreview> variants = [];
   List<VariantPreview> searchedVariants = [];
@@ -28,7 +30,8 @@ class ProductsExploreBloc
   int searchPage = 1;
   int savedVariantsPage = 1;
 
-  ProductsExploreBloc(this._authRepository) : super(ProductsExploreInitial()) {
+  ProductsExploreBloc(this._authRepository, this._settingsRepository)
+      : super(ProductsExploreInitial()) {
     on<ProductsExploreFetch>(_onProductsExploreFetch);
     on<ProductDetailFetch>(_onProductDetailFetch);
     on<ProductDetailChangeColor>(_onProductDetailChangeColor);
@@ -63,8 +66,10 @@ class ProductsExploreBloc
     }
 
     try {
-      Pagination<VariantPreview> pagination =
-          await APIService.exploreVariants(page: explorePage);
+      Pagination<VariantPreview> pagination = await APIService.exploreVariants(
+        shouldRecommend: _settingsRepository.showPersonalizedProducts,
+        page: explorePage,
+      );
       variants = variants + pagination.results;
       explorePage += 1;
       emit(ProductsExploreFetchSuccess());

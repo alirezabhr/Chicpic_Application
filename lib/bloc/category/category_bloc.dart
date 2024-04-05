@@ -3,6 +3,7 @@ import 'package:chicpic/models/auth/gender_choices.dart';
 import 'package:chicpic/models/pagination.dart';
 import 'package:chicpic/models/product/category.dart';
 import 'package:chicpic/models/product/variant.dart';
+import 'package:chicpic/repositories/settings/settings_repository.dart';
 import 'package:chicpic/services/api_service.dart';
 import 'package:meta/meta.dart';
 
@@ -11,10 +12,11 @@ part 'category_event.dart';
 part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
+  final SettingsRepository _settingsRepository;
   List<VariantPreview> variants = [];
   int page = 1;
 
-  CategoryBloc() : super(CategoryInitial()) {
+  CategoryBloc(this._settingsRepository) : super(CategoryInitial()) {
     on<CategoryVariantsFetch>(_onCategoryVariantsFetch);
     on<DiscountedVariantsFetch>(_onDiscountedVariantsFetch);
   }
@@ -33,6 +35,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       Pagination<VariantPreview> pagination =
           await APIService.getCategoryVariants(
         id: event.category.id,
+        shouldRecommend: _settingsRepository.showPersonalizedProducts,
         page: page,
       );
       variants = variants + pagination.results;
@@ -59,9 +62,10 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
     try {
       Pagination<VariantPreview> pagination =
-      await APIService.getDiscountedVariants(
+          await APIService.getDiscountedVariants(
         discount: event.discount,
         genderChoices: event.gender,
+        shouldRecommend: _settingsRepository.showPersonalizedProducts,
         page: page,
       );
       variants = variants + pagination.results;

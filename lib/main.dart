@@ -7,6 +7,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:chicpic/statics/theme.dart';
 
 import 'package:chicpic/repositories/auth/auth_repository.dart';
+import 'package:chicpic/repositories/settings/settings_repository.dart';
 
 import 'package:chicpic/bloc/auth/auth_bloc.dart';
 import 'package:chicpic/bloc/signup/signup_bloc.dart';
@@ -35,6 +36,7 @@ void main() async {
       MultiRepositoryProvider(
         providers: [
           RepositoryProvider(create: (context) => AuthRepository()),
+          RepositoryProvider(create: (context) => SettingsRepository()),
         ],
         child: MultiBlocProvider(
           providers: [
@@ -75,12 +77,16 @@ void main() async {
               create: (BuildContext context) {
                 final AuthRepository authRepository =
                     RepositoryProvider.of<AuthRepository>(context);
-                return ProductsExploreBloc(authRepository);
+                final SettingsRepository settingsRepository =
+                    RepositoryProvider.of<SettingsRepository>(context);
+                return ProductsExploreBloc(authRepository, settingsRepository);
               },
             ),
             BlocProvider<CategoryBloc>(
               create: (BuildContext context) {
-                return CategoryBloc();
+                final SettingsRepository settingsRepository =
+                    RepositoryProvider.of<SettingsRepository>(context);
+                return CategoryBloc(settingsRepository);
               },
             ),
             BlocProvider<ShopBloc>(
@@ -92,7 +98,9 @@ void main() async {
               create: (BuildContext context) {
                 final AuthRepository authRepository =
                     RepositoryProvider.of<AuthRepository>(context);
-                return SettingsBloc(authRepository);
+                final SettingsRepository settingsRepository =
+                    RepositoryProvider.of<SettingsRepository>(context);
+                return SettingsBloc(authRepository, settingsRepository);
               },
             ),
           ],
