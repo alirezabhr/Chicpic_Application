@@ -5,15 +5,15 @@ abstract class SettingsEvent {}
 
 class LoadSettings extends SettingsEvent {}
 
-class SetShowPersonalizedProducts extends SettingsEvent {
+class UpdateShowPersonalizedProducts extends SettingsEvent {
   final bool showPersonalizedProducts;
 
-  SetShowPersonalizedProducts(this.showPersonalizedProducts);
+  UpdateShowPersonalizedProducts(this.showPersonalizedProducts);
 }
 
-class SetGenderCategory extends SettingsEvent {
+class UpdateGenderCategory extends SettingsEvent {
   final GenderChoices gender;
 
-  SetGenderCategory(this.gender);
+  UpdateGenderCategory(this.gender);
 }
 

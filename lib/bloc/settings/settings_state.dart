@@ -7,12 +7,11 @@ class SettingsInitial extends SettingsState {}
 
 class SettingsLoading extends SettingsState {}
 
-class SettingsLoaded extends SettingsState {
-  //TODO: remove the constructor parameter
-  final bool showPersonalizedProducts;
+class SettingsLoaded extends SettingsState {}
 
-  SettingsLoaded({required this.showPersonalizedProducts});
-}
+class SettingsUpdated extends SettingsLoaded {}
+
+class SettingsShowPersonalizedProductsUpdated extends SettingsUpdated {}
 
 class SettingsError extends SettingsState {
   final String message;

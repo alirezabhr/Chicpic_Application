@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:chicpic/bloc/category/category_bloc.dart';
+import 'package:chicpic/bloc/settings/settings_bloc.dart';
 
 import 'package:chicpic/models/product/category.dart';
 import 'package:chicpic/models/product/variant.dart';
 
+import 'package:chicpic/ui/base_widgets/filter_button.dart';
 import 'package:chicpic/ui/base_widgets/variant_preview_widget.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -38,7 +40,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
               firstPage: false,
             ),
           );
-        } else { // not offer(discounted) category
+        } else {
+          // not offer(discounted) category
           BlocProvider.of<CategoryBloc>(context).add(
             CategoryVariantsFetch(category, firstPage: false),
           );
@@ -67,35 +70,61 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(category.title),
+        actions: const [
+          FilterButton(iconColor: Colors.white),
+        ],
       ),
-      body: BlocBuilder<CategoryBloc, CategoryState>(
-        builder: (context, state) {
-          if (state is CategoryVariantsFetchLoading &&
-              state.firstPage == true) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            List<VariantPreview> variants =
-                BlocProvider.of<CategoryBloc>(context).variants;
-
-            return RefreshIndicator(
-              onRefresh: () async {
-                BlocProvider.of<CategoryBloc>(context).add(
-                  CategoryVariantsFetch(category, firstPage: true),
-                );
-              },
-              child: GridView.builder(
-                controller: _scrollController,
-                itemCount: variants.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
+      body: BlocListener<SettingsBloc, SettingsState>(
+        listener: (context, state) {
+          if (state is SettingsShowPersonalizedProductsUpdated) {
+            if (category.id == 0) {
+              // Discounted category
+              const int discountPercentage = 50;
+              BlocProvider.of<CategoryBloc>(context).add(
+                DiscountedVariantsFetch(
+                  category,
+                  discountPercentage,
+                  category.gender,
+                  firstPage: true,
                 ),
-                itemBuilder: (BuildContext context, int index) {
-                  return VariantPreviewWidget(variant: variants[index]);
-                },
-              ),
-            );
+              );
+            } else {
+              // not offer(discounted) category
+              BlocProvider.of<CategoryBloc>(context).add(
+                CategoryVariantsFetch(category, firstPage: true),
+              );
+            }
           }
         },
+        child: BlocBuilder<CategoryBloc, CategoryState>(
+          builder: (context, state) {
+            if (state is CategoryVariantsFetchLoading &&
+                state.firstPage == true) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              List<VariantPreview> variants =
+                  BlocProvider.of<CategoryBloc>(context).variants;
+
+              return RefreshIndicator(
+                onRefresh: () async {
+                  BlocProvider.of<CategoryBloc>(context).add(
+                    CategoryVariantsFetch(category, firstPage: true),
+                  );
+                },
+                child: GridView.builder(
+                  controller: _scrollController,
+                  itemCount: variants.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return VariantPreviewWidget(variant: variants[index]);
+                  },
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }
