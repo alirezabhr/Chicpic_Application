@@ -10,6 +10,7 @@ import 'package:chicpic/models/product/variant.dart';
 
 import 'package:chicpic/ui/base_widgets/variant_preview_widget.dart';
 import 'package:chicpic/ui/explore/widgets/user_additional_reminder_dialog.dart';
+import 'package:chicpic/ui/base_widgets/filter_button.dart';
 
 class ProductsExplore extends StatelessWidget {
   const ProductsExplore({Key? key}) : super(key: key);
@@ -33,6 +34,8 @@ class ProductsExplore extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                 ),
               ),
+              const Spacer(),
+              const FilterButton(),
             ],
           ),
         ),
