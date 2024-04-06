@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import 'package:chicpic/repositories/auth/auth_repository.dart';
+import 'package:chicpic/repositories/settings/settings_repository.dart';
 
 import 'package:chicpic/models/measurements/mass.dart';
 import 'package:chicpic/models/measurements/length.dart';
@@ -37,10 +38,10 @@ class DefaultUserAdditionalConfig {
 class UserAdditionalBloc
     extends Bloc<UserAdditionalEvent, UserAdditionalState> {
   final AuthRepository _authRepository;
+  final SettingsRepository _settingsRepository;
 
-  UserAdditionalBloc(AuthRepository authRepository)
-      : _authRepository = authRepository,
-        super(UserAdditionalInitial()) {
+  UserAdditionalBloc(this._authRepository, this._settingsRepository)
+      : super(UserAdditionalInitial()) {
     _loadUserAdditionalValues();
     on<UserAdditionalInitialize>(_onUserAdditionalInitialize);
     on<UserAdditionalChangeStep>(_onUserAdditionalChangeStep);
@@ -151,6 +152,8 @@ class UserAdditionalBloc
       );
 
       await _authRepository.submitUserAdditional(userAdditional);
+      await _settingsRepository.setPersonalizedProducts(true);
+      await _settingsRepository.setGenderCategory(userAdditional.genderInterested);
       emit(UserAdditionalSubmitSuccess());
     } catch (e) {
       emit(UserAdditionalSubmitFailure(error: e.toString()));

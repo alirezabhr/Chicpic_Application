@@ -65,7 +65,9 @@ void main() async {
               create: (BuildContext context) {
                 final AuthRepository authRepository =
                     RepositoryProvider.of<AuthRepository>(context);
-                return UserAdditionalBloc(authRepository);
+                final SettingsRepository settingsRepository =
+                    RepositoryProvider.of<SettingsRepository>(context);
+                return UserAdditionalBloc(authRepository, settingsRepository);
               },
             ),
             BlocProvider<ShopsExploreBloc>(
