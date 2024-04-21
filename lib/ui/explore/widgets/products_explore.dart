@@ -8,7 +8,7 @@ import 'package:chicpic/statics/insets.dart';
 
 import 'package:chicpic/models/product/variant.dart';
 
-import 'package:chicpic/ui/base_widgets/variant_preview_widget.dart';
+import 'package:chicpic/ui/base_widgets/variant_preview_card.dart';
 import 'package:chicpic/ui/explore/widgets/user_additional_reminder_dialog.dart';
 import 'package:chicpic/ui/base_widgets/filter_button.dart';
 
@@ -52,7 +52,8 @@ class ProductsExplore extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            if (state is ProductsExploreFetchLoading && state.firstPage == true) {
+            if (state is ProductsExploreFetchLoading &&
+                state.firstPage == true) {
               return const SizedBox(
                 height: 200,
                 child: Center(child: CircularProgressIndicator()),
@@ -69,10 +70,11 @@ class ProductsExplore extends StatelessWidget {
                     itemCount: variants.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.75,
                     ),
                     itemBuilder: (BuildContext context, int index) {
-                      return VariantPreviewWidget(variant: variants[index]);
+                      return VariantPreviewCard(variant: variants[index]);
                     },
                   ),
                   state is ProductsExploreFetchLoading
