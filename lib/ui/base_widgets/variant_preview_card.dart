@@ -54,7 +54,8 @@ class VariantPreviewCard extends StatelessWidget {
                       height: cardWidth,
                       child: Center(
                         child: CircularProgressIndicator(
-                          color: Theme.of(context).primaryColor.withOpacity(0.6),
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.6),
                         ),
                       ),
                     ),
@@ -76,12 +77,10 @@ class VariantPreviewCard extends StatelessWidget {
                   ),
                 ),
                 if (variant.hasDiscount)
-                  OffLabel(
-                    discountPercentage:
-                        ((variant.originalPrice - variant.finalPrice) /
-                                variant.originalPrice *
-                                100)
-                            .toInt(),
+                  Positioned(
+                    top: 14,
+                    left: 10,
+                    child: OffLabel(percentage: variant.discountRate),
                   ),
               ],
             ),

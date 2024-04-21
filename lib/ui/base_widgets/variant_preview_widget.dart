@@ -50,7 +50,12 @@ class VariantPreviewWidget extends StatelessWidget {
               },
             ),
           ),
-          if (variant.hasDiscount) const OffLabel(),
+          if (variant.hasDiscount)
+            Positioned(
+              top: 8,
+              left: 4,
+              child: OffLabel(percentage: variant.discountRate),
+            ),
         ],
       ),
     );
