@@ -6,8 +6,9 @@ import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 import 'package:chicpic/models/product/variant.dart';
 
 import 'package:chicpic/statics/insets.dart';
+import 'package:chicpic/statics/grid_delegates.dart';
 
-import 'package:chicpic/ui/base_widgets/variant_preview_widget.dart';
+import 'package:chicpic/ui/base_widgets/variant_preview_card.dart';
 
 class SavedVariantsScreen extends StatefulWidget {
   const SavedVariantsScreen({Key? key}) : super(key: key);
@@ -79,12 +80,9 @@ class _SavedVariantsScreenState extends State<SavedVariantsScreen> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: variants.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                    ),
+                    gridDelegate: variantLargeGridDelegate,
                     itemBuilder: (BuildContext context, int index) {
-                      return VariantPreviewWidget(variant: variants[index]);
+                      return VariantPreviewCard(variant: variants[index]);
                     },
                   ),
                   state is ProductsExploreFetchLoading

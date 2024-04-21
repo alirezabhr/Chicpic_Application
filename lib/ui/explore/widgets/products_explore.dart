@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
+import 'package:chicpic/statics/grid_delegates.dart';
 
 import 'package:chicpic/models/product/variant.dart';
 
@@ -68,11 +69,7 @@ class ProductsExplore extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: variants.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.75,
-                    ),
+                    gridDelegate: variantLargeGridDelegate,
                     itemBuilder: (BuildContext context, int index) {
                       return VariantPreviewCard(variant: variants[index]);
                     },
