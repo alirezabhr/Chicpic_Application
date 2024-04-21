@@ -37,6 +37,8 @@ class ProductPreviewWidget extends StatelessWidget {
               ),
             ),
             child: CachedNetworkImage(
+              memCacheHeight: 300,
+              memCacheWidth: 300,
               imageUrl: product.previewImage,
               placeholder: (context, url) => Center(
                 child: CircularProgressIndicator(

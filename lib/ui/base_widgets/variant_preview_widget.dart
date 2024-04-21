@@ -38,6 +38,8 @@ class VariantPreviewWidget extends StatelessWidget {
               ),
             ),
             child: CachedNetworkImage(
+              memCacheHeight: 300,
+              memCacheWidth: 300,
               imageUrl: variant.imageSrc,
               placeholder: (context, url) => Center(
                 child: CircularProgressIndicator(
@@ -49,6 +51,23 @@ class VariantPreviewWidget extends StatelessWidget {
                 return const Icon(Icons.error);
               },
             ),
+            // child: Image.network(
+            //   variant.imageSrc,
+            //   fit: BoxFit.cover,
+            //   loadingBuilder: (context, child, loadingProgress) {
+            //     if (loadingProgress == null) {
+            //       return child;
+            //     }
+            //     return Center(
+            //       child: CircularProgressIndicator(
+            //         color: Theme.of(context).primaryColor.withOpacity(0.6),
+            //       ),
+            //     );
+            //   },
+            //   errorBuilder: (context, error, stackTrace) {
+            //     return const Icon(Icons.error);
+            //   },
+            // ),
           ),
           if (variant.hasDiscount) const OffLabel(),
         ],

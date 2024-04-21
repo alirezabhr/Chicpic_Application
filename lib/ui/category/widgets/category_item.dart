@@ -34,6 +34,8 @@ class CategoryItem extends StatelessWidget {
       },
       backgroundColor: Theme.of(context).primaryColor,
       trailing: CachedNetworkImage(
+        memCacheWidth: 300,
+        memCacheHeight: 300,
         imageUrl: category.image,
         fit: BoxFit.cover,
       ),
