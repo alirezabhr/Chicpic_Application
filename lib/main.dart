@@ -93,7 +93,9 @@ void main() async {
             ),
             BlocProvider<ShopBloc>(
               create: (BuildContext context) {
-                return ShopBloc();
+                final SettingsRepository settingsRepository =
+                    RepositoryProvider.of<SettingsRepository>(context);
+                return ShopBloc(settingsRepository);
               },
             ),
             BlocProvider<SettingsBloc>(

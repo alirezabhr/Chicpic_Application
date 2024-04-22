@@ -89,7 +89,7 @@ class _ShopsExploreScreenState extends State<ShopsExploreScreen> {
                         ),
                         onTap: () {
                           BlocProvider.of<ShopBloc>(context).add(
-                            ShopProductsFetch(shop, firstPage: true),
+                            ShopVariantsFetch(shop, firstPage: true),
                           );
                           Navigator.of(context).pushNamed(
                             AppRouter.shop,

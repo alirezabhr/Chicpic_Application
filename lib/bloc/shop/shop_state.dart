@@ -5,21 +5,21 @@ abstract class ShopState {}
 
 class ShopInitial extends ShopState {}
 
-class ShopProductsFetchLoading extends ShopState {
+class ShopVariantsFetchLoading extends ShopState {
   final Shop shop;
   final bool firstPage;
 
-  ShopProductsFetchLoading(this.shop, this.firstPage);
+  ShopVariantsFetchLoading(this.shop, this.firstPage);
 }
 
-class ShopProductsFetchSuccess extends ShopState {
+class ShopVariantsFetchSuccess extends ShopState {
   final Shop shop;
-  final List<ProductPreview> products;
+  final List<VariantPreview> variants;
 
-  ShopProductsFetchSuccess({
+  ShopVariantsFetchSuccess({
     required this.shop,
-    required this.products,
+    required this.variants,
   });
 }
 
-class ShopProductsFetchFailure extends ShopState {}
+class ShopVariantsFetchFailure extends ShopState {}

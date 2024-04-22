@@ -63,7 +63,7 @@ class ProductItemDialog extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               BlocProvider.of<ShopBloc>(context).add(
-                                ShopProductsFetch(
+                                ShopVariantsFetch(
                                   state.product.shop,
                                   firstPage: true,
                                 ),
@@ -79,7 +79,7 @@ class ProductItemDialog extends StatelessWidget {
                           TextButton(
                             onPressed: () {
                               BlocProvider.of<ShopBloc>(context).add(
-                                ShopProductsFetch(
+                                ShopVariantsFetch(
                                   state.product.shop,
                                   firstPage: true,
                                 ),
@@ -151,8 +151,9 @@ class ProductItemDialog extends StatelessWidget {
                                 ),
                               ),
                               const Spacer(),
-                              const TrackButton(),
-                              const SizedBox(width: Insets.xSmall),
+                              // TODO: add this feature in next version
+                              // const TrackButton(),
+                              // const SizedBox(width: Insets.xSmall),
                               const SaveButton(),
                             ],
                           ),

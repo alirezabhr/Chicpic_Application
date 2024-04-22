@@ -3,9 +3,9 @@ part of 'shop_bloc.dart';
 @immutable
 abstract class ShopEvent {}
 
-class ShopProductsFetch extends ShopEvent {
+class ShopVariantsFetch extends ShopEvent {
   final Shop shop;
   final bool firstPage;
 
-  ShopProductsFetch(this.shop, {this.firstPage=true});
+  ShopVariantsFetch(this.shop, {this.firstPage=true});
 }

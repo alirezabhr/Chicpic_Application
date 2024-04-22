@@ -20,7 +20,7 @@ class ShopsExplore extends StatelessWidget {
 
   navigateToShopPage(BuildContext context, Shop shop) {
     BlocProvider.of<ShopBloc>(context).add(
-      ShopProductsFetch(shop, firstPage: true),
+      ShopVariantsFetch(shop, firstPage: true),
     );
     Navigator.of(context).pushNamed(AppRouter.shop, arguments: shop);
   }

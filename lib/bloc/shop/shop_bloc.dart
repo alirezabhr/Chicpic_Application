@@ -3,48 +3,52 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import 'package:chicpic/repositories/settings/settings_repository.dart';
+
 import 'package:chicpic/services/api_service.dart';
 
 import 'package:chicpic/models/pagination.dart';
-import 'package:chicpic/models/product/product.dart';
+import 'package:chicpic/models/product/variant.dart';
 import 'package:chicpic/models/product/shop.dart';
 
 part 'shop_event.dart';
 part 'shop_state.dart';
 
 class ShopBloc extends Bloc<ShopEvent, ShopState> {
-  List<ProductPreview> products = [];
+  final SettingsRepository _settingsRepository;
+  List<VariantPreview> variants = [];
   int page = 1;
 
-  ShopBloc() : super(ShopInitial()) {
-    on<ShopProductsFetch>(_onShopProductsFetch);
+  ShopBloc(this._settingsRepository) : super(ShopInitial()) {
+    on<ShopVariantsFetch>(_onShopVariantsFetch);
   }
 
-  Future<void> _onShopProductsFetch(
-      ShopProductsFetch event,
+  Future<void> _onShopVariantsFetch(
+      ShopVariantsFetch event,
       Emitter<ShopState> emit,
       ) async {
-    emit(ShopProductsFetchLoading(event.shop, event.firstPage));
+    emit(ShopVariantsFetchLoading(event.shop, event.firstPage));
     if (event.firstPage) {
       page = 1;
-      products = [];
+      variants = [];
     }
 
     try {
-      Pagination<ProductPreview> pagination =
-      await APIService.getShopProducts(
+      Pagination<VariantPreview> pagination =
+      await APIService.getShopVariants(
         id: event.shop.id,
+        shouldRecommend: _settingsRepository.showPersonalizedProducts,
         page: page,
       );
-      products = products + pagination.results;
+      variants = variants + pagination.results;
       page += 1;
 
-      emit(ShopProductsFetchSuccess(
+      emit(ShopVariantsFetchSuccess(
         shop: event.shop,
-        products: products,
+        variants: variants,
       ));
     } catch (_) {
-      emit(ShopProductsFetchFailure());
+      emit(ShopVariantsFetchFailure());
     }
   }
 }

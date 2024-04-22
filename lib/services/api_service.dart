@@ -140,20 +140,21 @@ class APIService {
     );
   }
 
-  static Future<Pagination<ProductPreview>> getShopProducts({
+  static Future<Pagination<VariantPreview>> getShopVariants({
     required int id,
+    bool shouldRecommend = false,
     int page = 1,
   }) async {
     Response response = await Client.instance.get(
-      APIUrls.shopProducts(shopId: id, page: page),
+      APIUrls.shopVariants(shopId: id, recommend: shouldRecommend, page: page),
     );
 
-    return Pagination<ProductPreview>(
+    return Pagination<VariantPreview>(
       count: response.data['count'],
       next: response.data['next'],
       previous: response.data['previous'],
       results: response.data['results']
-          .map<ProductPreview>((e) => ProductPreview.fromMap(e))
+          .map<VariantPreview>((e) => VariantPreview.fromMap(e))
           .toList(),
     );
   }
