@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:chicpic/ui/category/screens/categories_screen.dart';
 import 'package:chicpic/ui/explore/screens/explore_screen.dart';
-import 'package:chicpic/ui/main/screens/notifications_screen.dart';
+import 'package:chicpic/ui/profile/screens/saved_variants_screen.dart';
 import 'package:chicpic/ui/profile/screens/profile_screen.dart';
-import 'package:chicpic/ui/main/widgets/image_picker_bottom_sheet.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -28,13 +28,9 @@ class _MainScreenState extends State<MainScreen> {
       'label': 'Explore',
     },
     {
-      'icon': const Icon(Icons.camera_enhance),
-      'label': 'Upload Image',
-    },
-    {
-      'icon': const Icon(Icons.notifications_none_outlined),
-      'page': const NotificationsScreen(),
-      'label': 'Notifications',
+      'icon': const Icon(FontAwesomeIcons.bookmark, size: 18),
+      'page': const SavedVariantsScreen(),
+      'label': 'Saved Items',
     },
     {
       'icon': const Icon(Icons.person_outline),
@@ -59,11 +55,6 @@ class _MainScreenState extends State<MainScreen> {
             setState(() {
               _pageIndex = index;
             });
-          } else {
-            showModalBottomSheet(
-              context: context,
-              builder: (context) => const ImagePickerBottomSheet(),
-            );
           }
         },
         items: _mainPages
