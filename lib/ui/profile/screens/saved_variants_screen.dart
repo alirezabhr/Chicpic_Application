@@ -5,7 +5,6 @@ import 'package:chicpic/bloc/explore/products/products_explore_bloc.dart';
 
 import 'package:chicpic/models/product/variant.dart';
 
-import 'package:chicpic/statics/insets.dart';
 import 'package:chicpic/statics/grid_delegates.dart';
 
 import 'package:chicpic/ui/base_widgets/variant_preview_card.dart';
@@ -74,25 +73,13 @@ class _SavedVariantsScreenState extends State<SavedVariantsScreen> {
                 child: Text('No saved items'),
               );
             } else {
-              return Column(
-                children: [
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: variants.length,
-                    gridDelegate: variantLargeGridDelegate,
-                    itemBuilder: (BuildContext context, int index) {
-                      return VariantPreviewCard(variant: variants[index]);
-                    },
-                  ),
-                  state is ProductsExploreFetchLoading
-                      ? const Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: Insets.medium),
-                          child: Center(child: CircularProgressIndicator()),
-                        )
-                      : Container()
-                ],
+              return GridView.builder(
+                controller: _scrollController,
+                itemCount: variants.length,
+                gridDelegate: variantLargeGridDelegate,
+                itemBuilder: (BuildContext context, int index) {
+                  return VariantPreviewCard(variant: variants[index]);
+                },
               );
             }
           }

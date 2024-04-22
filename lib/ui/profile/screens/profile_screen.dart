@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'package:chicpic/services/snack_bar.dart';
+
 import 'package:chicpic/app_router.dart';
 
 import 'package:chicpic/statics/insets.dart';
@@ -35,13 +37,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           const SizedBox(height: Insets.xLarge),
           ProfileButton(
-            text: 'Saved Items',
-            onPressed: () {
-              Navigator.of(context).pushNamed(AppRouter.savedVariants);
-            },
-            icon: FontAwesomeIcons.solidBookmark,
-          ),
-          ProfileButton(
             text: 'Body Size & Fit',
             onPressed: () {
               Navigator.of(context).pushNamed(AppRouter.userAdditional);
@@ -49,8 +44,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             icon: FontAwesomeIcons.shirt,
           ),
           ProfileButton(
+            text: 'Saved Items',
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRouter.savedVariants);
+            },
+            icon: FontAwesomeIcons.solidBookmark,
+          ),
+          ProfileButton(
             text: 'App Settings',
-            onPressed: () {},
+            onPressed: () {
+              showSnackBar(context, 'Coming Soon... 🥱', SnackBarStatus.normal);
+            },
             icon: FontAwesomeIcons.gear,
           ),
           const Spacer(),
