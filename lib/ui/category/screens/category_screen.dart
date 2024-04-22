@@ -7,8 +7,10 @@ import 'package:chicpic/bloc/settings/settings_bloc.dart';
 import 'package:chicpic/models/product/category.dart';
 import 'package:chicpic/models/product/variant.dart';
 
+import 'package:chicpic/statics/grid_delegates.dart';
+
 import 'package:chicpic/ui/base_widgets/filter_button.dart';
-import 'package:chicpic/ui/base_widgets/variant_preview_widget.dart';
+import 'package:chicpic/ui/base_widgets/variant_preview_card.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({Key? key}) : super(key: key);
@@ -114,11 +116,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 child: GridView.builder(
                   controller: _scrollController,
                   itemCount: variants.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                  ),
+                  gridDelegate: variantLargeGridDelegate,
                   itemBuilder: (BuildContext context, int index) {
-                    return VariantPreviewWidget(variant: variants[index]);
+                    return VariantPreviewCard(variant: variants[index]);
                   },
                 ),
               );
