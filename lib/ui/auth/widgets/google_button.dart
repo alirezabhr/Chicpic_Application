@@ -28,13 +28,10 @@ class GoogleButton extends StatelessWidget {
           late final GoogleSignIn googleSignIn;
 
           if (Platform.isIOS) {
-            // TODO: implement Google Sign In for iOS
-            // googleSignIn = GoogleSignIn(
-            //   clientId: '737870681288-upalmohfmb4utfgj1609mi144l066rdo.apps.googleusercontent.com',
-            //   scopes: [
-            //     'email',
-            //   ],
-            // );
+            googleSignIn = GoogleSignIn(
+              clientId: '138232992687-nof5ag56aiiauuuqo3v9o74u5n6l5g13.apps.googleusercontent.com',
+              scopes: scopes,
+            );
           } else { // for Android devices
             googleSignIn = GoogleSignIn(scopes: scopes);
           }
@@ -44,26 +41,24 @@ class GoogleButton extends StatelessWidget {
             print('<<<<< Google Sign OUT >>>>>');
           }
 
-          print('after google sign in');
+          print('after google sign in object creation');
           GoogleSignInAccount? googleUser;
           try {
              googleUser = await googleSignIn.signIn();
           } catch (error) {
             print('Google Sign In Error: $error');
-            showSnackBar(context, 'Google Sign In Failed', SnackBarStatus.error);
+            showSnackBar(context, 'Google Sign In Error', SnackBarStatus.error);
             return;
           }
-          print('after google user');
-          print(googleUser);
-          if (googleUser != null) {
-            print('before google authentication');
-            GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-            print('Google Auth access token: ${googleAuth.accessToken}');
-          } else {
-            print('Google Sign In Failed');
-            showSnackBar(context, 'Google Sign In Failed', SnackBarStatus.error);
+          print('googleUser: $googleUser');
+          if (googleUser == null) {
+            print('Google Sign In Cancelled');
+            showSnackBar(context, 'Google Sign In Cancelled', SnackBarStatus.error);
             return;
           }
+          print('before google authentication');
+          GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+          print('Google Auth access token: ${googleAuth.accessToken}');
         },
         style: ButtonStyle(
           shape: WidgetStateProperty.all(
