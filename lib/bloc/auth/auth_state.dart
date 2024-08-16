@@ -10,6 +10,44 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
+class SignupLoading extends AuthState {}
+
+class SignupSuccess extends AuthState {}
+
+class SignupFailure extends AuthState {
+  final String error;
+
+  SignupFailure({required this.error});
+
+  @override
+  List<Object?> get props => [error];
+}
+
+class LoginLoading extends AuthState {}
+
+class LoginSuccess extends AuthState {}
+
+class LoginFailure extends AuthState {
+  final String error;
+
+  LoginFailure({required this.error});
+
+  @override
+  List<Object> get props => [error];
+
+  @override
+  String toString() => 'LoginFailure { error: $error }';
+}
+
+class LoginInvalidCredentials extends LoginFailure {
+  LoginInvalidCredentials()
+      : super(error: 'Username and password do not match');
+}
+
+class LoginAccountNotVerified extends LoginFailure {
+  LoginAccountNotVerified() : super(error: 'Your account is not verified');
+}
+
 class AuthConnectionProblem extends AuthState {}
 
 class AuthNotVerified extends AuthState {}

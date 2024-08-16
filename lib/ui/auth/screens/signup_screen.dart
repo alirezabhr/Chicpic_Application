@@ -8,13 +8,12 @@ import 'package:chicpic/statics/assets_helper.dart';
 import 'package:chicpic/statics/insets.dart';
 
 import 'package:chicpic/bloc/auth/auth_bloc.dart';
-import 'package:chicpic/bloc/signup/signup_bloc.dart';
 
 import 'package:chicpic/models/auth/signup_user_data.dart';
 
 import 'package:chicpic/ui/auth/widgets/submit_button.dart';
-// import 'package:chicpic/ui/auth/widgets/auth_divider.dart';
-// import 'package:chicpic/ui/auth/widgets/google_button.dart';
+import 'package:chicpic/ui/auth/widgets/auth_divider.dart';
+import 'package:chicpic/ui/auth/widgets/google_button.dart';
 import 'package:chicpic/ui/terms_conditions_privacy_policy/widgets/terms_conditions_privacy_policy_links.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -36,7 +35,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<SignupBloc, SignupState>(
+      body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) async {
           if (state is SignupFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -178,7 +177,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(height: Insets.small),
                   const TermsConditionsPrivacyPolicyLinks(),
                   const SizedBox(height: Insets.xSmall),
-                  BlocBuilder<SignupBloc, SignupState>(
+                  BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return Column(
                         children: [
@@ -193,15 +192,13 @@ class _SignupScreenState extends State<SignupScreen> {
                                         password: _passwordController.text,
                                         password2: _passwordController2.text,
                                       );
-                                      BlocProvider.of<SignupBloc>(context).add(
-                                        SignupFormButtonPressed(
-                                          signupData: signupData,
-                                        ),
+                                      BlocProvider.of<AuthBloc>(context).add(
+                                        SignupWithCredentials(signupData),
                                       );
                                     }
                                   },
                             label: 'Signup',
-                            child: state is SignupLoadingWithForm
+                            child: state is SignupLoading
                                 ? const SizedBox(
                                     height: 20,
                                     width: 20,
@@ -209,11 +206,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                   )
                                 : null,
                           ),
-                          // const AuthDivider(),
-                          // GoogleButton(
-                          //   onPressed: state is SignupLoading ? null : () {},
-                          //   label: 'Sign up with Google',
-                          // ),
+                          const AuthDivider(),
+                          const GoogleButton(),
                         ],
                       );
                     },

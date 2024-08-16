@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
@@ -43,6 +42,10 @@ class OtpInput extends StatelessWidget {
               onCopy: null,
               onCut: null,
               onSelectAll: null,
+              onLookUp: null,
+              onSearchWeb: null,
+              onShare: null,
+              onLiveTextInput: null,
             );
           },
           onChanged: (value) {

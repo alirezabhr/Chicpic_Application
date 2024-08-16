@@ -46,7 +46,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
           } else if (state is VerificationSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Your account verified.'),
+                content: Text('Your account has been verified.'),
                 backgroundColor: Colors.green,
               ),
             );

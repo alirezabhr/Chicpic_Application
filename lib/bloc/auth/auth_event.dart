@@ -11,6 +11,24 @@ abstract class AuthEvent extends Equatable {
 // Fired just after the app is launched
 class AppLoaded extends AuthEvent {}
 
+class SignupWithCredentials extends AuthEvent {
+  final SignupUserData signupData;
+
+  const SignupWithCredentials(this.signupData);
+
+  @override
+  List<Object> get props => [signupData];
+}
+
+class LoginWithCredentials extends AuthEvent {
+  final LoginUserData loginData;
+
+  const LoginWithCredentials(this.loginData);
+
+  @override
+  List<Object> get props => [loginData];
+}
+
 class AuthRequestVerificationCode extends AuthEvent {
   final String email;
 

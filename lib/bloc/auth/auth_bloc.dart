@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:chicpic/models/auth/reset_password_data.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -11,6 +10,9 @@ import 'package:chicpic/services/api_service.dart';
 import 'package:chicpic/repositories/auth/auth_repository.dart';
 
 import 'package:chicpic/models/auth/user.dart';
+import 'package:chicpic/models/auth/login_user_data.dart';
+import 'package:chicpic/models/auth/signup_user_data.dart';
+import 'package:chicpic/models/auth/reset_password_data.dart';
 
 part 'auth_event.dart';
 
@@ -21,6 +23,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc(this._authRepository) : super(AuthInitial()) {
     on<AppLoaded>(_onAppLoaded);
+    on<SignupWithCredentials>(_onSignupWithCredentials);
+    on<LoginWithCredentials>(_onLoginWithCredentials);
     on<AuthRequestVerificationCode>(_onAuthRequestVerificationCode);
     on<AuthCheckVerificationCode>(_onAuthCheckVerificationCode);
     on<AuthLogout>(_onAuthLogout);
@@ -62,6 +66,48 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthConnectionProblem());
     } catch (error) {
       emit(AuthNotAuthenticated());
+    }
+  }
+
+  Future<void> _onSignupWithCredentials(
+      SignupWithCredentials event,
+      Emitter<AuthState> emit,
+      ) async {
+    emit(SignupLoading());
+
+    try {
+      await _authRepository.signup(event.signupData);
+      emit(SignupSuccess());
+    } on BadRequestException catch (error) {
+      if (error.errorMessage != null) {
+        emit(SignupFailure(error: error.errorMessage!));
+      } else {
+        emit(SignupFailure(error: 'An error occurred'));
+      }
+    } catch (error) {
+      emit(SignupFailure(error: error.toString()));
+    }
+  }
+
+  Future<void> _onLoginWithCredentials(
+    LoginWithCredentials event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(LoginLoading());
+
+    try {
+      await _authRepository.login(event.loginData);
+      emit(LoginSuccess());
+    } on UnAuthorizedException catch (_) {  // Invalid Credentials
+      emit(LoginInvalidCredentials());
+    } on BadRequestException catch (error) {
+      if (error.errorMessage == 'Your email is not verified.') {
+        emit(LoginAccountNotVerified());
+      } else {
+        emit(LoginFailure(error: error.errorMessage ?? 'Login Failed.'));
+      }
+    } catch (_) {
+      emit(LoginFailure(error: 'An error occurred.'));
     }
   }
 

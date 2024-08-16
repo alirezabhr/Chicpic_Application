@@ -6,7 +6,7 @@ import 'package:chicpic/app_router.dart';
 import 'package:chicpic/statics/insets.dart';
 import 'package:chicpic/statics/assets_helper.dart';
 
-import 'package:chicpic/bloc/login/login_bloc.dart';
+import 'package:chicpic/bloc/auth/auth_bloc.dart';
 
 import 'package:chicpic/models/auth/login_user_data.dart';
 
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<LoginBloc, LoginState>(
+      body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is LoginFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -119,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   const SizedBox(height: Insets.medium),
-                  BlocBuilder<LoginBloc, LoginState>(
+                  BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return Column(
                         children: [
@@ -132,15 +132,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                         username: _usernameController.text,
                                         password: _passwordController.text,
                                       );
-                                      BlocProvider.of<LoginBloc>(context).add(
-                                        LoginWithUsernamePassword(
-                                          userData: loginData,
-                                        ),
+                                      BlocProvider.of<AuthBloc>(context).add(
+                                        LoginWithCredentials(loginData),
                                       );
                                     }
                                   },
                             label: 'Login',
-                            child: state is LoginLoadingWithForm
+                            child: state is LoginLoading
                                 ? const SizedBox(
                                     height: 20,
                                     width: 20,
