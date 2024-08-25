@@ -49,6 +49,10 @@ class NotFoundException extends DioError {
   NotFoundException({required super.requestOptions});
 }
 
+class TooManyRequestException extends DioError {
+  TooManyRequestException({required super.requestOptions});
+}
+
 class InternalServerException extends DioError {
   @override
   String message = 'Server error.';

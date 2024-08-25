@@ -186,6 +186,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } on BadRequestException catch (error) {
       emit(VerificationFailure(
           error: error.errorMessage ?? 'An error occurred'));
+    } on TooManyRequestException catch (_) {
+      emit(VerificationFailure(error: 'Too many request. Try again later.'));
     } catch (_) {
       emit(VerificationFailure(error: 'Can not send verification code.'));
     }

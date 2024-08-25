@@ -62,11 +62,19 @@ class ClientInterceptor extends Interceptor {
               handler,
             );
             break;
+          case 429:
+            super.onError(
+              TooManyRequestException(requestOptions: err.requestOptions),
+              handler,
+            );
+            break;
           case 500:
             super.onError(
                 InternalServerException(requestOptions: err.requestOptions),
                 handler);
             break;
+          default:
+            super.onError(err, handler);
         }
         break;
       case DioErrorType.other:
