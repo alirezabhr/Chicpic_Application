@@ -28,6 +28,10 @@ abstract class APIUrls {
     return '$_users$userId/additional/';
   }
 
+  static String socialAuth({required String provider}) {
+    return '${_users}social-auth/$provider/';
+  }
+
   // Clothing APIs
   static const String _clothing = 'clothing/';
 

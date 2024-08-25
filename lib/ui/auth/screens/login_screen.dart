@@ -8,6 +8,8 @@ import 'package:chicpic/statics/assets_helper.dart';
 
 import 'package:chicpic/bloc/auth/auth_bloc.dart';
 
+import 'package:chicpic/services/snack_bar.dart';
+
 import 'package:chicpic/models/auth/login_user_data.dart';
 
 import 'package:chicpic/ui/auth/widgets/submit_button.dart';
@@ -34,14 +36,18 @@ class _LoginScreenState extends State<LoginScreen> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is LoginFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error)),
-            );
+            showSnackBar(context, state.error, SnackBarStatus.error);
           }
           if (state is LoginAccountNotVerified) {
             Navigator.of(context).pushReplacementNamed(
               AppRouter.emailVerification,
             );
+          }
+          if (state is SocialAuthFailure) {
+            showSnackBar(context, state.error, SnackBarStatus.error);
+          }
+          if (state is SocialAuthSuccess) {
+            Navigator.pushReplacementNamed(context, AppRouter.main);
           }
           if (state is LoginSuccess) {
             Navigator.pushReplacementNamed(context, AppRouter.main);
@@ -124,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       return Column(
                         children: [
                           SubmitButton(
-                            onPressed: state is LoginLoading
+                            onPressed: state is AuthLoading
                                 ? null
                                 : () {
                                     if (_formKey.currentState!.validate()) {

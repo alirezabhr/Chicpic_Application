@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
 import 'package:chicpic/services/exceptions.dart';
@@ -10,6 +12,7 @@ import 'package:chicpic/services/api_service.dart';
 import 'package:chicpic/repositories/auth/auth_repository.dart';
 
 import 'package:chicpic/models/auth/user.dart';
+import 'package:chicpic/models/auth/auth_types.dart';
 import 'package:chicpic/models/auth/login_user_data.dart';
 import 'package:chicpic/models/auth/signup_user_data.dart';
 import 'package:chicpic/models/auth/reset_password_data.dart';
@@ -25,6 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AppLoaded>(_onAppLoaded);
     on<SignupWithCredentials>(_onSignupWithCredentials);
     on<LoginWithCredentials>(_onLoginWithCredentials);
+    on<GoogleAuthRequest>(_onGoogleAuthRequest);
     on<AuthRequestVerificationCode>(_onAuthRequestVerificationCode);
     on<AuthCheckVerificationCode>(_onAuthCheckVerificationCode);
     on<AuthLogout>(_onAuthLogout);
@@ -70,9 +74,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onSignupWithCredentials(
-      SignupWithCredentials event,
-      Emitter<AuthState> emit,
-      ) async {
+    SignupWithCredentials event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(SignupLoading());
 
     try {
@@ -108,6 +112,65 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     } catch (_) {
       emit(LoginFailure(error: 'An error occurred.'));
+    }
+  }
+
+  Future<void> _onGoogleAuthRequest(
+    GoogleAuthRequest event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(GoogleAuthLoading());
+    const List<String> scopes = <String>[
+      'https://www.googleapis.com/auth/userinfo.email',
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'openid',
+    ];
+
+    // Initialize GoogleSignIn object
+    late final GoogleSignIn googleSignIn;
+    if (Platform.isIOS) {
+      googleSignIn = GoogleSignIn(
+        clientId:
+            '138232992687-nof5ag56aiiauuuqo3v9o74u5n6l5g13.apps.googleusercontent.com',
+        scopes: scopes,
+      );
+    } else {
+      // for Android devices
+      googleSignIn = GoogleSignIn(scopes: scopes);
+    }
+
+    if (await googleSignIn.isSignedIn()) {
+      googleSignIn.signOut();
+    }
+
+    // Sign in with Google Account
+    GoogleSignInAccount? googleUser;
+    try {
+      googleUser = await googleSignIn.signIn();
+      if (googleUser == null) {
+        emit(SocialAuthFailure(error: 'Google Authentication Cancelled'));
+        return;
+      }
+    } catch (error) {
+      emit(SocialAuthFailure(error: 'Google Sign In Failed'));
+      return;
+    }
+
+    GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+    try {
+      // Authenticate with the backend server
+      await _authRepository.socialAuthentication(
+        authType: AuthType.google,
+        accessToken: googleAuth.accessToken!,
+      );
+      emit(SocialAuthSuccess());
+    } on BadRequestException catch (error) {
+      // TODO: handle for existed user to connect with google account
+      emit(SocialAuthFailure(
+          error: error.errorMessage ?? 'Authentication Failed.'));
+    } catch (_) {
+      emit(SocialAuthFailure(error: 'An error occurred.'));
     }
   }
 
@@ -168,5 +231,4 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     await _authRepository.logout();
   }
-
 }

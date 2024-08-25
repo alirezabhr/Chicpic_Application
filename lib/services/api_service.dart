@@ -6,6 +6,7 @@ import 'package:chicpic/statics/urls.dart';
 
 import 'package:chicpic/models/app_version.dart';
 import 'package:chicpic/models/pagination.dart';
+import 'package:chicpic/models/auth/auth_types.dart';
 import 'package:chicpic/models/auth/login_user_data.dart';
 import 'package:chicpic/models/auth/signup_user_data.dart';
 import 'package:chicpic/models/auth/reset_password_data.dart';
@@ -41,6 +42,13 @@ class APIService {
 
   static Future<void> resetPassword(ResetPasswordData data) async {
     await Client.instance.post(APIUrls.resetPassword, data: data.toMap());
+  }
+
+  static Future<Response> socialAuth(AuthType authType, String accessToken) async {
+    return await Client.instance.post(
+      APIUrls.socialAuth(provider: authType.name),
+      data: {'accessToken': accessToken},
+    );
   }
 
   static Future<Response> signup(SignupUserData data) async {

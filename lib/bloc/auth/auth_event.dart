@@ -29,6 +29,8 @@ class LoginWithCredentials extends AuthEvent {
   List<Object> get props => [loginData];
 }
 
+class GoogleAuthRequest extends AuthEvent {}
+
 class AuthRequestVerificationCode extends AuthEvent {
   final String email;
 

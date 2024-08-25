@@ -7,6 +7,8 @@ import 'package:chicpic/app_router.dart';
 import 'package:chicpic/statics/assets_helper.dart';
 import 'package:chicpic/statics/insets.dart';
 
+import 'package:chicpic/services/snack_bar.dart';
+
 import 'package:chicpic/bloc/auth/auth_bloc.dart';
 
 import 'package:chicpic/models/auth/signup_user_data.dart';
@@ -38,13 +40,13 @@ class _SignupScreenState extends State<SignupScreen> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) async {
           if (state is SignupFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.error),
-                behavior: SnackBarBehavior.floating,
-                backgroundColor: Colors.red,
-              ),
-            );
+            showSnackBar(context, state.error, SnackBarStatus.error);
+          }
+          if (state is SocialAuthFailure) {
+            showSnackBar(context, state.error, SnackBarStatus.error);
+          }
+          if (state is SocialAuthSuccess) {
+            Navigator.pushReplacementNamed(context, AppRouter.main);
           }
           if (state is SignupSuccess) {
             BlocProvider.of<AuthBloc>(context).add(
@@ -182,7 +184,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       return Column(
                         children: [
                           SubmitButton(
-                            onPressed: state is SignupLoading
+                            onPressed: state is AuthLoading
                                 ? null
                                 : () {
                                     if (_formKey.currentState!.validate()) {

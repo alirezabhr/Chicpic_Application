@@ -105,6 +105,21 @@ class AuthRepository {
     saveUserDefaultSettings(authType: AuthType.email);
   }
 
+  Future<void> socialAuthentication({
+    required AuthType authType,
+    required String accessToken,
+  }) async {
+    final Response response = await APIService.socialAuth(authType, accessToken);
+    final Map<String, dynamic> userMap = response.data['user'];
+    userMap['tokens'] = {
+      'access': response.data['access'],
+      'refresh': response.data['refresh'],
+    };
+    _user = User.fromMap(userMap);
+    saveUserTokens(_user!.tokens);
+    saveUserDefaultSettings(authType: authType);
+  }
+
   Future<void> submitUserAdditional(UserAdditional data) async {
     late final Response response;
     if (_user!.userAdditional != null) {

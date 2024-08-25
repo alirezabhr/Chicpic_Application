@@ -10,7 +10,7 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class SignupLoading extends AuthState {}
+class SignupLoading extends AuthLoading {}
 
 class SignupSuccess extends AuthState {}
 
@@ -23,7 +23,7 @@ class SignupFailure extends AuthState {
   List<Object?> get props => [error];
 }
 
-class LoginLoading extends AuthState {}
+class LoginLoading extends AuthLoading {}
 
 class LoginSuccess extends AuthState {}
 
@@ -46,6 +46,21 @@ class LoginInvalidCredentials extends LoginFailure {
 
 class LoginAccountNotVerified extends LoginFailure {
   LoginAccountNotVerified() : super(error: 'Your account is not verified');
+}
+
+class SocialAuthLoading extends AuthLoading {}
+
+class GoogleAuthLoading extends SocialAuthLoading {}
+
+class SocialAuthSuccess extends AuthState {}
+
+class SocialAuthFailure extends AuthState {
+  final String error;
+
+  SocialAuthFailure({required this.error});
+
+  @override
+  List<Object?> get props => [error];
 }
 
 class AuthConnectionProblem extends AuthState {}
