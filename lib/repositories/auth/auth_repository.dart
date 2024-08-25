@@ -5,6 +5,7 @@ import 'package:chicpic/services/api_service.dart';
 
 import 'package:chicpic/statics/shared_preferences_keys.dart';
 
+import 'package:chicpic/models/auth/auth_types.dart';
 import 'package:chicpic/models/auth/user.dart';
 import 'package:chicpic/models/auth/token.dart';
 import 'package:chicpic/models/auth/login_user_data.dart';
@@ -32,6 +33,11 @@ class AuthRepository {
     return prefs.getString(SharedPrefKeys.userRefreshToken);
   }
 
+  Future<String?> getUserAuthType() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(SharedPrefKeys.userAuthType);
+  }
+
   Future<void> saveUserAccessToken(String accessToken) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     _user?.tokens.accessToken = accessToken;
@@ -49,13 +55,19 @@ class AuthRepository {
     await saveUserRefreshToken(tokens.refreshToken);
   }
 
+  Future<void> saveUserAuthType(AuthType authType) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(SharedPrefKeys.userAuthType, authType.name);
+  }
+
   Future<void> saveUserAdditionalReminder({int remindIn = 0}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     // Set reminder to next request
     prefs.setInt(SharedPrefKeys.userAdditionalReminder, remindIn);
   }
 
-  Future<void> saveUserDefaultSettings() async {
+  Future<void> saveUserDefaultSettings({required AuthType authType}) async {
+    await saveUserAuthType(authType);
     await saveUserAdditionalReminder();
   }
 
@@ -83,21 +95,23 @@ class AuthRepository {
     final Response response = await APIService.signup(data);
     _user = User.fromMap(response.data);
     saveUserTokens(_user!.tokens);
-    saveUserDefaultSettings();
+    saveUserDefaultSettings(authType: AuthType.email);
   }
 
   Future<void> login(LoginUserData data) async {
     final Response response = await APIService.login(data);
     _user = User.fromMap(response.data);
     saveUserTokens(_user!.tokens);
-    saveUserDefaultSettings();
+    saveUserDefaultSettings(authType: AuthType.email);
   }
 
   Future<void> submitUserAdditional(UserAdditional data) async {
     late final Response response;
-    if (_user!.userAdditional != null) {  // Update user additional
+    if (_user!.userAdditional != null) {
+      // Update user additional
       response = await APIService.updateUserAdditional(data);
-    } else {  // Create user additional
+    } else {
+      // Create user additional
       response = await APIService.createUserAdditional(data);
     }
     _user = _user!.copyWith(
@@ -110,7 +124,7 @@ class AuthRepository {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final int? reminder = prefs.getInt(SharedPrefKeys.userAdditionalReminder);
       if (reminder == null) {
-        await saveUserAdditionalReminder(remindIn:5);
+        await saveUserAdditionalReminder(remindIn: 5);
         return true;
       }
       if (reminder > 0) {
