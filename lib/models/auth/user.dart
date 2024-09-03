@@ -30,6 +30,19 @@ class User extends Equatable {
             ? UserAdditional.fromJson(userData['additional'])
             : null;
 
+  User.fromSocialAuthResponse(Map<String, dynamic> socialResponse)
+      : tokens = UserToken(
+          accessToken: socialResponse['access'],
+          refreshToken: socialResponse['refresh'],
+        ),
+        id = socialResponse['user']['id'],
+        email = socialResponse['user']['email'],
+        username = socialResponse['user']['username'],
+        isVerified = socialResponse['user']['isVerified'],
+        userAdditional = socialResponse['user']['additional'] != null
+            ? UserAdditional.fromJson(socialResponse['user']['additional'])
+            : null;
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,

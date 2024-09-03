@@ -110,12 +110,7 @@ class AuthRepository {
     required String accessToken,
   }) async {
     final Response response = await APIService.socialAuth(authType, accessToken);
-    final Map<String, dynamic> userMap = response.data['user'];
-    userMap['tokens'] = {
-      'access': response.data['access'],
-      'refresh': response.data['refresh'],
-    };
-    _user = User.fromMap(userMap);
+    _user = User.fromSocialAuthResponse(response.data);
     saveUserTokens(_user!.tokens);
     saveUserDefaultSettings(authType: authType);
   }
