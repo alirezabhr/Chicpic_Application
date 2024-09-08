@@ -39,9 +39,17 @@ class ClientInterceptor extends Interceptor {
             super.onError(BadRequestException(err), handler);
             break;
           case 401:
-            super.onError(
+            try {
+              await refreshToken();
+              Response response = await retryRequest(err.requestOptions);
+              return handler.resolve(response);
+            } catch (_) {
+              await AuthRepository().clearUserTokens();
+              super.onError(
                 UnAuthorizedException(requestOptions: err.requestOptions),
-                handler);
+                handler,
+              );
+            }
             break;
           case 403:
             try {

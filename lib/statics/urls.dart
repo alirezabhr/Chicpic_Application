@@ -1,11 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class BaseUrls {
   static const String http = 'http://';
   static const String https = 'https://';
-  static const String _developmentBaseUrl = '${http}10.0.2.2:8000/';
-  static const String _productionBaseUrl = '${http}3.99.177.129/';
-  static String baseUrl = dotenv.env['IS_PRODUCTION'] == 'true'
+
+  static const String _androidDevelopmentBaseUrl = '${http}10.0.2.2:8000/';
+  static const String _iosDevelopmentBaseUrl = '${http}127.0.0.1:8000/';
+  static final String _developmentBaseUrl =
+      Platform.isAndroid ? _androidDevelopmentBaseUrl : _iosDevelopmentBaseUrl;
+
+  static const String _productionBaseUrl = '${http}99.79.190.129/';
+  static final String baseUrl = dotenv.env['IS_PRODUCTION'] == 'true'
       ? _productionBaseUrl
       : _developmentBaseUrl;
   static const String appVersions =
