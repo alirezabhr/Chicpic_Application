@@ -9,6 +9,7 @@ import 'package:chicpic/ui/auth/screens/verification_code_screen.dart';
 import 'package:chicpic/ui/auth/screens/forget_password.dart';
 import 'package:chicpic/ui/auth/screens/reset_password_verification.dart';
 import 'package:chicpic/ui/auth/screens/reset_password.dart';
+import 'package:chicpic/ui/auth/screens/birth_date_screen.dart';
 import 'package:chicpic/ui/user_additional/screens/user_additional_screen.dart';
 import 'package:chicpic/ui/user_additional/screens/size_guide_screen.dart';
 import 'package:chicpic/ui/terms_conditions_privacy_policy/screens/privacy_policy.dart';
@@ -29,6 +30,7 @@ abstract class AppRouter {
   static const String forgetPassword = "/forgetPassword";
   static const String resetPasswordVerification = "/resetPasswordVerification";
   static const String resetPassword = "/resetPassword";
+  static const String birthDate = "/birth-date";
   static const String userAdditional = "/userAdditional";
   static const String sizeGuide = "/size_guide";
   static const String termsConditions = "/terms";
@@ -69,6 +71,8 @@ abstract class AppRouter {
           builder: (_) => const ResetPasswordScreen(),
           settings: routeSettings,
         );
+      case birthDate:
+        return MaterialPageRoute(builder: (_) => const BirthDateScreen());
       case userAdditional:
         return MaterialPageRoute(builder: (_) => const UserAdditionalScreen());
       case sizeGuide:

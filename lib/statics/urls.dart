@@ -23,13 +23,17 @@ abstract class APIUrls {
   // Users APIs
   static const String _users = 'users/';
 
-  static const String checkAuthentication = '${_users}details/';
+  static const String checkAuthentication = '${_users}check-auth/';
   static const String login = '${_users}login/';
   static const String signup = '${_users}signup/';
   static const String requestVerificationCode = '${_users}otp/request/';
   static const String checkVerificationCode = '${_users}otp/verify/';
   static const String resetPassword = '${_users}reset-password/';
   static const String tokenRefresh = '${_users}token/refresh/';
+
+  static String userDetails(int userId) {
+    return '$_users$userId/';
+  }
 
   static String userAdditional(int userId) {
     return '$_users$userId/additional/';

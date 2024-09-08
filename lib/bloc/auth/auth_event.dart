@@ -59,4 +59,13 @@ class AuthResetPassword extends AuthEvent {
   List<Object> get props => [resetPasswordData];
 }
 
+class AuthUpdateBirthdate extends AuthEvent {
+  final DateTime birthdate;
+
+  const AuthUpdateBirthdate(this.birthdate);
+
+  @override
+  List<Object> get props => [birthdate];
+}
+
 class AuthLogout extends AuthEvent {}

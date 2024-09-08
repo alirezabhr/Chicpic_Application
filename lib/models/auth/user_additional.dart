@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 
 import 'package:chicpic/services/exceptions.dart';
 
@@ -12,7 +11,6 @@ class UserAdditional extends Equatable {
   final GenderChoices genderInterested;
   final int weight;
   final int height;
-  final DateTime birthDate;
   final int shoulderSize;
   final int? chestSize;
   final int? bustSize;
@@ -28,7 +26,6 @@ class UserAdditional extends Equatable {
     required this.genderInterested,
     required this.weight,
     required this.height,
-    required this.birthDate,
     required this.shoulderSize,
     this.chestSize,
     this.bustSize,
@@ -57,7 +54,6 @@ class UserAdditional extends Equatable {
       genderInterested: genderInterested,
       weight: map['weight'],
       height: map['height'],
-      birthDate: DateTime.parse(map['birthDate']),
       shoulderSize: map['shoulderSize'],
       chestSize: map['chestSize'],
       bustSize: map['bustSize'],
@@ -79,7 +75,6 @@ class UserAdditional extends Equatable {
       'genderInterested': genderInterested.abbreviation,
       'weight': weight,
       'height': height,
-      'birthDate': DateFormat('yyyy-MM-dd').format(birthDate),
       'shoulderSize': shoulderSize,
       'chestSize': chestSize,
       'bustSize': bustSize,
@@ -98,7 +93,6 @@ class UserAdditional extends Equatable {
         genderInterested,
         weight,
         height,
-        birthDate,
         shoulderSize,
         chestSize,
         bustSize,

@@ -53,7 +53,11 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
             bool hasUserData = authBloc.hasUserData();
             if (hasUserData) {
               await authBloc.verifyUser();
-              _routeTo(AppRouter.main);
+              if (authBloc.user!.birthdate == null) {
+                _routeTo(AppRouter.birthDate);
+              } else {
+                _routeTo(AppRouter.main);
+              }
             } else {
               _routeTo(AppRouter.login);
             }

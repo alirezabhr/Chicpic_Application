@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:chicpic/models/auth/token.dart';
 import 'package:chicpic/models/auth/user_additional.dart';
+import 'package:intl/intl.dart';
 
 class User extends Equatable {
   final int id;
@@ -9,6 +10,7 @@ class User extends Equatable {
   final String username;
   final UserToken tokens;
   final bool isVerified;
+  final DateTime? birthdate;
   final UserAdditional? userAdditional;
 
   const User({
@@ -17,6 +19,7 @@ class User extends Equatable {
     required this.username,
     required this.tokens,
     required this.isVerified,
+    this.birthdate,
     this.userAdditional,
   });
 
@@ -26,6 +29,9 @@ class User extends Equatable {
         username = userData['username'],
         isVerified = userData['isVerified'],
         tokens = UserToken.fromJson(userData['tokens']),
+        birthdate = userData['birthDate'] != null
+            ? DateTime.parse(userData['birthDate'])
+            : null,
         userAdditional = userData['additional'] != null
             ? UserAdditional.fromJson(userData['additional'])
             : null;
@@ -39,6 +45,9 @@ class User extends Equatable {
         email = socialResponse['user']['email'],
         username = socialResponse['user']['username'],
         isVerified = socialResponse['user']['isVerified'],
+        birthdate = socialResponse['user']['birthDate'] != null
+            ? DateTime.parse(socialResponse['user']['birthDate'])
+            : null,
         userAdditional = socialResponse['user']['additional'] != null
             ? UserAdditional.fromJson(socialResponse['user']['additional'])
             : null;
@@ -50,6 +59,9 @@ class User extends Equatable {
       'username': username,
       'isVerified': isVerified,
       'tokens': tokens.toMap(),
+      'birthdate': birthdate != null
+          ? DateFormat('yyyy-MM-dd').format(birthdate!)
+          : null,
     };
   }
 
@@ -60,6 +72,7 @@ class User extends Equatable {
         username,
         isVerified,
         tokens,
+        birthdate,
         userAdditional,
       ];
 
@@ -69,6 +82,7 @@ class User extends Equatable {
     String? username,
     UserToken? tokens,
     bool? isVerified,
+    DateTime? birthdate,
     UserAdditional? userAdditional,
   }) =>
       User(
@@ -77,6 +91,7 @@ class User extends Equatable {
         username: username ?? this.username,
         tokens: tokens ?? this.tokens,
         isVerified: isVerified ?? this.isVerified,
+        birthdate: birthdate ?? this.birthdate,
         userAdditional: userAdditional ?? this.userAdditional,
       );
 }

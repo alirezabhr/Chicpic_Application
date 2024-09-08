@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
@@ -34,6 +35,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthCheckVerificationCode>(_onAuthCheckVerificationCode);
     on<AuthLogout>(_onAuthLogout);
     on<AuthResetPassword>(_onAuthResetPassword);
+    on<AuthUpdateBirthdate>(_onAuthUpdateBirthdate);
   }
 
   User? get user => _authRepository.user;
@@ -229,6 +231,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           error: error.errorMessage ?? 'An error occurred'));
     } catch (_) {
       emit(AuthResetPasswordFailure(error: 'An error occurred'));
+    }
+  }
+
+  Future<void> _onAuthUpdateBirthdate(
+    AuthUpdateBirthdate event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthUpdateUserLoading());
+
+    try {
+      await APIService.updateUser(
+        _authRepository.user!.id,
+        {'birthDate': DateFormat('yyyy-MM-dd').format(event.birthdate)},
+      );
+      emit(AuthUpdateUserSuccess());
+    } catch (_) {
+      emit(AuthUpdateUserFailure(error: 'An error occurred'));
     }
   }
 

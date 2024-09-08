@@ -22,7 +22,6 @@ part 'user_additional_state.dart';
 class DefaultUserAdditionalConfig {
   static final Mass weight = Mass(value: 60);
   static final Length height = Length(cmValue: 160);
-  static const DateTime? birthDate = null;
   static const gender = GenderChoices.women;
   static final Length shoulderSize = Length(cmValue: 80);
   static final Length chestSize = Length(cmValue: 60);
@@ -50,7 +49,6 @@ class UserAdditionalBloc
 
   late Mass weight;
   late Length height;
-  DateTime? birthDate;
   late GenderChoices gender;
   late Length shoulderSize;
   late Length? chestSize;
@@ -71,7 +69,6 @@ class UserAdditionalBloc
 
       weight = Mass(value: userAdditional.weight);
       height = Length(cmValue: userAdditional.height);
-      birthDate = userAdditional.birthDate;
       gender = userAdditional.genderInterested;
       shoulderSize = Length(cmValue: userAdditional.shoulderSize);
       chestSize = userAdditional.chestSize != null
@@ -90,7 +87,6 @@ class UserAdditionalBloc
       // load default values
       weight = DefaultUserAdditionalConfig.weight;
       height = DefaultUserAdditionalConfig.height;
-      birthDate = DefaultUserAdditionalConfig.birthDate;
       gender = DefaultUserAdditionalConfig.gender;
       shoulderSize = DefaultUserAdditionalConfig.shoulderSize;
       chestSize = DefaultUserAdditionalConfig.chestSize;
@@ -139,7 +135,6 @@ class UserAdditionalBloc
         genderInterested: gender,
         weight: (weight..convertToKg()).value,
         height: (height..convertToCm()).cmValue,
-        birthDate: birthDate!,
         shoulderSize: (shoulderSize..convertToCm()).cmValue,
         chestSize: (chestSize?..convertToCm())?.cmValue,
         bustSize: (bustSize?..convertToCm())?.cmValue,

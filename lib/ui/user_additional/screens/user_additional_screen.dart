@@ -8,7 +8,6 @@ import 'package:chicpic/app_router.dart';
 import 'package:chicpic/services/snack_bar.dart';
 
 import 'package:chicpic/ui/user_additional/widgets/user_additional_base_form.dart';
-import 'package:chicpic/ui/user_additional/widgets/birth_date_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/gender_interested_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/weight_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/height_form.dart';
@@ -80,10 +79,6 @@ class _UserAdditionalEditFormState extends State<UserAdditionalEditForm> {
         child: const SingleChildScrollView(
           child: Column(
             children: [
-              UserAdditionalBaseEditForm(
-                title: 'Birth Date',
-                content: BirthDateForm(),
-              ),
               UserAdditionalBaseEditForm(
                 title: 'Which gender are you mostly interested in?',
                 content: GenderInterestedForm(),
@@ -161,15 +156,11 @@ class _UserAdditionalCreateFormState extends State<UserAdditionalCreateForm> {
 
     _userAdditionalFormWidgets = [
       UserAdditionalBaseCreateForm(
-        title: 'Birth Date:',
+        title: 'Mostly interested in:',
         backBtnOnPressed: () {
           Navigator.of(context).pop();
         },
-        content: const BirthDateForm(),
-      ),
-      const UserAdditionalBaseCreateForm(
-        title: 'Mostly interested in:',
-        content: GenderInterestedForm(),
+        content: const GenderInterestedForm(),
       ),
       const UserAdditionalBaseCreateForm(
         title: 'What do you weigh?',

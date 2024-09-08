@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
+import 'package:chicpic/bloc/auth/auth_bloc.dart';
 
 class BirthDateForm extends StatefulWidget {
-  const BirthDateForm({Key? key}) : super(key: key);
+  const BirthDateForm({Key? key, required this.onSelectDate}) : super(key: key);
+  final Function onSelectDate;
 
   @override
   State<BirthDateForm> createState() => _BirthDateFormState();
@@ -29,13 +30,9 @@ class _BirthDateFormState extends State<BirthDateForm> {
   @override
   void initState() {
     super.initState();
-    pickedDate = BlocProvider.of<UserAdditionalBloc>(context).birthDate;
+    pickedDate = BlocProvider.of<AuthBloc>(context).user?.birthdate;
     _controller.text =
         DateFormat('yyyy-MM-dd').format(pickedDate ?? DateTime.now());
-  }
-
-  void setBirthDate(DateTime date) {
-    BlocProvider.of<UserAdditionalBloc>(context).birthDate = date;
   }
 
   @override
@@ -65,8 +62,8 @@ class _BirthDateFormState extends State<BirthDateForm> {
         );
 
         if (pickedDate != null) {
-          setBirthDate(pickedDate!);
           _controller.text = DateFormat('yyyy-MM-dd').format(pickedDate!);
+          widget.onSelectDate(pickedDate!);
         }
       },
     );

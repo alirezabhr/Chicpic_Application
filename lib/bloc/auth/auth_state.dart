@@ -96,3 +96,16 @@ class AuthResetPasswordFailure extends AuthState {
   @override
   List<Object?> get props => [error];
 }
+
+class AuthUpdateUserLoading extends AuthState {}
+
+class AuthUpdateUserSuccess extends AuthState {}
+
+class AuthUpdateUserFailure extends AuthState {
+  final String error;
+
+  AuthUpdateUserFailure({required this.error});
+
+  @override
+  List<Object?> get props => [error];
+}
