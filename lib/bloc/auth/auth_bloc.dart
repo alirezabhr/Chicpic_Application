@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
@@ -102,7 +103,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await _authRepository.login(event.loginData);
       emit(LoginSuccess());
-    } on UnAuthorizedException catch (_) {  // Invalid Credentials
+    } on UnAuthorizedException catch (_) {
+      // Invalid Credentials
       emit(LoginInvalidCredentials());
     } on BadRequestException catch (error) {
       if (error.errorMessage == 'Your email is not verified.') {
@@ -151,7 +153,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(SocialAuthFailure(error: 'Google Authentication Cancelled'));
         return;
       }
-    } catch (error) {
+    } catch (error, stackTrace) {
+      await Sentry.captureException(error, stackTrace: stackTrace);
       emit(SocialAuthFailure(error: 'Google Sign In Failed'));
       return;
     }
@@ -165,11 +168,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         accessToken: googleAuth.accessToken!,
       );
       emit(SocialAuthSuccess());
-    } on BadRequestException catch (error) {
+    } on BadRequestException catch (error, stackTrace) {
+      await Sentry.captureException(error, stackTrace: stackTrace);
       // TODO: handle for existed user to connect with google account
       emit(SocialAuthFailure(
           error: error.errorMessage ?? 'Authentication Failed.'));
-    } catch (_) {
+    } catch (error, stackTrace) {
+      await Sentry.captureException(error, stackTrace: stackTrace);
       emit(SocialAuthFailure(error: 'An error occurred.'));
     }
   }

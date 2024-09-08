@@ -24,13 +24,22 @@ void main() async {
   await dotenv.load(fileName: ".env");
   final isProduction = dotenv.env['IS_PRODUCTION']?.toLowerCase() == 'true';
 
-  await SentryFlutter.init(
-    (options) {
-      options.dsn = dotenv.env['SENTRY_DSN'];
-      options.environment = isProduction ? 'production' : 'development';
-      options.tracesSampleRate = 1.0;
-    },
-    appRunner: () => runApp(
+  if (isProduction) {
+    await SentryFlutter.init(
+      (options) {
+        options.dsn = dotenv.env['SENTRY_DSN'];
+        options.environment = isProduction ? 'production' : 'development';
+        options.tracesSampleRate = 1.0;
+        options.profilesSampleRate = 1.0;
+      },
+      appRunner: appRunner,
+    );
+  } else {
+    appRunner();
+  }
+}
+
+void appRunner() => runApp(
       MultiRepositoryProvider(
         providers: [
           RepositoryProvider(create: (context) => AuthRepository()),
@@ -95,9 +104,7 @@ void main() async {
           child: const MyApp(),
         ),
       ),
-    ),
-  );
-}
+    );
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
