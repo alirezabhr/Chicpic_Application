@@ -5,9 +5,12 @@ import 'package:chicpic/bloc/user_additional/user_additional_bloc.dart';
 
 import 'package:chicpic/statics/insets.dart';
 
+import 'package:chicpic/ui/user_additional/screens/user_additional_screen.dart';
+
 class UserAdditionalBaseCreateForm extends StatelessWidget {
   final String title;
-  final String? helper;
+  final String? helperText;
+  final bool needSizeGuideBtn;
   final Widget content;
   final String backBtnText;
   final String continueBtnText;
@@ -16,8 +19,9 @@ class UserAdditionalBaseCreateForm extends StatelessWidget {
 
   const UserAdditionalBaseCreateForm({
     required this.title,
-    this.helper,
+    this.helperText,
     required this.content,
+    this.needSizeGuideBtn = false,
     this.backBtnText = 'back',
     this.continueBtnText = 'Continue',
     this.continueBtnOnPressed,
@@ -37,15 +41,21 @@ class UserAdditionalBaseCreateForm extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 28,
-                fontWeight: FontWeight.w900,
-              ),
+            Row(
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const Spacer(),
+                if (needSizeGuideBtn) const BodySizeHelpBtn(),
+              ],
             ),
-            helper != null ? Text(helper!) : Container(),
+            helperText != null ? Text(helperText!) : Container(),
             const SizedBox(height: Insets.large),
             content,
             const SizedBox(height: Insets.xLarge),

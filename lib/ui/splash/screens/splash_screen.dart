@@ -16,6 +16,7 @@ import 'package:chicpic/bloc/settings/settings_bloc.dart';
 import 'package:chicpic/bloc/auth/auth_bloc.dart';
 
 import 'package:chicpic/statics/assets_helper.dart';
+import 'package:chicpic/statics/insets.dart';
 
 import 'package:chicpic/models/app_version.dart';
 
@@ -180,21 +181,16 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
                 Container(
+                  padding: const EdgeInsets.only(top: 25.0),
                   child: state is AuthLoading || _isLoaded == false
-                      ? JumpingDotsProgressIndicator(
-                          fontSize: 80,
-                          color: Theme.of(context).colorScheme.primary,
+                      ? CollectionScaleTransition(
+                          children: const [
+                            LoadingDot(),
+                            LoadingDot(),
+                            LoadingDot(),
+                          ],
                         )
-                      : Padding(
-                          padding: const EdgeInsets.only(top: 25.0),
-                          child: Text(
-                            '...',
-                            style: TextStyle(
-                              fontSize: 80,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                          ),
-                        ),
+                      : null
                 ),
                 const SizedBox(height: 20),
                 Text(
@@ -208,6 +204,25 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class LoadingDot extends StatelessWidget {
+  const LoadingDot({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: Insets.xSmall,
+        horizontal: Insets.xSmall / 2,
+      ),
+      child: Icon(
+        Icons.circle,
+        color: Theme.of(context).primaryColor,
+        size: 14,
       ),
     );
   }

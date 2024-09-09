@@ -103,14 +103,16 @@ class _ShirtFitFormState extends State<ShirtFitForm> {
                           child: Center(
                             child: Column(
                               children: [
-                                Image.asset(e.image, scale: 10),
+                                Flexible(child: Image.asset(e.image, scale: 10)),
                                 const SizedBox(height: Insets.small),
-                                Text(
-                                  e.humanReadable,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black54,
+                                FittedBox(
+                                  child: Text(
+                                    e.humanReadable,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black54,
+                                    ),
                                   ),
                                 ),
                               ],

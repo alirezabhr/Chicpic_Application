@@ -14,8 +14,6 @@ import 'package:chicpic/models/product/shop.dart';
 import 'package:chicpic/ui/shop/widgets/shop_icon.dart';
 
 class ShopsExplore extends StatelessWidget {
-  final double _shopBarHeight = Insets.xSmall * 15;
-
   const ShopsExplore({Key? key}) : super(key: key);
 
   navigateToShopPage(BuildContext context, Shop shop) {
@@ -27,19 +25,27 @@ class ShopsExplore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: Insets.small),
-      child: Column(
-        children: [
-          Row(
+    final Size deviceSize = MediaQuery.of(context).size;
+    final double shopBarHeight =
+        deviceSize.width > 360 ? Insets.large * 4 : Insets.medium * 4;
+    final double shopIconSize = shopBarHeight / 2;
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Insets.small),
+          child: Row(
             children: [
-              const Icon(FontAwesomeIcons.shop,
-                  color: Colors.black45, size: 22),
-              const SizedBox(width: Insets.medium),
+              const Icon(
+                FontAwesomeIcons.shop,
+                color: Colors.black45,
+                size: 16,
+              ),
+              const SizedBox(width: Insets.small),
               Text(
                 'Explore Shops',
                 style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColor),
               ),
@@ -52,61 +58,64 @@ class ShopsExplore extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
-            height: _shopBarHeight,
-            child: BlocBuilder<ShopsExploreBloc, ShopsExploreState>(
-              builder: (context, state) {
-                if (state is ShopsExploreFetchLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  List<Shop> shops =
-                      BlocProvider.of<ShopsExploreBloc>(context).shops;
+        ),
+        SizedBox(
+          height: shopBarHeight,
+          child: BlocBuilder<ShopsExploreBloc, ShopsExploreState>(
+            builder: (context, state) {
+              if (state is ShopsExploreFetchLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                List<Shop> shops =
+                    BlocProvider.of<ShopsExploreBloc>(context).shops;
 
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: shops.length,
-                    itemBuilder: (context, index) {
-                      Shop shop = shops[index];
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: shops.length,
+                  itemBuilder: (context, index) {
+                    Shop shop = shops[index];
 
-                      return Padding(
-                        padding: const EdgeInsets.all(Insets.xSmall),
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                        top: Insets.xSmall,
+                        left: Insets.xSmall,
+                        right: Insets.xSmall,
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          navigateToShopPage(context, shop);
+                        },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                navigateToShopPage(context, shop);
-                              },
-                              child: ShopIcon(imageURL: shop.image, radius: 80),
+                            ShopIcon(
+                              imageURL: shop.image,
+                              radius: shopIconSize,
                             ),
                             const SizedBox(height: Insets.xSmall / 2),
-                            TextButton(
-                              onPressed: () {
-                                navigateToShopPage(context, shop);
-                              },
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                minimumSize: Size.zero,
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              ),
+                            SizedBox(
+                              width: shopIconSize + Insets.medium,
                               child: Text(
                                 shop.name,
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Theme.of(context).primaryColor,
+                                  fontSize: 12,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      );
-                    },
-                  );
-                }
-              },
-            ),
+                      ),
+                    );
+                  },
+                );
+              }
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

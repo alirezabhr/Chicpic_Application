@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chicpic/models/product/product.dart';
 
 import 'package:chicpic/ui/explore/widgets/product_item_dialog.dart';
-import 'package:chicpic/ui/base_widgets/off_label.dart';
 
 class ProductPreviewWidget extends StatelessWidget {
   final ProductPreview product;
@@ -51,7 +50,6 @@ class ProductPreviewWidget extends StatelessWidget {
               },
             ),
           ),
-          if (product.hasDiscount) const OffLabel(),
         ],
       ),
     );

@@ -84,7 +84,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
               ),
               const SizedBox(height: Insets.medium),
               const ShopsExplore(),
-              const SizedBox(height: Insets.medium),
+              const SizedBox(height: Insets.xSmall),
               const ProductsExplore(),
             ],
           ),

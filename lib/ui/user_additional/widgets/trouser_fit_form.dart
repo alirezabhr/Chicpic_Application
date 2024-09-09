@@ -103,12 +103,12 @@ class _TrouserFitFormState extends State<TrouserFitForm> {
                           child: Center(
                             child: Column(
                               children: [
-                                Image.asset(e.image, scale: 10),
+                                Flexible(child: Image.asset(e.image, scale: 10)),
                                 const SizedBox(height: Insets.small),
                                 Text(
                                   e.humanReadable,
                                   style: const TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black54,
                                   ),

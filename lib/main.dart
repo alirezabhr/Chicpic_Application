@@ -135,8 +135,9 @@ class _MyAppState extends State<MyApp> {
       title: appName,
       theme: ThemeData(
         fontFamily: 'Nunito',
-        primarySwatch: CustomTheme.primaryColor,
-        disabledColor: CustomTheme.disabledColor,
+        colorScheme: const ColorScheme.light(
+          primary: CustomTheme.primaryColor,
+        ),
       ),
       initialRoute: AppRouter.splash,
       onGenerateRoute: AppRouter.generateRoute,

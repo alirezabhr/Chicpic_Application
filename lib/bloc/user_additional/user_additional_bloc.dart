@@ -21,14 +21,14 @@ part 'user_additional_state.dart';
 
 class DefaultUserAdditionalConfig {
   static final Mass weight = Mass(value: 60);
-  static final Length height = Length(cmValue: 160);
+  static final Length height = Length(cmValue: 170);
   static const gender = GenderChoices.women;
-  static final Length shoulderSize = Length(cmValue: 80);
-  static final Length chestSize = Length(cmValue: 60);
-  static final Length bustSize = Length(cmValue: 60);
-  static final Length waistSize = Length(cmValue: 50);
-  static final Length hipsSize = Length(cmValue: 80);
-  static final Length inseam = Length(cmValue: 110);
+  static final Length shoulderSize = Length(cmValue: 50);
+  static final Length chestSize = Length(cmValue: 55);
+  static final Length bustSize = Length(cmValue: 55);
+  static final Length waistSize = Length(cmValue: 80);
+  static final Length hipsSize = Length(cmValue: 90);
+  static final Length inseam = Length(cmValue: 70);
   static final ShoeSize shoeSize = ShoeSize(gender: gender);
   static final List<ShirtFit> shirtFits = [];
   static final List<TrouserFit> trouserFits = [];

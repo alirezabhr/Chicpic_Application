@@ -24,13 +24,16 @@ class ProductsExplore extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: Insets.small),
           child: Row(
             children: [
-              const Icon(FontAwesomeIcons.shirt,
-                  color: Colors.black45, size: 22),
-              const SizedBox(width: Insets.medium),
+              const Icon(
+                FontAwesomeIcons.shirt,
+                color: Colors.black45,
+                size: 16,
+              ),
+              const SizedBox(width: Insets.small),
               Text(
                 'Explore Products',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor,
                 ),
@@ -40,7 +43,6 @@ class ProductsExplore extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: Insets.small),
         BlocConsumer<ProductsExploreBloc, ProductsExploreState>(
           listener: (context, state) {
             if (state is ProductsExploreFetchRemindUserAdditional) {

@@ -20,12 +20,14 @@ class ChestBustSizeCreateForm extends StatelessWidget {
       return const UserAdditionalBaseCreateForm(
         title: 'Bust Size:',
         content: BustSizeForm(),
+        needSizeGuideBtn: true,
       );
     } else {
       // return chest size form for males
       return const UserAdditionalBaseCreateForm(
         title: 'Chest Size:',
         content: ChestSizeForm(),
+        needSizeGuideBtn: true,
       );
     }
   }

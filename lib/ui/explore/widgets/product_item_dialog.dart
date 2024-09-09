@@ -53,43 +53,29 @@ class ProductItemDialog extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Shop information
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: Insets.small,
-                        vertical: Insets.xSmall,
-                      ),
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              BlocProvider.of<ShopBloc>(context).add(
-                                ShopVariantsFetch(
-                                  state.product.shop,
-                                  firstPage: true,
-                                ),
-                              );
-                              Navigator.of(context).pushNamed(
-                                AppRouter.shop,
-                                arguments: state.product.shop,
-                              );
-                            },
-                            child: ShopIcon(imageURL: state.product.shop.image),
+                    GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<ShopBloc>(context).add(
+                          ShopVariantsFetch(
+                            state.product.shop,
+                            firstPage: true,
                           ),
-                          const SizedBox(width: Insets.small),
-                          TextButton(
-                            onPressed: () {
-                              BlocProvider.of<ShopBloc>(context).add(
-                                ShopVariantsFetch(
-                                  state.product.shop,
-                                  firstPage: true,
-                                ),
-                              );
-                              Navigator.of(context).pushNamed(
-                                AppRouter.shop,
-                                arguments: state.product.shop,
-                              );
-                            },
-                            child: Text(
+                        );
+                        Navigator.of(context).pushNamed(
+                          AppRouter.shop,
+                          arguments: state.product.shop,
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: Insets.small,
+                          vertical: Insets.xSmall,
+                        ),
+                        child: Row(
+                          children: [
+                            ShopIcon(imageURL: state.product.shop.image),
+                            const SizedBox(width: Insets.xSmall),
+                            Text(
                               state.product.shop.name.toUpperCase(),
                               style: TextStyle(
                                 fontSize: 16,
@@ -97,8 +83,8 @@ class ProductItemDialog extends StatelessWidget {
                                 color: Theme.of(context).primaryColor,
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     // Variant Image and buttons on image

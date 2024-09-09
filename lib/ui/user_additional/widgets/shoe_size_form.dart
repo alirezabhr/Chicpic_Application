@@ -32,6 +32,8 @@ class _ShoeSizeFormState extends State<ShoeSizeForm> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     return Column(
       children: [
         FormField(
@@ -53,8 +55,8 @@ class _ShoeSizeFormState extends State<ShoeSizeForm> {
                 constraints:
                     BoxConstraints(maxHeight: _deviceSize.height * 0.6),
                 child: GridView(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 6,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: screenWidth > 360 ? 6 : 5,
                     mainAxisSpacing: Insets.small,
                     crossAxisSpacing: Insets.xSmall,
                   ),
@@ -82,11 +84,16 @@ class _ShoeSizeFormState extends State<ShoeSizeForm> {
                                 borderRadius: BorderRadius.circular(4.0),
                               ),
                               child: Center(
-                                child: Text(
-                                  e.value.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(Insets.xSmall/2),
+                                  child: FittedBox(
+                                    child: Text(
+                                      e.value.toString(),
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),

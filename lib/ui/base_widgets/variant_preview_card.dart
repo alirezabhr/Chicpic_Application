@@ -18,23 +18,23 @@ class VariantPreviewCard extends StatelessWidget {
     final Size deviceSize = MediaQuery.of(context).size;
     final double cardWidth = deviceSize.width * 0.5 - Insets.xSmall * 2;
 
-    return Card(
-      margin: const EdgeInsets.all(Insets.xSmall),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Insets.xSmall),
-      ),
-      child: GestureDetector(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return ProductItemDialog(
-                productId: variant.product,
-                variantId: variant.id,
-              );
-            },
-          );
-        },
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return ProductItemDialog(
+              productId: variant.product,
+              variantId: variant.id,
+            );
+          },
+        );
+      },
+      child: Card(
+        margin: const EdgeInsets.all(Insets.xSmall),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(Insets.xSmall),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

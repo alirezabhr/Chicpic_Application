@@ -7,6 +7,8 @@ import 'package:chicpic/app_router.dart';
 
 import 'package:chicpic/services/snack_bar.dart';
 
+import 'package:chicpic/statics/insets.dart';
+
 import 'package:chicpic/ui/user_additional/widgets/user_additional_base_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/gender_interested_form.dart';
 import 'package:chicpic/ui/user_additional/widgets/weight_form.dart';
@@ -34,8 +36,8 @@ class UserAdditionalScreen extends StatelessWidget {
   }
 }
 
-class UserAdditionalHelpBtn extends StatelessWidget {
-  const UserAdditionalHelpBtn({Key? key}) : super(key: key);
+class BodySizeHelpBtn extends StatelessWidget {
+  const BodySizeHelpBtn({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,7 @@ class _UserAdditionalEditFormState extends State<UserAdditionalEditForm> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Your Body Size'),
-        actions: const [UserAdditionalHelpBtn()],
+        actions: const [BodySizeHelpBtn()],
       ),
       body: BlocListener<UserAdditionalBloc, UserAdditionalState>(
         listener: (context, state) {
@@ -126,6 +128,7 @@ class _UserAdditionalEditFormState extends State<UserAdditionalEditForm> {
                 title: 'Shoe Size',
                 content: ShoeSizeForm(),
               ),
+              SizedBox(height: Insets.xLarge),
             ],
           ),
         ),
@@ -173,15 +176,17 @@ class _UserAdditionalCreateFormState extends State<UserAdditionalCreateForm> {
       const UserAdditionalBaseCreateForm(
         title: 'Shoulder Size:',
         content: ShoulderSizeForm(),
+        needSizeGuideBtn: true,
       ),
       const ChestBustSizeCreateForm(),
       const UserAdditionalBaseCreateForm(
         title: 'Waist Size:',
         content: WaistSizeForm(),
+        needSizeGuideBtn: true,
       ),
       const UserAdditionalBaseCreateForm(
         title: 'Which shirt fit do you prefer?',
-        helper: '(Optional)',
+        helperText: '(Optional)',
         content: ShirtFitForm(),
       ),
       const UserAdditionalBaseCreateForm(
@@ -191,10 +196,11 @@ class _UserAdditionalCreateFormState extends State<UserAdditionalCreateForm> {
       const UserAdditionalBaseCreateForm(
         title: 'Inside Leg:',
         content: InseamForm(),
+        needSizeGuideBtn: true,
       ),
       const UserAdditionalBaseCreateForm(
         title: 'Which trouser fit do you prefer?',
-        helper: '(Optional)',
+        helperText: '(Optional)',
         content: TrouserFitForm(),
       ),
       UserAdditionalBaseCreateForm(
@@ -217,7 +223,6 @@ class _UserAdditionalCreateFormState extends State<UserAdditionalCreateForm> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Add Your Body Size'),
-        actions: const [UserAdditionalHelpBtn()],
       ),
       body: BlocConsumer<UserAdditionalBloc, UserAdditionalState>(
         listener: (context, state) {
