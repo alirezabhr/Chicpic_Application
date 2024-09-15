@@ -20,7 +20,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
 
   void _onLoadSettings(LoadSettings event, Emitter<SettingsState> emit) async {
     emit(SettingsLoading());
-    await _settingsRepo.loadConfigs();
+    bool? showPersonalized;
+    if (_authRepo.user?.userAdditional == null) {
+      showPersonalized = false;
+    }
+    await _settingsRepo.loadConfigs(showPersonalized: showPersonalized);
     emit(SettingsLoaded());
   }
 

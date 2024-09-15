@@ -3,6 +3,7 @@ import 'package:chicpic/models/auth/gender_choices.dart';
 import 'package:chicpic/models/pagination.dart';
 import 'package:chicpic/models/product/category.dart';
 import 'package:chicpic/models/product/variant.dart';
+import 'package:chicpic/repositories/auth/auth_repository.dart';
 import 'package:chicpic/repositories/settings/settings_repository.dart';
 import 'package:chicpic/services/api_service.dart';
 import 'package:meta/meta.dart';
@@ -12,11 +13,13 @@ part 'category_event.dart';
 part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
+  final AuthRepository _authRepository;
   final SettingsRepository _settingsRepository;
   List<VariantPreview> variants = [];
   int page = 1;
 
-  CategoryBloc(this._settingsRepository) : super(CategoryInitial()) {
+  CategoryBloc(this._authRepository, this._settingsRepository)
+      : super(CategoryInitial()) {
     on<CategoryVariantsFetch>(_onCategoryVariantsFetch);
     on<DiscountedVariantsFetch>(_onDiscountedVariantsFetch);
   }
@@ -29,6 +32,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     if (event.firstPage) {
       page = 1;
       variants = [];
+    }
+
+    // Remind user to add additional info
+    if (await _authRepository.shouldRemindUserAdditional()) {
+      emit(CategoryVariantsFetchRemindUserAdditional());
     }
 
     try {
@@ -58,6 +66,11 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     if (event.firstPage) {
       page = 1;
       variants = [];
+    }
+
+    // Remind user to add additional info
+    if (await _authRepository.shouldRemindUserAdditional()) {
+      emit(CategoryVariantsFetchRemindUserAdditional());
     }
 
     try {

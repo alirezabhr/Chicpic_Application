@@ -10,16 +10,28 @@ class SettingsRepository {
     loadConfigs();
   }
 
-  Future<void> loadConfigs() async {
+  Future<void> loadConfigs({
+    bool? showPersonalized,
+    GenderChoices? lastGenderCategory,
+  }) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    _showPersonalizedProducts =
-        prefs.getBool(SharedPrefKeys.showPersonalized) ?? false;
+    if (showPersonalized != null) {
+      _showPersonalizedProducts = showPersonalized;
+    } else {
+      _showPersonalizedProducts =
+          prefs.getBool(SharedPrefKeys.showPersonalized) ?? false;
+    }
 
+    if (lastGenderCategory != null) {
+      _lastGenderCategory = lastGenderCategory;
+    } else {
     _lastGenderCategory = prefs.get(SharedPrefKeys.categoryGender) ==
-            GenderChoices.men.abbreviation
-        ? GenderChoices.men
-        : GenderChoices.women;
+              GenderChoices.men.abbreviation
+          ? GenderChoices.men
+          : GenderChoices.women;
+    }
+
   }
 
   bool get showPersonalizedProducts => _showPersonalizedProducts;

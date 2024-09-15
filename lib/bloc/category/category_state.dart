@@ -5,6 +5,8 @@ abstract class CategoryState {}
 
 class CategoryInitial extends CategoryState {}
 
+class CategoryVariantsFetchRemindUserAdditional extends CategoryState {}
+
 class CategoryVariantsFetchLoading extends CategoryState {
   final Category category;
   final bool firstPage;

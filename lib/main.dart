@@ -79,9 +79,11 @@ void appRunner() => runApp(
             ),
             BlocProvider<CategoryBloc>(
               create: (BuildContext context) {
+                final AuthRepository authRepository =
+                    RepositoryProvider.of<AuthRepository>(context);
                 final SettingsRepository settingsRepository =
                     RepositoryProvider.of<SettingsRepository>(context);
-                return CategoryBloc(settingsRepository);
+                return CategoryBloc(authRepository, settingsRepository);
               },
             ),
             BlocProvider<ShopBloc>(

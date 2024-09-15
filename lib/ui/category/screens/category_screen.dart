@@ -11,6 +11,7 @@ import 'package:chicpic/statics/grid_delegates.dart';
 
 import 'package:chicpic/ui/base_widgets/filter_button.dart';
 import 'package:chicpic/ui/base_widgets/variant_preview_card.dart';
+import 'package:chicpic/ui/explore/widgets/user_additional_reminder_dialog.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({Key? key}) : super(key: key);
@@ -98,7 +99,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
             }
           }
         },
-        child: BlocBuilder<CategoryBloc, CategoryState>(
+        child: BlocConsumer<CategoryBloc, CategoryState>(
+          listener: (context, state) {
+            if (state is CategoryVariantsFetchRemindUserAdditional) {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const UserAdditionalReminderDialog();
+                },
+              );
+            }
+          },
           builder: (context, state) {
             if (state is CategoryVariantsFetchLoading &&
                 state.firstPage == true) {
