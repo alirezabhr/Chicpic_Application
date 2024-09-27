@@ -83,7 +83,7 @@ class AuthRepository {
 
   Future<void> logout() async {
     _user = null;
-    clearUserTokens();
+    await clearUserTokens();
   }
 
   Future<void> userCheckAuthentication() async {
@@ -105,11 +105,23 @@ class AuthRepository {
     saveUserDefaultSettings(authType: AuthType.email);
   }
 
+  Future<void> updateUserData() async {
+    // TODO: implement updateUserData and call it in auth bloc
+  }
+
+  Future<void> deleteUserAccount() async {
+    await APIService.deleteUser(_user!.id);
+    await logout();
+  }
+
   Future<void> socialAuthentication({
     required AuthType authType,
     required String accessToken,
   }) async {
-    final Response response = await APIService.socialAuth(authType, accessToken);
+    final Response response = await APIService.socialAuth(
+      authType,
+      accessToken,
+    );
     _user = User.fromSocialAuthResponse(response.data);
     saveUserTokens(_user!.tokens);
     saveUserDefaultSettings(authType: authType);

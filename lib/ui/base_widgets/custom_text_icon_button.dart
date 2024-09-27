@@ -1,13 +1,14 @@
-import 'package:chicpic/statics/insets.dart';
 import 'package:flutter/material.dart';
 
-class ProfileButton extends StatelessWidget {
+import 'package:chicpic/statics/insets.dart';
+
+class CustomTextIconButton extends StatelessWidget {
   final String text;
   final void Function() onPressed;
   final IconData? icon;
   final Color? color;
 
-  const ProfileButton({
+  const CustomTextIconButton({
     Key? key,
     required this.text,
     required this.onPressed,
@@ -18,7 +19,7 @@ class ProfileButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color baseColor =
-        color != null ? color! : Theme.of(context).primaryColor;
+    color != null ? color! : Theme.of(context).primaryColor;
 
     return GestureDetector(
       onTap: onPressed,
@@ -41,14 +42,14 @@ class ProfileButton extends StatelessWidget {
           children: [
             icon != null
                 ? Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: Insets.xSmall),
-                    child: Icon(
-                      icon,
-                      color: baseColor,
-                      size: 16,
-                    ),
-                  )
+              margin:
+              const EdgeInsets.symmetric(horizontal: Insets.xSmall),
+              child: Icon(
+                icon,
+                color: baseColor,
+                size: 16,
+              ),
+            )
                 : Container(),
             Text(
               text,

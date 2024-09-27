@@ -44,7 +44,10 @@ class APIService {
     await Client.instance.post(APIUrls.resetPassword, data: data.toMap());
   }
 
-  static Future<Response> socialAuth(AuthType authType, String accessToken) async {
+  static Future<Response> socialAuth(
+    AuthType authType,
+    String accessToken,
+  ) async {
     return await Client.instance.post(
       APIUrls.socialAuth(provider: authType.name),
       data: {'accessToken': accessToken},
@@ -70,6 +73,10 @@ class APIService {
       APIUrls.userDetails(userId),
       data: updatedData,
     );
+  }
+
+  static Future<Response> deleteUser(int userId) async {
+    return await Client.instance.delete(APIUrls.userDetails(userId));
   }
 
   static Future<Response> createUserAdditional(UserAdditional data) async {

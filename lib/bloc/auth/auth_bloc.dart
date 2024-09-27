@@ -36,6 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLogout>(_onAuthLogout);
     on<AuthResetPassword>(_onAuthResetPassword);
     on<AuthUpdateBirthdate>(_onAuthUpdateBirthdate);
+    on<AuthDeleteUser>(_onAuthDeleteUser);
   }
 
   User? get user => _authRepository.user;
@@ -248,6 +249,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthUpdateUserSuccess());
     } catch (_) {
       emit(AuthUpdateUserFailure(error: 'An error occurred'));
+    }
+  }
+
+  Future<void> _onAuthDeleteUser(
+    AuthDeleteUser event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthDeleteUserLoading());
+    try {
+      await _authRepository.deleteUserAccount();
+      emit(AuthDeleteUserSuccess());
+    } catch (error, stackTrace) {
+      await Sentry.captureException(error, stackTrace: stackTrace);
+      emit(AuthDeleteUserFailure(error: 'An error occurred'));
     }
   }
 

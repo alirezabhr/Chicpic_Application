@@ -17,6 +17,8 @@ import 'package:chicpic/ui/shop/screens/shop_screen.dart';
 import 'package:chicpic/ui/shop/screens/shops_explore_screen.dart';
 import 'package:chicpic/ui/explore/screens/search_screen.dart';
 import 'package:chicpic/ui/profile/screens/saved_variants_screen.dart';
+import 'package:chicpic/ui/profile/screens/account_settings_screen.dart';
+import 'package:chicpic/ui/profile/screens/delete_account_verification.dart';
 
 abstract class AppRouter {
   static const String splash = "/";
@@ -36,6 +38,9 @@ abstract class AppRouter {
   static const String shopsExplore = "/shops-explore";
   static const String search = "/search";
   static const String savedVariants = "/saved-variants";
+  static const String accountSettings = "/account-settings";
+  static const String deleteAccountVerification =
+      "/delete-account-verification";
 
   static Route? generateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
@@ -93,6 +98,13 @@ abstract class AppRouter {
       case savedVariants:
         return MaterialPageRoute(
           builder: (_) => const SavedVariantsScreen(),
+          settings: routeSettings,
+        );
+      case accountSettings:
+        return MaterialPageRoute(builder: (_) => const AccountSettingsScreen());
+      case deleteAccountVerification:
+        return MaterialPageRoute(
+          builder: (_) => const DeleteAccountVerificationScreen(),
           settings: routeSettings,
         );
       default:

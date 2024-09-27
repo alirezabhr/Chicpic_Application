@@ -109,3 +109,16 @@ class AuthUpdateUserFailure extends AuthState {
   @override
   List<Object?> get props => [error];
 }
+
+class AuthDeleteUserLoading extends AuthState {}
+
+class AuthDeleteUserSuccess extends AuthState {}
+
+class AuthDeleteUserFailure extends AuthState {
+  final String error;
+
+  AuthDeleteUserFailure({required this.error});
+
+  @override
+  List<Object?> get props => [error];
+}

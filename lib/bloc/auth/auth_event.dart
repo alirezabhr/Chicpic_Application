@@ -68,4 +68,6 @@ class AuthUpdateBirthdate extends AuthEvent {
   List<Object> get props => [birthdate];
 }
 
+class AuthDeleteUser extends AuthEvent {}
+
 class AuthLogout extends AuthEvent {}
