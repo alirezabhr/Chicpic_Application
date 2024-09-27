@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import 'package:chicpic/app_router.dart';
+import 'package:chicpic/services/snack_bar.dart';
 
 class TermsConditionsPrivacyPolicyLinks extends StatelessWidget {
   const TermsConditionsPrivacyPolicyLinks({Key? key}) : super(key: key);
+
+  Future<void> _openWebsite(BuildContext context, String url) async {
+    if (!await launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    )) {
+      showSnackBar(context, 'Could not open the website', SnackBarStatus.error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +30,11 @@ class TermsConditionsPrivacyPolicyLinks extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
             ),
             recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                Navigator.pushNamed(context, AppRouter.termsConditions);
+              ..onTap = () async {
+                await _openWebsite(
+                  context,
+                  'https://chicpic.app/terms-conditions',
+                );
               },
           ),
           const TextSpan(
@@ -35,8 +48,11 @@ class TermsConditionsPrivacyPolicyLinks extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
             ),
             recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                Navigator.pushNamed(context, AppRouter.privacyPolicy);
+              ..onTap = () async {
+                await _openWebsite(
+                  context,
+                  'https://chicpic.app/privacy-policy',
+                );
               },
           ),
         ],

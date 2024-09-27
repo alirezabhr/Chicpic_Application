@@ -16,7 +16,7 @@ import 'package:chicpic/models/auth/signup_user_data.dart';
 import 'package:chicpic/ui/auth/widgets/submit_button.dart';
 import 'package:chicpic/ui/auth/widgets/auth_divider.dart';
 import 'package:chicpic/ui/auth/widgets/google_button.dart';
-import 'package:chicpic/ui/terms_conditions_privacy_policy/widgets/terms_conditions_privacy_policy_links.dart';
+import 'package:chicpic/ui/auth/widgets/terms_conditions_privacy_policy_links.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);

@@ -12,8 +12,6 @@ import 'package:chicpic/ui/auth/screens/reset_password.dart';
 import 'package:chicpic/ui/auth/screens/birth_date_screen.dart';
 import 'package:chicpic/ui/user_additional/screens/user_additional_screen.dart';
 import 'package:chicpic/ui/user_additional/screens/size_guide_screen.dart';
-import 'package:chicpic/ui/terms_conditions_privacy_policy/screens/privacy_policy.dart';
-import 'package:chicpic/ui/terms_conditions_privacy_policy/screens/terms_and_condition.dart';
 import 'package:chicpic/ui/category/screens/category_screen.dart';
 import 'package:chicpic/ui/shop/screens/shop_screen.dart';
 import 'package:chicpic/ui/shop/screens/shops_explore_screen.dart';
@@ -33,8 +31,6 @@ abstract class AppRouter {
   static const String birthDate = "/birth-date";
   static const String userAdditional = "/userAdditional";
   static const String sizeGuide = "/size_guide";
-  static const String termsConditions = "/terms";
-  static const String privacyPolicy = "/privacy";
   static const String category = "/category";
   static const String shop = "/shop";
   static const String shopsExplore = "/shops-explore";
@@ -77,10 +73,6 @@ abstract class AppRouter {
         return MaterialPageRoute(builder: (_) => const UserAdditionalScreen());
       case sizeGuide:
         return MaterialPageRoute(builder: (_) => const SizeGuideScreen());
-      case termsConditions:
-        return MaterialPageRoute(builder: (_) => const TermsConditionsScreen());
-      case privacyPolicy:
-        return MaterialPageRoute(builder: (_) => const PrivacyPolicyScreen());
       case category:
         return MaterialPageRoute(
           builder: (_) => const CategoryScreen(),
